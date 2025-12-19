@@ -53,7 +53,7 @@ function LinkGroup({ groupName, links, width }: LinkGroupProps) {
       <h3
         className={`${titleColor} mb-[.625rem] text-sm font-medium tracking-[0.025rem] sm:text-[0.9375rem]`}
       >
-        {t(groupName)}
+        {groupName}
       </h3>
 
       <ul

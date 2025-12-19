@@ -6,7 +6,7 @@ type TranslationKeys = keyof typeof footerTranslations;
 type Links = { href: string; title: TranslationKeys }[];
 
 export type LinkGroupProps = {
-  groupName: TranslationKeys;
+  groupName: string;
   links: Links;
   width: string;
 };
@@ -41,22 +41,22 @@ const moreLinks = [
 export const getLinkGroups = (locale: Locale) =>
   [
     {
-      groupName: '소개',
+      groupName: 'About',
       links: aboutLinks,
       width: locale === 'ko' ? 'w-[7.5rem]' : 'w-[10rem]',
     },
     {
-      groupName: '자료',
+      groupName: 'Resources',
       links: resourcesLinks,
       width: 'w-[8.25rem]',
     },
     {
-      groupName: '연구',
+      groupName: 'Research',
       links: researchLinks,
       width: 'w-[9rem]',
     },
     {
-      groupName: '기타',
+      groupName: 'More',
       links: moreLinks,
       width: 'w-[8rem]',
     },

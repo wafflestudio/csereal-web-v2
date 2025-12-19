@@ -19,7 +19,7 @@ const routeFactory: (locale: Locale) => typeof _route =
 const getLocaleRoutes = (locale: Locale) => {
   const route = routeFactory(locale);
   return [
-    route('/', 'routes/index.tsx'),
+    route('/', 'routes/main/index.tsx'),
     ...prefix('/about', [route('/overview', 'routes/about/overview.tsx')]),
   ];
 };

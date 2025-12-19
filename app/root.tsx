@@ -9,8 +9,7 @@ import {
 } from 'react-router';
 import './app.css';
 import clsx from 'clsx';
-import Footer from '~/components/layout/Footer/Footer';
-import Header from '~/components/layout/Header';
+import Footer from '~/components/layout/Footer';
 import LNB from '~/components/layout/LeftNav';
 import MobileNav from '~/components/layout/MobileNav';
 import { useLanguage } from '~/hooks/useLanguage';
@@ -59,7 +58,6 @@ export default function App() {
         <main
           className={clsx('flex min-h-full min-w-full flex-col', paddingLeft)}
         >
-          <Header />
           <Outlet />
           <Footer />
         </main>
