@@ -10,7 +10,7 @@ import navbarTranslations from '../LeftNav/translations.json';
 export default function MobileNavList() {
   const navbarState = useStore((s) => s.navbarState);
   const hoverNavItem = useStore((s) => s.hoverNavItem);
-  const { t } = useLanguage(navbarTranslations);
+  const { tUnsafe } = useLanguage(navbarTranslations);
   const [search, setSearch] = useState(false);
 
   const shouldHighlight = (item: NavItem) => {
@@ -33,7 +33,7 @@ export default function MobileNavList() {
             onClick={() => hoverNavItem(item)}
             onKeyDown={(e) => e.key === 'Enter' && hoverNavItem(item)}
           >
-            {t(item.key)}
+            {tUnsafe(item.key)}
           </li>
         ))}
       </ul>

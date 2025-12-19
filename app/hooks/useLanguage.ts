@@ -1,8 +1,6 @@
 import { useLocation, useNavigate } from 'react-router';
 import type { Locale } from '~/types/i18n';
 
-type Translations = Record<string, string>; // 한국어 -> 영어
-
 interface UseLanguageBase {
   locale: Locale;
   isEnglish: boolean;
@@ -11,20 +9,20 @@ interface UseLanguageBase {
   localizedPath: (path: string) => string;
 }
 
-export interface UseLanguageReturn extends UseLanguageBase {
-  t?: (koreanKey: string) => string;
-}
-
-interface UseLanguageWithTranslations extends UseLanguageBase {
-  t: (koreanKey: string) => string;
+interface UseLanguageWithTranslations<T extends Record<string, string>>
+  extends UseLanguageBase {
+  t: (koreanKey: keyof T & string) => string; // type-safe
+  tUnsafe: (koreanKey: string) => string; // 동적 키 허용
 }
 
 // Overload signatures
 export function useLanguage(): UseLanguageBase;
-export function useLanguage(
-  translations: Translations,
-): UseLanguageWithTranslations;
-export function useLanguage(translations?: Translations): UseLanguageReturn {
+export function useLanguage<T extends Record<string, string>>(
+  translations: T,
+): UseLanguageWithTranslations<T>;
+export function useLanguage<T extends Record<string, string>>(
+  translations?: T,
+): UseLanguageBase | UseLanguageWithTranslations<T> {
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
 
@@ -45,13 +43,23 @@ export function useLanguage(translations?: Translations): UseLanguageReturn {
     return isEnglish ? `/en${path}` : path;
   };
 
-  // If translations provided, create translation function
-  const t = translations
-    ? (koreanKey: string): string => {
-        if (locale === 'ko') return koreanKey;
-        return translations[koreanKey] || koreanKey;
-      }
-    : undefined;
+  // If translations provided, create translation functions
+  if (translations) {
+    const translateFn = (koreanKey: string): string => {
+      if (locale === 'ko') return koreanKey;
+      return translations[koreanKey] || koreanKey;
+    };
+
+    return {
+      locale,
+      isEnglish,
+      pathWithoutLocale,
+      changeLanguage,
+      localizedPath,
+      t: translateFn as UseLanguageWithTranslations<T>['t'],
+      tUnsafe: translateFn,
+    };
+  }
 
   return {
     locale,
@@ -59,6 +67,5 @@ export function useLanguage(translations?: Translations): UseLanguageReturn {
     pathWithoutLocale,
     changeLanguage,
     localizedPath,
-    t,
   };
 }

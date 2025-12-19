@@ -9,6 +9,7 @@ import {
 } from 'react-router';
 import './app.css';
 import clsx from 'clsx';
+import Footer from '~/components/layout/Footer/Footer';
 import Header from '~/components/layout/Header';
 import LNB from '~/components/layout/LeftNav';
 import MobileNav from '~/components/layout/MobileNav';
@@ -60,6 +61,7 @@ export default function App() {
         >
           <Header />
           <Outlet />
+          <Footer />
         </main>
         <ScrollRestoration />
         <Scripts />

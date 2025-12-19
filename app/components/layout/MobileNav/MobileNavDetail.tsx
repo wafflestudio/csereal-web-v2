@@ -70,11 +70,11 @@ function MobileNavMenuItem({
   onClick,
   depth,
 }: MobileNavMenuItemProps) {
-  const { localizedPath, t } = useLanguage(navbarTranslations);
+  const { localizedPath, tUnsafe } = useLanguage(navbarTranslations);
   const to = navItem.path ? localizedPath(navItem.path) : undefined;
 
   // 번역 및 포맷팅 (괄호 처리)
-  const translated = t(navItem.key);
+  const translated = tUnsafe(navItem.key);
   const idx = translated.indexOf('(');
   const label =
     idx === -1 ? (

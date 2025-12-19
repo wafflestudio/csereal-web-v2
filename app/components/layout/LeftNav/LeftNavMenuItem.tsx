@@ -19,13 +19,13 @@ export default function LNBMenuItem({
   onHover,
   onClick,
 }: LNBMenuItemProps) {
-  const { localizedPath, t } = useLanguage(navbarTranslations);
+  const { localizedPath, tUnsafe } = useLanguage(navbarTranslations);
 
   // Build localized path if navItem has a path
   const to = navItem.path ? localizedPath(navItem.path) : undefined;
 
   // Translate and format label (inline NavLabel logic)
-  const translated = t(navItem.key);
+  const translated = tUnsafe(navItem.key);
   const idx = translated.indexOf('(');
   const label =
     idx === -1 ? (
