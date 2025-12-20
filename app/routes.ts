@@ -32,7 +32,37 @@ const getLocaleRoutes = (locale: Locale) => {
     ...prefix('/community', [route('/', 'routes/community/index.tsx')]),
     ...prefix('/people', [route('/', 'routes/people/index.tsx')]),
     ...prefix('/research', [route('/', 'routes/research/index.tsx')]),
-    ...prefix('/admissions', [route('/', 'routes/admissions/index.tsx')]),
+    ...prefix('/admissions', [
+      route('/', 'routes/admissions/index.tsx'),
+      ...prefix('/undergraduate', [
+        route(
+          '/early-admission',
+          'routes/admissions/undergraduate/early-admission.tsx',
+        ),
+        route(
+          '/regular-admission',
+          'routes/admissions/undergraduate/regular-admission.tsx',
+        ),
+      ]),
+      ...prefix('/graduate', [
+        route(
+          '/regular-admission',
+          'routes/admissions/graduate/regular-admission.tsx',
+        ),
+      ]),
+      ...prefix('/international', [
+        route(
+          '/undergraduate',
+          'routes/admissions/international/undergraduate.tsx',
+        ),
+        route('/graduate', 'routes/admissions/international/graduate.tsx'),
+        route('/exchange', 'routes/admissions/international/exchange.tsx'),
+        route(
+          '/scholarships',
+          'routes/admissions/international/scholarships.tsx',
+        ),
+      ]),
+    ]),
     ...prefix('/academics', [route('/', 'routes/academics/index.tsx')]),
     ...prefix('/reservations', [route('/', 'routes/reservations/index.tsx')]),
     route('/10-10-project', 'routes/10-10-project/index.tsx'),

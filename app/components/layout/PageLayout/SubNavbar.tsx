@@ -4,7 +4,7 @@ import { useLanguage } from '~/hooks/useLanguage';
 
 export interface SubNavItem {
   name: string;
-  path: string;
+  path?: string;
   depth?: number; // 들여쓰기 깊이 (0, 1, 2...)
 }
 
@@ -51,7 +51,7 @@ export default function SubNavbar({ title, titlePath, items }: SubNavbarProps) {
 function SubNavItem({ item }: { item: SubNavItem }) {
   const { pathname } = useLocation();
   const { localizedPath } = useLanguage();
-  const localizedItemPath = localizedPath(item.path);
+  const localizedItemPath = item.path ? localizedPath(item.path) : '';
   const isCurrent = pathname === localizedItemPath;
   const marginLeft = `${(item.depth || 0) * INDENTATION}px`;
 
@@ -64,12 +64,16 @@ function SubNavItem({ item }: { item: SubNavItem }) {
       }`}
       style={{ marginLeft }}
     >
-      <Link
-        to={localizedItemPath}
-        className="whitespace-nowrap hover:text-main-orange"
-      >
-        {item.name}
-      </Link>
+      {localizedItemPath ? (
+        <Link
+          to={localizedItemPath}
+          className={'whitespace-nowrap hover:text-main-orange'}
+        >
+          {item.name}
+        </Link>
+      ) : (
+        <span className={'whitespace-nowrap'}>{item.name}</span>
+      )}
     </li>
   );
 }

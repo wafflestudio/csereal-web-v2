@@ -18,3 +18,61 @@ export const useAboutSubNav = () => {
     ],
   };
 };
+
+export const useAdmissionsSubNav = () => {
+  const { t } = useLanguage();
+
+  return {
+    title: t('입학'),
+    titlePath: '/admissions',
+    items: [
+      {
+        name: t('학부'),
+        depth: 1,
+      },
+      {
+        name: t('수시 모집'),
+        path: '/admissions/undergraduate/early-admission',
+        depth: 2,
+      },
+      {
+        name: t('정시 모집'),
+        path: '/admissions/undergraduate/regular-admission',
+        depth: 2,
+      },
+      {
+        name: t('대학원'),
+        depth: 1,
+      },
+      {
+        name: t('전기/후기 모집'),
+        path: '/admissions/graduate/regular-admission',
+        depth: 2,
+      },
+      {
+        name: t('International'),
+        depth: 1,
+      },
+      {
+        name: t('Undergraduate'),
+        path: '/admissions/international/undergraduate',
+        depth: 2,
+      },
+      {
+        name: t('Graduate'),
+        path: '/admissions/international/graduate',
+        depth: 2,
+      },
+      {
+        name: t('Exchange/Visiting Program'),
+        path: '/admissions/international/exchange',
+        depth: 2,
+      },
+      {
+        name: t('Scholarships'),
+        path: '/admissions/international/scholarships',
+        depth: 2,
+      },
+    ],
+  };
+};

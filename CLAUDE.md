@@ -131,3 +131,11 @@ const { t, localizedPath } = useLanguage({
 - 섹션 타이틀 + 더보기 → `SectionHeader`
 - 에러 화면 → `ErrorState`
 - 노드 컴포넌트 → `Node` 하나로 통합 (`variant`로 제어)
+
+## Admissions 마이그레이션
+- 공용 뷰: `app/routes/admissions/components/AdmissionsPageContent.tsx`
+  - `layout`으로 기본/하단 여백 제어
+- 공용 fetch: `app/routes/admissions/components/fetchAdmissions.ts`
+  - `/v2/admissions/{mainType}/{postType}` 호출
+- 하위 라우트 파일에 동일 패턴 적용 (loader에서 locale 판단 후 description만 반환)
+- SubNav: `useAdmissionsSubNav` 훅으로 admissions 사이드 내비 구성

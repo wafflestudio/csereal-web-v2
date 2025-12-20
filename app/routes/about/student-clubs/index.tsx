@@ -20,6 +20,7 @@ export default function StudentClubsPage() {
   const [searchParams] = useSearchParams();
   const { t, locale } = useLanguage({
     '학생 동아리': 'Student Clubs',
+    '동아리 소개': 'Student Clubs',
     '학부 소개': 'About',
   });
   const subNav = useAboutSubNav();
@@ -43,11 +44,11 @@ export default function StudentClubsPage() {
 
   return (
     <PageLayout
-      title={t('학생 동아리')}
+      title={t('동아리 소개')}
       titleSize="xl"
       breadcrumb={[
         { name: t('학부 소개'), path: '/about/overview' },
-        { name: t('학생 동아리'), path: '/about/student-clubs' },
+        { name: t('동아리 소개'), path: '/about/student-clubs' },
       ]}
       subNav={subNav}
       padding="noTop"

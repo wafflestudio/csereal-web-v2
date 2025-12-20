@@ -36,7 +36,7 @@ importers:
         specifier: ^1.11.19
         version: 1.11.19
       isbot:
-        specifier: ^5.1.31
+        specifier: ^5
         version: 5.1.32
       lucide-react:
         specifier: ^0.561.0
@@ -66,9 +66,6 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.1.13
         version: 4.1.18(vite@7.3.0(@types/node@22.19.3)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
-      '@types/autolinker':
-        specifier: ^2.0.4
-        version: 2.0.4
       '@types/node':
         specifier: ^22
         version: 22.19.3
@@ -1066,10 +1063,6 @@ packages:
     resolution: {integrity: sha512-jVA+/UpKL1vRLg6Hkao5jldawNmRo7mQYrZtNHMIVpLfLhDml5nMRUo/8MwoX2vNXvnaXNNMedrMfMugAVX1nA==}
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7
-
-  '@types/autolinker@2.0.4':
-    resolution: {integrity: sha512-GfmXkZGo17WocnVY/xZdmjq+uQYZKZMy4oS8XX1taSqubmKwOB1CHJLQmDtBvsHJ/nwdr0UKGVBLC7KbbYmvFg==}
-    deprecated: This is a stub types definition. autolinker provides its own type definitions, so you do not need this installed.
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
@@ -2994,10 +2987,6 @@ snapshots:
       '@tailwindcss/oxide': 4.1.18
       tailwindcss: 4.1.18
       vite: 7.3.0(@types/node@22.19.3)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)
-
-  '@types/autolinker@2.0.4':
-    dependencies:
-      autolinker: 4.1.5
 
   '@types/estree@1.0.8': {}
 
