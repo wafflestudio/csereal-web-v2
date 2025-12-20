@@ -1,12 +1,11 @@
 import { Link } from 'react-router';
 import { useLanguage } from '~/hooks/useLanguage';
-import commonTranslations from '~/translations.json';
 
 export default function LinkSection() {
-  const { t, localizedPath } = useLanguage(commonTranslations);
+  const { t, localizedPath } = useLanguage();
 
   return (
-    <div className="mx-6 mb-[7rem] mt-[60px] flex flex-col gap-[4rem] sm:mx-[7.81rem] sm:mb-[12rem] sm:mt-[90px] sm:flex-row sm:gap-[8rem]">
+    <div className="mx-6 mb-28 mt-[60px] flex flex-col gap-16 sm:mx-[7.81rem] sm:mb-48 sm:mt-[90px] sm:flex-row sm:gap-32">
       <div className="flex flex-1 flex-col gap-[1.37rem] sm:gap-9">
         <h3 className="text-md font-medium text-neutral-400 sm:text-[1.3125rem]">
           {t('바로가기')}

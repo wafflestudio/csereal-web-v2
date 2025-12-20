@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import { useLanguage } from '~/hooks/useLanguage';
 import useResponsive from '~/hooks/useResponsive';
-import commonTranslations from '~/translations.json';
 import type { AllMainNotice } from '~/types/api/v2';
 import noticeGraphicImg from '../assets/noticeGraphic.png';
 
@@ -18,7 +17,7 @@ export default function NoticeSection({
 }) {
   const [tag, setTag] = useState<keyof AllMainNotice>('all');
   const isMobile = useResponsive();
-  const { t, localizedPath, locale } = useLanguage(commonTranslations);
+  const { t, localizedPath, locale } = useLanguage();
 
   return (
     <div className="relative mt-16 bg-[#212121] sm:mx-31 sm:mt-22 sm:h-112">

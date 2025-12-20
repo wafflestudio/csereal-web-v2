@@ -3,7 +3,6 @@
 import { Link } from 'react-router';
 import { useLanguage } from '~/hooks/useLanguage';
 import useResponsive from '~/hooks/useResponsive';
-import commonTranslations from '~/translations.json';
 import type { MainNews } from '~/types/api/v2';
 import NewsCarousel from './NewsCarousel';
 import NewsCarouselMobile from './NewsCarouselMobile';
@@ -24,7 +23,7 @@ export default function NewsSection({ mainNews }: { mainNews: MainNews[] }) {
 }
 
 function Header() {
-  const { t, localizedPath } = useLanguage(commonTranslations);
+  const { t, localizedPath } = useLanguage();
 
   return (
     <div className="flex flex-col gap-2">

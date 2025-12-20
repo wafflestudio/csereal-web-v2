@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from 'react-router';
+import commonTranslations from '~/translations.json';
 import type { Locale } from '~/types/i18n';
 
 interface UseLanguageBase {
@@ -15,14 +16,19 @@ interface UseLanguageWithTranslations<T extends Record<string, string>>
   tUnsafe: (koreanKey: string) => string; // 동적 키 허용
 }
 
+type CommonTranslations = typeof commonTranslations;
+type CommonTranslationsKey = keyof CommonTranslations;
+
 // Overload signatures
-export function useLanguage(): UseLanguageBase;
+export function useLanguage(): UseLanguageWithTranslations<CommonTranslations>;
 export function useLanguage<T extends Record<string, string>>(
   translations: T,
-): UseLanguageWithTranslations<T>;
+): UseLanguageWithTranslations<CommonTranslations & T>;
 export function useLanguage<T extends Record<string, string>>(
   translations?: T,
-): UseLanguageBase | UseLanguageWithTranslations<T> {
+):
+  | UseLanguageWithTranslations<CommonTranslations>
+  | UseLanguageWithTranslations<CommonTranslations & T> {
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
 
@@ -43,23 +49,16 @@ export function useLanguage<T extends Record<string, string>>(
     return isEnglish ? `/en${path}` : path;
   };
 
-  // If translations provided, create translation functions
-  if (translations) {
-    const translateFn = (koreanKey: string): string => {
-      if (locale === 'ko') return koreanKey;
-      return translations[koreanKey] || koreanKey;
-    };
+  // Merge commonTranslations with provided translations
+  const mergedTranslations = {
+    ...commonTranslations,
+    ...(translations || {}),
+  };
 
-    return {
-      locale,
-      isEnglish,
-      pathWithoutLocale,
-      changeLanguage,
-      localizedPath,
-      t: translateFn as UseLanguageWithTranslations<T>['t'],
-      tUnsafe: translateFn,
-    };
-  }
+  const translateFn = (koreanKey: CommonTranslationsKey & keyof T): string => {
+    if (locale === 'ko') return koreanKey;
+    return mergedTranslations[koreanKey] || koreanKey;
+  };
 
   return {
     locale,
@@ -67,5 +66,7 @@ export function useLanguage<T extends Record<string, string>>(
     pathWithoutLocale,
     changeLanguage,
     localizedPath,
+    t: translateFn,
+    tUnsafe: translateFn as (koreanKey: string) => string,
   };
 }

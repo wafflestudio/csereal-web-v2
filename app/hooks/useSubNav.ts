@@ -1,8 +1,7 @@
 import { useLanguage } from '~/hooks/useLanguage';
-import commonTranslations from '~/translations.json';
 
 export const useAboutSubNav = () => {
-  const { t } = useLanguage(commonTranslations);
+  const { t } = useLanguage();
 
   return {
     title: t('소개'),

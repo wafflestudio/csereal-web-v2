@@ -3,7 +3,6 @@ import HTMLViewer from '~/components/common/HTMLViewer';
 import PageLayout from '~/components/layout/PageLayout';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useAboutSubNav } from '~/hooks/useSubNav';
-import commonTranslations from '~/translations.json';
 import type { AboutContent } from '~/types/api/v2';
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -19,7 +18,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function GreetingsPage() {
-  const { t } = useLanguage(commonTranslations);
+  const { t } = useLanguage();
   const subNav = useAboutSubNav();
 
   return (
