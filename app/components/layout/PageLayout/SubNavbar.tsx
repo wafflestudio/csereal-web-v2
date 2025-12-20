@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router';
-import { CurvedVerticalNode } from '~/components/common/Nodes';
+import Node from '~/components/common/Nodes';
 import { useLanguage } from '~/hooks/useLanguage';
 
 export interface SubNavItem {
@@ -27,7 +27,7 @@ export default function SubNavbar({ title, titlePath, items }: SubNavbarProps) {
         className="sticky top-[52px] col-start-2 row-span-full mb-8 mt-13 flex"
         style={{ height }}
       >
-        <CurvedVerticalNode grow={false} />
+        <Node variant="curvedVertical" />
         <div className="pl-1.5 pt-2.75">
           <Link
             to={localizedPath(titlePath)}

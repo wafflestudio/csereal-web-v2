@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from 'react-router';
+import ErrorState from '~/components/common/ErrorState';
 import Header from '~/components/layout/Header';
 import { useLanguage } from '~/hooks/useLanguage';
 
@@ -13,18 +14,10 @@ export default function NotFound() {
   return (
     <>
       <Header />
-      <div className="grow p-15 flex flex-col items-start gap-4">
-        <p className="text-lg text-white">
-          {t('존재하지 않는 경로입니다')}: {pathname}
-        </p>
-        <button
-          type="button"
-          onClick={() => navigate('/')}
-          className="whitespace-nowrap rounded-[.0625rem] border border-neutral-200 bg-neutral-100 px-[.875rem] py-[.3125rem] text-md font-medium leading-[1.5rem] text-neutral-500 hover:bg-neutral-200"
-        >
-          {t('메인으로 이동')}
-        </button>
-      </div>
+      <ErrorState
+        message={`${t('존재하지 않는 경로입니다')}: ${pathname}`}
+        action={{ label: t('메인으로 이동'), onClick: () => navigate('/') }}
+      />
     </>
   );
 }

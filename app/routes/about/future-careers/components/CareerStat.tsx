@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Dropdown from '~/components/form/Dropdown';
+import Dropdown from '~/components/common/Dropdown';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { YearStat } from '~/types/api/future-careers';
 

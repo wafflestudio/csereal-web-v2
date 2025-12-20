@@ -1,4 +1,5 @@
 import { type LoaderFunctionArgs, useLoaderData } from 'react-router';
+import ContentSection from '~/components/common/ContentSection';
 import HTMLViewer from '~/components/common/HTMLViewer';
 import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
@@ -31,19 +32,19 @@ export default function FutureCareersPage() {
   return (
     <PageLayout
       title={t('졸업생 진로')}
-      titleType="big"
+      titleSize="xl"
       breadcrumb={[
         { name: t('학부 소개'), path: '/about/overview' },
         { name: t('졸업생 진로'), path: '/about/future-careers' },
       ]}
       subNav={subNav}
-      removePadding
+      padding="none"
     >
-      <div className="px-5 pb-12 pt-7 sm:py-11 sm:pl-25 sm:pr-[360px]">
-        <HTMLViewer htmlContent={data.description} />
+      <ContentSection tone="white" padding="subNav">
+        <HTMLViewer html={data.description} />
         <CareerStat stat={data.stat} />
         <CareerCompanies companies={data.companies} />
-      </div>
+      </ContentSection>
     </PageLayout>
   );
 }

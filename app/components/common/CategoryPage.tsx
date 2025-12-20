@@ -4,7 +4,7 @@ import navbarTranslations from '~/components/layout/LeftNav/translations.json';
 import type { NavItem } from '~/constants/navigation';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useNavItem } from '~/hooks/useNavItem';
-import CategoryGrid from './common/CategoryGrid';
+import CategoryGrid from './CategoryGrid';
 
 export const tentenProjectNavItem: NavItem = {
   key: '10-10 Project',

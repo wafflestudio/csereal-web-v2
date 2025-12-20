@@ -1,12 +1,12 @@
 import { useLoaderData, useSearchParams } from 'react-router';
+import SelectionList from '~/components/common/SelectionList';
 import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useAboutSubNav } from '~/hooks/useSubNav';
 import type { StudentClubsResponse } from '~/types/api/student-clubs';
-import { findItemBySearchParam } from '~/utils/string';
+import { findItemBySearchParam, replaceSpaceWithDash } from '~/utils/string';
 import ClubDetails from './components/ClubDetails';
-import SelectionList from './components/SelectionList';
 
 export async function loader() {
   const response = await fetch(`${BASE_URL}/v2/about/student-clubs`);
@@ -30,22 +30,29 @@ export default function StudentClubsPage() {
     searchParams.get('selected') ?? undefined,
   );
 
+  const selectionItems = clubs.map((club) => {
+    const label = club[locale]?.name ?? club.ko.name;
+    const query = replaceSpaceWithDash(club.en.name || club.ko.name);
+    return {
+      id: club.ko.name,
+      label,
+      href: `/about/student-clubs?selected=${query}`,
+      selected: club.ko.name === selectedClub?.ko.name,
+    };
+  });
+
   return (
     <PageLayout
       title={t('학생 동아리')}
-      titleType="big"
+      titleSize="xl"
       breadcrumb={[
         { name: t('학부 소개'), path: '/about/overview' },
         { name: t('학생 동아리'), path: '/about/student-clubs' },
       ]}
       subNav={subNav}
-      removeTopPadding
+      padding="noTop"
     >
-      <SelectionList
-        names={clubs.map((club) => ({ ko: club.ko.name, en: club.en.name }))}
-        selectedItemNameKo={selectedClub?.ko.name ?? ''}
-        rootPath="/about/student-clubs"
-      />
+      <SelectionList items={selectionItems} />
 
       {selectedClub ? (
         <ClubDetails club={selectedClub} locale={locale} />

@@ -90,3 +90,44 @@ const { t, localizedPath } = useLanguage({
 - 별도 훅 만들지 않고 dayjs 직접 사용
 - 예시: `dayjs(date).locale(locale).format('YYYY/M/DD (ddd)')`
 - 간결함 유지 - 불필요한 추상화 지양
+
+## 공용 컴포넌트 가이드 (기존 프로젝트 기준)
+
+### 공용화 기준
+- 공용 컴포넌트는 실제로 반복 사용되며 화면 구조에 핵심적인 것만 둔다
+- 공용 컴포넌트는 `app/components/common/`에 둔다
+- 사용처에서 `className`/`style`를 넘기지 않도록 `variant`/`tone`/`size`로 통제한다
+
+### 새 공용 컴포넌트
+- `app/components/common/Button.tsx`
+  - props: `variant`, `tone`, `size`, `as`, `to/href`, `iconLeft/iconRight`, `selected`, `ariaLabel`
+- `app/components/common/ContentSection.tsx`
+  - props: `tone`, `padding`
+- `app/components/common/LinkRow.tsx`
+  - props: `to`, `title`, `subtitle`, `tone`, `size`
+- `app/components/common/SectionHeader.tsx`
+  - props: `title`, `size`, `action`, `actionVisibility`
+- `app/components/common/ErrorState.tsx`
+  - props: `title`, `message`, `action`
+- `app/components/common/Pagination.tsx`
+  - props: `page`, `totalPages`, `onChange`, `disabled`
+- `app/components/common/selection/SelectionList.tsx`
+- `app/components/common/selection/SelectionTitle.tsx`
+- `app/components/common/CategoryPage.tsx`
+
+### 기존 공용 컴포넌트 props 정리
+- `app/components/common/HTMLViewer.tsx`
+  - `html`, `image`, `variant`
+- `app/components/common/Attachments.tsx`
+  - `variant` (spacing 제어)
+- `app/components/common/Nodes.tsx`
+  - `variant`, `tone`, `direction`, `grow`
+- `app/components/layout/PageLayout/index.tsx`
+  - `titleSize`, `padding` (removePadding 계열 제거)
+
+### 적용 패턴
+- 헤더/모바일 네비 버튼 → `Button` 사용
+- about 본문 영역 → `ContentSection`
+- 섹션 타이틀 + 더보기 → `SectionHeader`
+- 에러 화면 → `ErrorState`
+- 노드 컴포넌트 → `Node` 하나로 통합 (`variant`로 제어)

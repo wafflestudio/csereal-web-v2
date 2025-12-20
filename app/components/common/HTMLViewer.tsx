@@ -11,22 +11,20 @@ interface TopRightImage {
 }
 
 interface HTMLViewerProps {
-  htmlContent: string;
-  topRightImage?: TopRightImage;
-  wrapperClassName?: string;
-  contentClassName?: string;
+  html: string;
+  image?: TopRightImage;
+  variant?: 'default' | 'muted' | 'compact';
 }
 
 export default function HTMLViewer({
-  htmlContent,
-  topRightImage,
-  wrapperClassName,
-  contentClassName,
+  html,
+  image,
+  variant = 'default',
 }: HTMLViewerProps) {
   const isMobile = useResponsive();
 
   // 400.XXX같은 값들이 링크 처리되는걸 막기 위해 tldMatches false처리
-  const linkedHTML = Autolinker.link(htmlContent, {
+  const linkedHTML = Autolinker.link(html, {
     urls: { tldMatches: false },
   }).trim();
 
@@ -38,30 +36,35 @@ export default function HTMLViewer({
       )
     : linkedHTML;
 
-  // topRightImage width 계산
+  // image width 계산
   const imageWidth =
-    topRightImage && isMobile && topRightImage.mobileFullWidth
-      ? undefined
-      : topRightImage?.width;
+    image && isMobile && image.mobileFullWidth ? undefined : image?.width;
+
+  const contentTone =
+    variant === 'muted'
+      ? 'text-neutral-600'
+      : variant === 'compact'
+        ? 'text-sm leading-6'
+        : '';
 
   return (
-    <div className={`flow-root ${wrapperClassName ?? ''}`}>
-      {topRightImage && (
+    <div className="flow-root">
+      {image && (
         <div
           className="relative mb-7 w-full sm:float-right sm:ml-7 sm:w-auto"
           style={imageWidth ? { width: `${imageWidth}px` } : undefined}
         >
           <img
-            src={topRightImage.src}
+            src={image.src}
             alt="대표 이미지"
-            width={topRightImage.width}
-            height={topRightImage.height}
+            width={image.width}
+            height={image.height}
             className="w-full object-contain"
           />
         </div>
       )}
       <div
-        className={`sun-editor-editable ${contentClassName ?? ''}`}
+        className={`sun-editor-editable ${contentTone}`}
         // biome-ignore lint/security/noDangerouslySetInnerHtml: TODO 근데 대안이 있나?
         dangerouslySetInnerHTML={{ __html: trimmedHTML }}
       />

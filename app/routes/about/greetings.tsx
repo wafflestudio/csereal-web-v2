@@ -1,4 +1,5 @@
 import { type LoaderFunctionArgs, useLoaderData } from 'react-router';
+import ContentSection from '~/components/common/ContentSection';
 import HTMLViewer from '~/components/common/HTMLViewer';
 import PageLayout from '~/components/layout/PageLayout';
 import { useLanguage } from '~/hooks/useLanguage';
@@ -25,13 +26,13 @@ export default function GreetingsPage() {
   return (
     <PageLayout
       title={t('학부장 인사말')}
-      titleType="big"
+      titleSize="xl"
       breadcrumb={[
         { name: t('학부 소개'), path: '/about/overview' },
         { name: t('학부장 인사말'), path: '/about/greetings' },
       ]}
       subNav={subNav}
-      removePadding
+      padding="none"
     >
       <GreetingsContent />
     </PageLayout>
@@ -42,18 +43,17 @@ function GreetingsContent() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <div className="px-5 pb-12 pt-7 sm:py-11 sm:pl-25 sm:pr-[360px]">
+    <ContentSection tone="white" padding="subNav">
       <div className="flex flex-col-reverse items-start gap-6 sm:flex-row sm:gap-10">
-        <HTMLViewer
-          htmlContent={data.description}
-          wrapperClassName="sm:w-[25rem] sm:grow"
-        />
+        <div className="sm:w-[25rem] sm:grow">
+          <HTMLViewer html={data.description} />
+        </div>
         {data.imageURL && (
           <div>
             <img src={data.imageURL} alt="학부장" width={212} height={280} />
           </div>
         )}
       </div>
-    </div>
+    </ContentSection>
   );
 }

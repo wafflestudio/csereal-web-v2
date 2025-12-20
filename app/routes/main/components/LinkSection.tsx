@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import LinkRow from '~/components/common/LinkRow';
 import { useLanguage } from '~/hooks/useLanguage';
 
 export default function LinkSection() {
@@ -11,17 +11,17 @@ export default function LinkSection() {
           {t('바로가기')}
         </h3>
         <div className="flex flex-col gap-5">
-          <LinkWithArrow
-            href={localizedPath('/community/top-conference')}
+          <LinkRow
+            to={localizedPath('/community/top-conference')}
             title="Top Conference List"
           />
-          <LinkWithArrow
-            href={localizedPath('/about/faculty-recruitment')}
+          <LinkRow
+            to={localizedPath('/about/faculty-recruitment')}
             title="신임교수초빙"
             subtitle="Faculty Recruitment"
           />
-          <LinkWithArrow
-            href={localizedPath('/people/faculty')}
+          <LinkRow
+            to={localizedPath('/people/faculty')}
             title="구성원"
             subtitle="Faculty"
           />
@@ -33,13 +33,13 @@ export default function LinkSection() {
           {t('학부')}
         </h3>
         <div className="flex flex-col gap-5">
-          <LinkWithArrow
-            href={localizedPath('/academics/undergraduate/general-studies')}
+          <LinkRow
+            to={localizedPath('/academics/undergraduate/general-studies')}
             title="필수 교양 과목"
             subtitle="General Studies Requirements"
           />
-          <LinkWithArrow
-            href={localizedPath('/academics/undergraduate/degree-requirements')}
+          <LinkRow
+            to={localizedPath('/academics/undergraduate/degree-requirements')}
             title="졸업 규정"
             subtitle="Degree Requirements"
           />
@@ -48,30 +48,3 @@ export default function LinkSection() {
     </div>
   );
 }
-
-const LinkWithArrow = ({
-  href,
-  title,
-  subtitle,
-}: {
-  href: string;
-  title: string;
-  subtitle?: string;
-}) => {
-  return (
-    <Link
-      to={href}
-      className="group flex h-10 items-center justify-between border-l-[5px] border-[#E65817] pl-7 duration-300"
-    >
-      <div className="flex items-end gap-3 text-white group-hover:text-main-orange">
-        <p className="text-base font-medium sm:text-lg sm:font-semibold">
-          {title}
-        </p>
-        <p className="text-xs font-medium sm:font-semibold">{subtitle}</p>
-      </div>
-      <span className="material-symbols-outlined pt-0.5 text-[30px] font-extralight text-white duration-300 group-hover:translate-x-[10px] group-hover:font-light group-hover:text-main-orange">
-        arrow_forward
-      </span>
-    </Link>
-  );
-};

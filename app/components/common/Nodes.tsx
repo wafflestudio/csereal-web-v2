@@ -1,100 +1,89 @@
-interface CurvedNodeProps {
-  grow?: boolean; // flex-grow 속성 (true일 때는 부모 element가 'display: flex'여야 함)
-  direction?: 'row' | 'col'; // 가로 노드: row, 세로 노드: col
-  length?: string; // row일 때 width, col일 때 height
-  double?: boolean;
+type NodeVariant =
+  | 'straight'
+  | 'curvedHorizontal'
+  | 'curvedHorizontalGray'
+  | 'curvedHorizontalSmall'
+  | 'curvedVertical';
+type NodeTone = 'brand' | 'neutral';
+
+interface NodeProps {
+  variant: NodeVariant;
+  tone?: NodeTone;
+  direction?: 'row' | 'col';
+  grow?: boolean;
 }
 
-/** width 최소 65px (원 10px + 대각선 꼬리 55px) */
-export function CurvedHorizontalNode({
-  grow = false,
-  length = 'w-auto',
-}: CurvedNodeProps) {
-  return (
-    <div className={`flex ${grow ? 'grow' : ''} ${length} items-center`}>
-      <StraightNode grow={true} direction="row" />
-      <Diagonal width="w-[90px]" />
-    </div>
-  );
-}
-
-export function CurvedHorizontalNodeGray() {
-  return (
-    <div className="flex grow items-center">
-      <div className="flex w-full items-center">
-        <div className="h-2.5 w-2.5 rounded-full border border-neutral-600" />
-        <div className="grow border-t border-neutral-600" />
-      </div>
-      <div className="h-0 w-[90px] origin-top-left rotate-45 border-t border-neutral-600" />
-    </div>
-  );
-}
-
-export function CurvedVerticalNode({
-  grow = false,
-  length = 'h-full',
-}: CurvedNodeProps) {
-  return (
-    <div className={`flex flex-col ${grow ? 'grow' : ''} ${length} w-[25px]`}>
-      <StraightNode grow={false} direction="col" length="h-[36px]" />
-      <Diagonal
-        width="w-[25px]"
-        translateX="translate-x-[5.1px]"
-        translateY="-translate-y-[0.5px]"
-      />
-      <Straight
-        direction="col"
-        translateX="-translate-x-[2.3px]"
-        translateY="translate-y-[16.7px]"
-      />
-    </div>
-  );
-}
-
-export function CurvedHorizontalSmallNode() {
-  return (
-    <div className="flex items-center">
-      <Circle />
-      <Diagonal
-        width="w-[18.81px]"
-        translateX="-translate-x-[1px]"
-        translateY="translate-y-[3px]"
-      />
-    </div>
-  );
-}
-
-interface StraightNodeProps {
-  grow?: boolean; // flex-grow 속성 (true일 때는 부모 element가 'display: flex'여야 함)
-  direction?: 'row' | 'col'; // 가로 노드: row, 세로 노드: col
-  length?: string; // tailwind width class 그대로 쓰면 됨
-  double?: boolean;
-  margin?: string; // tailwind
-}
-
-/**
- * straight node width, height 최소 10px (원 크기)
- * 가로일 때 width, 세로일 때 height 명시 권장 (기본값: 그 방향으로 최대한 늘어남)
- */
-export function StraightNode({
-  grow = false,
+export default function Node({
+  variant,
+  tone = 'brand',
   direction = 'row',
-  length = '',
-  double = false, // 양쪽 노드
-  margin,
-}: StraightNodeProps) {
-  const sizeClass =
-    direction === 'row'
-      ? `${length || 'w-full'} h-fit`
-      : `w-fit ${length || 'h-full'}`;
+  grow = false,
+}: NodeProps) {
+  const color = tone === 'neutral' ? 'neutral' : 'brand';
+
+  if (variant === 'curvedHorizontalGray') {
+    return (
+      <div className="flex grow items-center">
+        <div className="flex w-full items-center">
+          <Circle tone="neutral" />
+          <Straight direction="row" tone="neutral" />
+        </div>
+        <Diagonal width="w-[90px]" tone="neutral" />
+      </div>
+    );
+  }
+
+  if (variant === 'curvedVertical') {
+    return (
+      <div className={`flex flex-col ${grow ? 'grow' : ''} h-full w-[25px]`}>
+        <StraightBlock direction="col" tone={color} />
+        <Diagonal
+          width="w-[25px]"
+          translateX="translate-x-[5.1px]"
+          translateY="-translate-y-[0.5px]"
+          tone={color}
+        />
+        <Straight
+          direction="col"
+          translateX="-translate-x-[2.3px]"
+          translateY="translate-y-[16.7px]"
+          tone={color}
+        />
+      </div>
+    );
+  }
+
+  if (variant === 'curvedHorizontalSmall') {
+    return (
+      <div className="flex items-center">
+        <Circle tone={color} />
+        <Diagonal
+          width="w-[18.81px]"
+          translateX="-translate-x-[1px]"
+          translateY="translate-y-[3px]"
+          tone={color}
+        />
+      </div>
+    );
+  }
+
+  if (variant === 'curvedHorizontal') {
+    return (
+      <div className={`flex ${grow ? 'grow' : ''} w-auto items-center`}>
+        <StraightBlock direction="row" tone={color} grow={true} />
+        <Diagonal width="w-[90px]" tone={color} />
+      </div>
+    );
+  }
 
   return (
     <div
-      className={`flex flex-${direction} ${grow ? 'grow' : ''} ${sizeClass} items-center ${margin}`}
+      className={`flex flex-${direction} ${grow ? 'grow' : ''} ${
+        direction === 'row' ? 'w-full h-fit' : 'w-fit h-full'
+      } items-center`}
     >
-      <Circle />
-      <Straight direction={direction} />
-      {double && <Circle />}
+      <Circle tone={color} />
+      <Straight direction={direction} tone={color} />
     </div>
   );
 }
@@ -104,13 +93,22 @@ interface DiagonalProps {
   width: string;
   translateX?: string;
   translateY?: string;
+  tone: NodeTone | 'neutral';
 }
 
 /** 우하향 */
-function Diagonal({ width, translateX = '', translateY = '' }: DiagonalProps) {
+function Diagonal({
+  width,
+  translateX = '',
+  translateY = '',
+  tone,
+}: DiagonalProps) {
+  const borderClass =
+    tone === 'neutral' ? 'border-neutral-600' : 'border-main-orange';
+
   return (
     <div
-      className={`h-0 origin-top-left rotate-45 border-t border-main-orange ${width} ${translateX} ${translateY}`}
+      className={`h-0 origin-top-left rotate-45 border-t ${borderClass} ${width} ${translateX} ${translateY}`}
     />
   );
 }
@@ -123,22 +121,51 @@ interface StraightProps {
   direction?: 'row' | 'col';
   translateX?: string;
   translateY?: string;
+  tone: NodeTone | 'neutral';
 }
 
 function Straight({
   direction = 'row',
   translateX = '',
   translateY = '',
+  tone,
 }: StraightProps) {
+  const borderClass =
+    tone === 'neutral' ? 'border-neutral-600' : 'border-main-orange';
+
   return (
     <div
-      className={`grow border-main-orange ${
-        direction === 'row' ? 'border-t' : 'border-r'
-      } ${translateX} ${translateY}`}
+      className={`grow ${borderClass} ${direction === 'row' ? 'border-t' : 'border-r'} ${translateX} ${translateY}`}
     />
   );
 }
 
-function Circle() {
-  return <div className="h-2.5 w-2.5 rounded-full border border-main-orange" />;
+interface CircleProps {
+  tone: NodeTone | 'neutral';
+}
+
+function Circle({ tone }: CircleProps) {
+  const borderClass =
+    tone === 'neutral' ? 'border-neutral-600' : 'border-main-orange';
+
+  return <div className={`h-2.5 w-2.5 rounded-full border ${borderClass}`} />;
+}
+
+interface StraightBlockProps {
+  direction: 'row' | 'col';
+  tone: NodeTone;
+  grow?: boolean;
+}
+
+function StraightBlock({ direction, tone, grow = false }: StraightBlockProps) {
+  return (
+    <div
+      className={`flex flex-${direction} ${grow ? 'grow' : ''} ${
+        direction === 'row' ? 'w-full h-fit' : 'w-fit h-[36px]'
+      } items-center`}
+    >
+      <Circle tone={tone} />
+      <Straight direction={direction} tone={tone} />
+    </div>
+  );
 }

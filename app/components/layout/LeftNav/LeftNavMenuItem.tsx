@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { StraightNode } from '~/components/common/Nodes';
+import Node from '~/components/common/Nodes';
 import type { NavItem } from '~/constants/navigation';
 import { useLanguage } from '~/hooks/useLanguage';
 import commonTranslations from '~/translations.json';
@@ -84,7 +84,7 @@ export default function LNBMenuItem({
         >
           {label}
         </Link>
-        <StraightNode />
+        <Node variant="straight" />
       </div>
     );
   }

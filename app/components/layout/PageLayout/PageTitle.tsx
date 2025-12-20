@@ -1,24 +1,25 @@
 import { Fragment } from 'react';
 import { Link, useLocation } from 'react-router';
-import { CurvedHorizontalNodeGray } from '~/components/common/Nodes';
+import Button from '~/components/common/Button';
+import Node from '~/components/common/Nodes';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { BreadcrumbItem } from './index';
 
 interface PageTitleProps {
   title?: string;
   breadcrumb?: BreadcrumbItem[];
-  titleType: 'big' | 'small';
+  titleSize: 'xl' | 'lg';
   margin: string;
 }
 
 export default function PageTitle({
   title,
   breadcrumb,
-  titleType,
+  titleSize,
   margin,
 }: PageTitleProps) {
   const titleStyle =
-    titleType === 'big' ? 'text-2xl font-bold' : 'text-lg font-medium';
+    titleSize === 'xl' ? 'text-2xl font-bold' : 'text-lg font-medium';
 
   return (
     <div className="px-5 pt-[54px] sm:px-25">
@@ -28,7 +29,7 @@ export default function PageTitle({
         {breadcrumb && breadcrumb.length > 0 && (
           <div className="mb-2 flex items-center justify-center gap-2">
             <Breadcrumb items={breadcrumb} />
-            <CurvedHorizontalNodeGray />
+            <Node variant="curvedHorizontalGray" />
           </div>
         )}
         {title && (
@@ -87,13 +88,14 @@ function LocationText({ path, name, isCurrent }: LocationTextProps) {
 
   if (isCurrent) {
     return (
-      <button
-        type="button"
-        className={`${textStyle} hover:text-main-orange`}
+      <Button
+        variant="text"
+        tone="inherit"
+        size="xs"
         onClick={() => window.location.reload()}
       >
         {name}
-      </button>
+      </Button>
     );
   }
 

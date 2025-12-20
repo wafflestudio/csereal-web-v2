@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router';
+import Button from '~/components/common/Button';
 import { useLanguage } from '~/hooks/useLanguage';
 
 const translations = {
@@ -45,12 +46,18 @@ export default function HeaderSearchBar() {
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
-      <button
+      <Button
         type="submit"
-        className="material-symbols-rounded w-8 text-[1.25rem] text-neutral-800 hover:text-neutral-500"
-      >
-        search
-      </button>
+        variant="text"
+        tone="neutral"
+        size="sm"
+        ariaLabel={t('통합검색')}
+        iconLeft={
+          <span className="material-symbols-rounded w-8 text-[1.25rem]">
+            search
+          </span>
+        }
+      />
     </form>
   );
 }

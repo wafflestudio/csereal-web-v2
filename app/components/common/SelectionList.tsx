@@ -1,30 +1,20 @@
 import { Link } from 'react-router';
 import CornerFoldedRectangle from '~/components/common/CornerFoldedRectangle';
 import { COLOR_THEME } from '~/constants/color';
-import { useLanguage } from '~/hooks/useLanguage';
-import { replaceSpaceWithDash } from '~/utils/string';
 
 interface SelectionListProps {
-  names: { ko: string; en: string }[];
-  selectedItemNameKo: string;
-  rootPath: string;
+  items: { id: string; label: string; href: string; selected?: boolean }[];
 }
 
-export default function SelectionList({
-  names,
-  selectedItemNameKo,
-  rootPath,
-}: SelectionListProps) {
-  const { locale } = useLanguage();
-
+export default function SelectionList({ items }: SelectionListProps) {
   return (
     <ul className="mb-6 grid grid-cols-2 gap-3 pt-7 sm:mb-9 sm:pt-11 lg:grid-cols-[repeat(auto-fit,minmax(200px,auto))]">
-      {names.map((name) => (
+      {items.map((item) => (
         <SelectionItem
-          key={name.ko}
-          href={`${rootPath}?selected=${replaceSpaceWithDash(name.en || name.ko)}`}
-          name={name[locale] ?? name.ko}
-          isSelected={name.ko === selectedItemNameKo}
+          key={item.id}
+          href={item.href}
+          name={item.label}
+          isSelected={Boolean(item.selected)}
         />
       ))}
     </ul>

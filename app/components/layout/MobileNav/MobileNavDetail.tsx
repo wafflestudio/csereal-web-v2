@@ -44,7 +44,6 @@ function NavTree({ item, activeItem, depth }: NavTreeProps) {
         <div className="mb-11 ml-5">
           {childItems.map((child, i) => (
             <NavTree
-              // biome-ignore lint/suspicious/noArrayIndexKey: static nav tree
               key={i}
               item={child}
               activeItem={activeItem}

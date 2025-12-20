@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router';
+import Button from '~/components/common/Button';
 import { useLanguage } from '~/hooks/useLanguage';
 import useResponsive from '~/hooks/useResponsive';
 import type { AllMainNotice } from '~/types/api/v2';
@@ -115,15 +116,15 @@ const NoticeSectionButton = ({
   children: ReactNode;
 }) => {
   return (
-    <button
-      type="button"
-      className={`rounded-[1.875rem] border border-solid border-[#E65817] px-3 py-[0.37rem] text-md ${
-        selected ? 'bg-[#E65817] text-[#202020]' : 'bg-[#202020] text-[#E65817]'
-      }`}
+    <Button
+      variant="pill"
+      tone="brand"
+      size="md"
+      selected={selected}
       onClick={onClick}
     >
       {children}
-    </button>
+    </Button>
   );
 };
 

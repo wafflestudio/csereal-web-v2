@@ -17,11 +17,9 @@ export interface SubNavConfig {
 interface PageLayoutProps {
   title?: string;
   breadcrumb?: BreadcrumbItem[];
-  titleType: 'big' | 'small';
+  titleSize: 'xl' | 'lg';
   titleMargin?: string;
-  removePadding?: boolean;
-  removeTopPadding?: boolean;
-  removeBottomPadding?: boolean;
+  padding?: 'default' | 'none' | 'noTop' | 'noBottom';
   subNav?: SubNavConfig;
   children: ReactNode;
 }
@@ -37,21 +35,20 @@ interface PageLayoutProps {
 export default function PageLayout({
   title,
   breadcrumb,
-  titleType,
+  titleSize,
   titleMargin = 'mb-6 sm:mb-11',
-  removePadding,
-  removeTopPadding,
-  removeBottomPadding,
+  padding = 'default',
   subNav,
   children,
 }: PageLayoutProps) {
-  const paddingClass = removePadding
-    ? 'p-0'
-    : removeTopPadding
-      ? 'p-[0_1.25rem_4rem_1.25rem] sm:p-[0_360px_150px_100px]'
-      : removeBottomPadding
-        ? 'p-[1.75rem_1.25rem_0_1.25rem] sm:p-[2.75rem_360px_0_100px]'
-        : 'p-[1.75rem_1.25rem_4rem_1.25rem] sm:p-[2.75rem_360px_150px_100px]';
+  const paddingClass =
+    padding === 'none'
+      ? 'p-0'
+      : padding === 'noTop'
+        ? 'p-[0_1.25rem_4rem_1.25rem] sm:p-[0_360px_150px_100px]'
+        : padding === 'noBottom'
+          ? 'p-[1.75rem_1.25rem_0_1.25rem] sm:p-[2.75rem_360px_0_100px]'
+          : 'p-[1.75rem_1.25rem_4rem_1.25rem] sm:p-[2.75rem_360px_150px_100px]';
 
   return (
     <div className="flex grow flex-col bg-neutral-900">
@@ -60,7 +57,7 @@ export default function PageLayout({
         <PageTitle
           title={title}
           breadcrumb={breadcrumb}
-          titleType={titleType}
+          titleSize={titleSize}
           margin={titleMargin}
         />
       )}

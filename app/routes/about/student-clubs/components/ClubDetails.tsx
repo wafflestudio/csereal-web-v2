@@ -1,6 +1,6 @@
 import HTMLViewer from '~/components/common/HTMLViewer';
+import SelectionTitle from '~/components/common/SelectionTitle';
 import type { Club, WithLanguage } from '~/types/api/student-clubs';
-import SelectionTitle from './SelectionTitle';
 
 interface ClubDetailsProps {
   club: WithLanguage<Club>;
@@ -9,7 +9,7 @@ interface ClubDetailsProps {
 
 export default function ClubDetails({ club, locale }: ClubDetailsProps) {
   const oppositeLocale = locale === 'ko' ? 'en' : 'ko';
-  const topRightImage = club[locale].imageURL
+  const image = club[locale].imageURL
     ? {
         src: club[locale].imageURL,
         width: 320,
@@ -23,12 +23,9 @@ export default function ClubDetails({ club, locale }: ClubDetailsProps) {
       <SelectionTitle
         title={club[locale].name}
         subtitle={club[oppositeLocale].name}
-        animationKey={club[locale].name}
+        animateKey={club[locale].name}
       />
-      <HTMLViewer
-        htmlContent={club[locale].description}
-        topRightImage={topRightImage}
-      />
+      <HTMLViewer html={club[locale].description} image={image} />
     </div>
   );
 }

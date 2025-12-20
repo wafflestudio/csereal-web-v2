@@ -4,20 +4,25 @@ import clipIcon from './assets/clip.svg';
 
 interface AttachmentsProps {
   files: Attachment[];
-  margin?: string;
-  padding?: string;
+  variant?: 'default' | 'compact' | 'spacious';
 }
 
 export default function Attachments({
   files,
-  margin = 'mb-9 mt-3 sm:mb-11 sm:mt-5',
-  padding = 'py-3 pl-4 pr-20 sm:pr-[10rem]',
+  variant = 'default',
 }: AttachmentsProps) {
   if (files.length === 0) return null;
 
+  const variantSpacing =
+    variant === 'compact'
+      ? 'mb-4 mt-2 py-2 pl-3 pr-12'
+      : variant === 'spacious'
+        ? 'mb-12 mt-6 py-4 pl-5 pr-24 sm:mb-14 sm:mt-8 sm:pr-[12rem]'
+        : 'mb-9 mt-3 py-3 pl-4 pr-20 sm:mb-11 sm:mt-5 sm:pr-[10rem]';
+
   return (
     <div
-      className={`relative flex flex-col gap-2 self-start rounded-sm border border-neutral-200 bg-white sm:w-auto sm:max-w-fit ${margin} ${padding}`}
+      className={`relative flex flex-col gap-2 self-start rounded-sm border border-neutral-200 bg-white sm:w-auto sm:max-w-fit ${variantSpacing}`}
     >
       {files.map((file, index) => {
         const byteStr = formatBytes(file.bytes);

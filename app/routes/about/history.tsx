@@ -1,5 +1,6 @@
 import type { Route } from '.react-router/types/app/routes/about/+types/history';
 import type { LoaderFunctionArgs } from 'react-router';
+import ContentSection from '~/components/common/ContentSection';
 import HTMLViewer from '~/components/common/HTMLViewer';
 import PageLayout from '~/components/layout/PageLayout';
 import { useLanguage } from '~/hooks/useLanguage';
@@ -27,25 +28,25 @@ export default function HistoryPage({ loaderData }: Route.ComponentProps) {
   return (
     <PageLayout
       title={t('연혁')}
-      titleType="big"
+      titleSize="xl"
       breadcrumb={[
         { name: t('학부 소개'), path: '/about/overview' },
         { name: t('연혁'), path: '/about/history' },
       ]}
       subNav={subNav}
-      removePadding
+      padding="none"
     >
-      <div className="px-5 pb-12 pt-7 sm:py-11 sm:pl-25 sm:pr-[360px]">
+      <ContentSection tone="white" padding="subNav">
         <HTMLViewer
-          htmlContent={loaderData.description}
-          topRightImage={{
+          html={loaderData.description}
+          image={{
             src: historyImage,
             width: 320,
             height: 360,
             mobileFullWidth: true,
           }}
         />
-      </div>
+      </ContentSection>
     </PageLayout>
   );
 }
