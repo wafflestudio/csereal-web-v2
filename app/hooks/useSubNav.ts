@@ -95,3 +95,17 @@ export const useCommunitySubNav = () => {
     ],
   };
 };
+
+export const usePeopleSubNav = () => {
+  const { t } = useLanguage();
+
+  return {
+    title: t('구성원'),
+    titlePath: '/people',
+    items: [
+      { name: t('교수진'), path: '/people/faculty', depth: 1 },
+      { name: t('역대 교수진'), path: '/people/emeritus-faculty', depth: 1 },
+      { name: t('행정직원'), path: '/people/staff', depth: 1 },
+    ],
+  };
+};

@@ -7,6 +7,7 @@ import type { BreadcrumbItem } from './index';
 
 interface PageTitleProps {
   title?: string;
+  subtitle?: string;
   breadcrumb?: BreadcrumbItem[];
   titleSize: 'xl' | 'lg';
   margin: string;
@@ -14,6 +15,7 @@ interface PageTitleProps {
 
 export default function PageTitle({
   title,
+  subtitle,
   breadcrumb,
   titleSize,
   margin,
@@ -33,10 +35,25 @@ export default function PageTitle({
           </div>
         )}
         {title && (
-          <h3
-            className={`mr-25 ${titleStyle} break-keep text-[24px] tracking-wide text-white sm:text-[32px]`}
-          >
-            {title}
+          <h3 className="mr-25">
+            {subtitle ? (
+              <span className="flex items-end">
+                <span
+                  className={`${titleStyle} break-keep text-[24px] tracking-wide text-white sm:text-[32px]`}
+                >
+                  {title}
+                </span>
+                <span className="ml-2 text-md font-normal leading-7 text-neutral-300">
+                  {subtitle}
+                </span>
+              </span>
+            ) : (
+              <span
+                className={`${titleStyle} break-keep text-[24px] tracking-wide text-white sm:text-[32px]`}
+              >
+                {title}
+              </span>
+            )}
           </h3>
         )}
       </div>
