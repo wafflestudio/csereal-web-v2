@@ -1,5 +1,7 @@
 import clsx from 'clsx';
 import { Link } from 'react-router';
+import PlusIcon from './assets/plus.svg?react';
+import SmallRightArrowIcon from './assets/small_right_arrow.svg?react';
 
 interface ActionConfig {
   label: string;
@@ -41,40 +43,9 @@ export default function SectionHeader({
           to={action.to}
         >
           {action.label}{' '}
-          {action.icon === 'plus' ? <Plus /> : <SmallRightArrow />}
+          {action.icon === 'plus' ? <PlusIcon /> : <SmallRightArrowIcon />}
         </Link>
       )}
     </div>
   );
 }
-
-const SmallRightArrow = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="18"
-    height="18"
-    viewBox="0 0 18 18"
-    fill="none"
-  >
-    <path
-      d="M9.003 3.60039L14.3984 8.99583M14.3984 8.99583L9.003 14.4004M14.3984 8.99583L3.59844 8.99583"
-      stroke="#E65615"
-      strokeWidth="1.3"
-    />
-  </svg>
-);
-
-const Plus = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="18"
-    height="18"
-    viewBox="0 0 20 20"
-    fill="none"
-  >
-    <path
-      d="M9 15.5999V10.5999H4V9.3999H9V4.3999H10.2V9.3999H15.2V10.5999H10.2V15.5999H9Z"
-      fill="#E65817"
-    />
-  </svg>
-);

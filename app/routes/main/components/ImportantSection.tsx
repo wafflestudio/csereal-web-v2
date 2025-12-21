@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { MainImportant } from '~/types/api/v2';
 import charityImg from '../assets/charity.png';
+import ImportantArrowIcon from '../assets/important_arrow.svg?react';
 
 export default function ImportantSection({
   importantList,
@@ -54,18 +55,5 @@ const CharityBanner = () => (
 );
 
 const ImportantSectionArrow = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="28"
-    height="28"
-    viewBox="0 0 28 28"
-    fill="none"
-    className="absolute bottom-[0.87rem] right-[0.87rem]"
-  >
-    <path
-      d="M14.0076 5L23 13.9924M23 13.9924L14.0076 23M23 13.9924L5 13.9924"
-      stroke="#0A0A0A"
-      strokeWidth="1.5"
-    />
-  </svg>
+  <ImportantArrowIcon className="absolute bottom-[0.87rem] right-[0.87rem]" />
 );

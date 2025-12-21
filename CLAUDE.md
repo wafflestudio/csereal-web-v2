@@ -8,6 +8,8 @@
 - 기존 코드를 현재 프로젝트의 적합한 위치에 복사
 - 현재 프로젝트의 컨벤션과 react-router에 맞게 기존 코드를 수정 
 
+현재는 create, edit 관련 기능은 따로 언급하지 않으면 마이그레이션하지 않음.
+
 Use react 19.
 Use react router v7.
 
@@ -73,8 +75,8 @@ const { t, localizedPath } = useLanguage({
 - public URL이 아닌 상대 경로 import
 
 ### SVG 처리
-- 컴포넌트 내에 인라인으로 포함 (간결함 추구)
-- Vite SVG 플러그인 사용하지 않음
+- 인라인 SVG 금지: 별도 `assets/` 폴더에 `.svg`로 분리
+- 필요하면 `?react`로 import하여 컴포넌트처럼 사용
 
 ### 폰트
 - next/font/local → CSS @font-face
@@ -91,6 +93,17 @@ const { t, localizedPath } = useLanguage({
 - 별도 훅 만들지 않고 dayjs 직접 사용
 - 예시: `dayjs(date).locale(locale).format('YYYY/M/DD (ddd)')`
 - 간결함 유지 - 불필요한 추상화 지양
+
+### 동적 스타일
+- useStyle 훅 사용하지 않음
+- 동적 스타일은 인라인 style prop으로 직접 적용
+- 예시: `style={{ gridTemplateColumns: \`repeat(auto-fill, minmax(\${width}px, auto))\` }}`
+
+### 검색 및 필터링
+- useCustomSearchParams 같은 커스텀 훅 사용하지 않음
+- 컴포넌트에서 직접 `useSearchParams`, `useNavigate` 사용
+- 태그 변경 시 즉시 query param 변경 (navigate 호출)
+- 검색 버튼 클릭 시에만 keyword query param 변경
 
 ## 공용 컴포넌트 가이드 (기존 프로젝트 기준)
 
@@ -132,4 +145,3 @@ const { t, localizedPath } = useLanguage({
 - 섹션 타이틀 + 더보기 → `SectionHeader`
 - 에러 화면 → `ErrorState`
 - 노드 컴포넌트 → `Node` 하나로 통합 (`variant`로 제어)
-

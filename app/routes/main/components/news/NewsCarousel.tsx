@@ -2,6 +2,8 @@ import type { ButtonHTMLAttributes } from 'react';
 import { useEffect, useRef } from 'react';
 import type { MainNews } from '~/types/api/v2';
 import { animateScrollLeft } from './animateScrollTo';
+import PauseIcon from './assets/pause.svg?react';
+import PlayIcon from './assets/play.svg?react';
 import { CARD_GAP_REM, CARD_GAP_TAILWIND } from './constants';
 import NewsCard from './NewsCard';
 import useCarousel from './useCarousel';
@@ -103,25 +105,3 @@ const PageIndicatorDot = ({
     </button>
   );
 };
-
-const PauseIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none">
-    <mask id="a" width={24} height={24} x={0} y={0} maskUnits="userSpaceOnUse">
-      <path fill="#D9D9D9" d="M0 0h24v24H0z" />
-    </mask>
-    <g mask="url(#a)">
-      <path fill="#D4D4D4" d="M14 18V6h2.5v12H14Zm-6.5 0V6H10v12H7.5Z" />
-    </g>
-  </svg>
-);
-
-const PlayIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none">
-    <mask id="a" width={24} height={24} x={0} y={0} maskUnits="userSpaceOnUse">
-      <path fill="#D9D9D9" d="M0 0h24v24H0z" />
-    </mask>
-    <g mask="url(#a)">
-      <path fill="#D4D4D4" d="M7 19.12V4l10.8 7.56L7 19.12Z" />
-    </g>
-  </svg>
-);

@@ -1,5 +1,6 @@
 type NodeVariant =
   | 'straight'
+  | 'straightDouble'
   | 'curvedHorizontal'
   | 'curvedHorizontalGray'
   | 'curvedHorizontalSmall'
@@ -72,6 +73,20 @@ export default function Node({
       <div className={`flex ${grow ? 'grow' : ''} w-auto items-center`}>
         <StraightBlock direction="row" tone={color} grow={true} />
         <Diagonal width="w-[90px]" tone={color} />
+      </div>
+    );
+  }
+
+  if (variant === 'straightDouble') {
+    return (
+      <div
+        className={`flex flex-${direction} ${grow ? 'grow' : ''} ${
+          direction === 'row' ? 'w-full h-fit' : 'w-fit h-full'
+        } items-center`}
+      >
+        <Circle tone={color} />
+        <Straight direction={direction} tone={color} />
+        <Circle tone={color} />
       </div>
     );
   }

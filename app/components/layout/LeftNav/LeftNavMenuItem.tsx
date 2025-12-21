@@ -74,7 +74,7 @@ export default function LNBMenuItem({
   // detail variant
   if (highlight && to) {
     return (
-      <div className="flex items-center mb-7">
+      <div className="flex items-center mb-6">
         <Link
           to={to}
           onClick={onClick}

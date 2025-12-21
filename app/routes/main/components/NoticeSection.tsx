@@ -10,6 +10,7 @@ import { useLanguage } from '~/hooks/useLanguage';
 import useResponsive from '~/hooks/useResponsive';
 import type { AllMainNotice } from '~/types/api/v2';
 import noticeGraphicImg from '../assets/noticeGraphic.png';
+import PlusIcon from '../assets/plus.svg?react';
 
 export default function NoticeSection({
   allMainNotice,
@@ -98,7 +99,7 @@ export default function NoticeSection({
             className="ml-auto mt-6 flex text-base font-normal text-[#E65817]"
             to={localizedPath('/community/notice')}
           >
-            <Plus /> {t('더보기')}
+            <PlusIcon /> {t('더보기')}
           </Link>
         )}
       </div>
@@ -127,18 +128,3 @@ const NoticeSectionButton = ({
     </Button>
   );
 };
-
-const Plus = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
-    fill="none"
-  >
-    <path
-      d="M9 15.5999V10.5999H4V9.3999H9V4.3999H10.2V9.3999H15.2V10.5999H10.2V15.5999H9Z"
-      fill="#E65817"
-    />
-  </svg>
-);

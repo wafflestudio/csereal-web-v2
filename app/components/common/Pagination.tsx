@@ -1,10 +1,10 @@
 import clsx from 'clsx';
+import { useNavigate, useSearchParams } from 'react-router';
 import useResponsive from '~/hooks/useResponsive';
 
 interface PaginationProps {
   page: number;
   totalPages: number;
-  onChange: (page: number) => void;
   disabled?: boolean;
 }
 
@@ -14,9 +14,10 @@ const MOBILE_PAGE_COUNT = 5;
 export default function Pagination({
   page,
   totalPages,
-  onChange,
   disabled = false,
 }: PaginationProps) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const isMobile = useResponsive();
   const pageLimit = isMobile ? MOBILE_PAGE_COUNT : DESKTOP_PAGE_COUNT;
   const safeTotalPages = Math.max(1, totalPages);
@@ -25,7 +26,9 @@ export default function Pagination({
 
   const handleChange = (nextPage: number) => {
     if (disabled || nextPage === page) return;
-    onChange(nextPage);
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('pageNum', nextPage.toString());
+    navigate({ search: newParams.toString() });
   };
 
   return (

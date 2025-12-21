@@ -76,3 +76,22 @@ export const useAdmissionsSubNav = () => {
     ],
   };
 };
+
+export const useCommunitySubNav = () => {
+  const { t, tUnsafe } = useLanguage();
+
+  return {
+    title: tUnsafe('커뮤니티'),
+    titlePath: '/community',
+    items: [
+      { name: t('공지사항'), path: '/community/notice', depth: 1 },
+      { name: t('새 소식'), path: '/community/news', depth: 1 },
+      { name: t('세미나'), path: '/community/seminar', depth: 1 },
+      {
+        name: t('신임교수초빙'),
+        path: '/community/faculty-recruitment',
+        depth: 1,
+      },
+    ],
+  };
+};
