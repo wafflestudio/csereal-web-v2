@@ -100,6 +100,14 @@ const getLocaleRoutes = (locale: Locale) => {
         route('/courses', 'routes/academics/undergraduate/courses.tsx'),
         route('/curriculum', 'routes/academics/undergraduate/curriculum.tsx'),
         route(
+          '/general-studies-requirements',
+          'routes/academics/undergraduate/general-studies-requirements.tsx',
+        ),
+        route(
+          '/course-changes',
+          'routes/academics/undergraduate/course-changes.tsx',
+        ),
+        route(
           '/scholarship',
           'routes/academics/undergraduate/scholarship/index.tsx',
         ),
@@ -111,6 +119,10 @@ const getLocaleRoutes = (locale: Locale) => {
       ...prefix('/graduate', [
         route('/guide', 'routes/academics/graduate/guide.tsx'),
         route('/courses', 'routes/academics/graduate/courses.tsx'),
+        route(
+          '/course-changes',
+          'routes/academics/graduate/course-changes.tsx',
+        ),
         route(
           '/scholarship',
           'routes/academics/graduate/scholarship/index.tsx',
