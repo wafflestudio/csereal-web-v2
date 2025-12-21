@@ -37,37 +37,21 @@ export default function PostFooter({ post, listPath }: PostFooterProps) {
   return (
     <div className="mt-12 flex flex-col">
       {nextPost && (
-        <Link
-          to={localizedPath(`${listPath}/${nextPost.id}`)}
-          className="group mb-[2px] flex w-fit items-center"
-        >
-          <span className="material-symbols-rounded font-normal text-main-orange">
-            expand_less
-          </span>
-          <p className="mr-3 flex-shrink-0 text-md font-medium text-main-orange">
-            {t('다음글')}
-          </p>
-          <p className="line-clamp-1 text-md font-normal group-hover:underline">
-            {nextPost.title}
-          </p>
-        </Link>
+        <PostNavLink
+          href={localizedPath(`${listPath}/${nextPost.id}`)}
+          label={t('다음글')}
+          title={nextPost.title}
+          icon="expand_less"
+        />
       )}
 
       {prevPost && (
-        <Link
-          to={localizedPath(`${listPath}/${prevPost.id}`)}
-          className="group mb-[2px] flex w-fit items-center"
-        >
-          <span className="material-symbols-rounded font-normal text-main-orange">
-            expand_more
-          </span>
-          <p className="mr-3 flex-shrink-0 text-md font-medium text-main-orange">
-            {t('이전글')}
-          </p>
-          <p className="line-clamp-1 text-md font-normal group-hover:underline">
-            {prevPost.title}
-          </p>
-        </Link>
+        <PostNavLink
+          href={localizedPath(`${listPath}/${prevPost.id}`)}
+          label={t('이전글')}
+          title={prevPost.title}
+          icon="expand_more"
+        />
       )}
 
       <div className="mt-16 flex justify-end">
@@ -84,3 +68,27 @@ export default function PostFooter({ post, listPath }: PostFooterProps) {
     </div>
   );
 }
+
+const PostNavLink = ({
+  href,
+  label,
+  title,
+  icon,
+}: {
+  href: string;
+  label: string;
+  title: string;
+  icon: string;
+}) => (
+  <Link to={href} className="group mb-[2px] flex w-fit items-center">
+    <span className="material-symbols-rounded font-normal text-main-orange">
+      {icon}
+    </span>
+    <p className="mr-3 shrink-0 text-md font-medium text-main-orange">
+      {label}
+    </p>
+    <p className="line-clamp-1 text-md font-normal group-hover:underline">
+      {title}
+    </p>
+  </Link>
+);

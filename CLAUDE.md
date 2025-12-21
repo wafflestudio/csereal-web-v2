@@ -7,9 +7,6 @@
 - 요청된 기능에 연관된 기존 코드 탐색
 - 기존 코드를 현재 프로젝트의 적합한 위치에 복사
 - 현재 프로젝트의 컨벤션과 react-router에 맞게 기존 코드를 수정
-- **매 작업 완료 후 반드시 검증 실행:**
-  - `pnpm typecheck` - 타입 에러 검증
-  - `pnpm biome check --no-errors-on-unmatched --files-ignore-unknown=true --write [수정한파일들]` - 코드 스타일 자동 수정
 
 현재는 create, edit 관련 기능은 따로 언급하지 않으면 마이그레이션하지 않음.
 

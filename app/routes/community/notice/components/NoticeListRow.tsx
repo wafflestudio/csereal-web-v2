@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { Link } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { NoticePreview } from '~/types/api/v2/notice';
 import ClipIcon from '../assets/clip.svg?react';
@@ -18,6 +18,8 @@ export const NOTICE_ROW_CELL_WIDTH = {
 } as const;
 
 export default function NoticeListRow({ post }: NoticeListRowProps) {
+  const [searchParams] = useSearchParams();
+
   return (
     <li
       className={`flex flex-col gap-2.5 px-7 py-6 text-md sm:h-11 sm:flex-row sm:items-center sm:gap-0 sm:px-0 sm:py-2.5 ${
@@ -30,6 +32,7 @@ export default function NoticeListRow({ post }: NoticeListRowProps) {
         hasAttachment={post.hasAttachment}
         id={post.id}
         isPinned={post.isPinned}
+        pageNum={searchParams.get('pageNum')}
       />
       <DateCell date={post.createdAt} />
     </li>
@@ -59,15 +62,25 @@ interface TitleCellProps {
   hasAttachment: boolean;
   id: number;
   isPinned: boolean;
+  pageNum: string | null;
 }
 
-function TitleCell({ title, hasAttachment, id, isPinned }: TitleCellProps) {
+function TitleCell({
+  title,
+  hasAttachment,
+  id,
+  isPinned,
+  pageNum,
+}: TitleCellProps) {
   const { locale } = useLanguage({});
+  const detailPath = pageNum
+    ? `/${locale}/community/notice/${id}?pageNum=${pageNum}`
+    : `/${locale}/community/notice/${id}`;
 
   return (
     <span className={`${NOTICE_ROW_CELL_WIDTH.title} min-w-0 grow sm:pl-3`}>
       <Link
-        to={`/${locale}/community/notice/${id}`}
+        to={detailPath}
         className="flex items-center gap-1.5 font-semibold sm:font-normal"
       >
         <span

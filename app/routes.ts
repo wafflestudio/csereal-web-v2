@@ -35,6 +35,7 @@ const getLocaleRoutes = (locale: Locale) => {
     ...prefix('/community', [
       route('/', 'routes/community/index.tsx'),
       route('/notice', 'routes/community/notice/index.tsx'),
+      route('/notice/:id', 'routes/community/notice/$id.tsx'),
       route('/news', 'routes/community/news/index.tsx'),
       route('/news/:id', 'routes/community/news/$id.tsx'),
     ]),
