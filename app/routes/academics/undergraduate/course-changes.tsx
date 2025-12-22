@@ -1,6 +1,5 @@
 import type { Route } from '.react-router/types/app/routes/academics/undergraduate/+types/course-changes';
 import PageLayout from '~/components/layout/PageLayout';
-import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useAcademicsSubNav } from '~/hooks/useSubNav';
 import TimelineViewer from '~/routes/academics/components/timeline/TimelineViewer';
@@ -8,7 +7,7 @@ import type { TimelineContent } from '~/types/api/v2/academics';
 
 export async function loader() {
   const response = await fetch(
-    `${BASE_URL}/v2/academics/undergraduate/course-changes`,
+    'https://cse.snu.ac.kr/api/v2/academics/undergraduate/course-changes',
   );
   if (!response.ok) {
     throw new Error('Failed to fetch undergraduate course changes data');

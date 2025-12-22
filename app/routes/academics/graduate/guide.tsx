@@ -2,13 +2,14 @@ import type { Route } from '.react-router/types/app/routes/academics/graduate/+t
 import Attachments from '~/components/common/Attachments';
 import HTMLViewer from '~/components/common/HTMLViewer';
 import PageLayout from '~/components/layout/PageLayout';
-import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useAcademicsSubNav } from '~/hooks/useSubNav';
 import type { Guide } from '~/types/api/v2/academics';
 
 export async function loader() {
-  const response = await fetch(`${BASE_URL}/v2/academics/graduate/guide`);
+  const response = await fetch(
+    'https://cse.snu.ac.kr/api/v2/academics/graduate/guide',
+  );
   if (!response.ok) {
     throw new Error('Failed to fetch graduate guide data');
   }

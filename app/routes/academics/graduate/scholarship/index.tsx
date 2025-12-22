@@ -1,14 +1,15 @@
 import type { Route } from '.react-router/types/app/routes/academics/graduate/scholarship/+types/index';
 import HTMLViewer from '~/components/common/HTMLViewer';
 import PageLayout from '~/components/layout/PageLayout';
-import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useAcademicsSubNav } from '~/hooks/useSubNav';
 import ScholarshipList from '~/routes/academics/components/ScholarshipList';
 import type { ScholarshipList as ScholarshipListType } from '~/types/api/v2/academics/scholarship';
 
 export async function loader() {
-  const response = await fetch(`${BASE_URL}/v2/academics/graduate/scholarship`);
+  const response = await fetch(
+    'https://cse.snu.ac.kr/api/v2/academics/graduate/scholarship',
+  );
   if (!response.ok) {
     throw new Error('Failed to fetch graduate scholarship data');
   }

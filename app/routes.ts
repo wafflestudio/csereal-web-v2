@@ -147,6 +147,12 @@ const getLocaleRoutes = (locale: Locale) => {
       ),
     ]),
     route('/10-10-project', 'routes/10-10-project/index.tsx'),
+    route('/10-10-project/proposal', 'routes/10-10-project/proposal.tsx'),
+    route('/10-10-project/manager', 'routes/10-10-project/manager.tsx'),
+    route(
+      '/10-10-project/participants',
+      'routes/10-10-project/participants.tsx',
+    ),
     route('*', 'routes/404.tsx'),
   ];
 };
