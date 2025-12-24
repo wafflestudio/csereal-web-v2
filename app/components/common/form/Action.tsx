@@ -94,10 +94,51 @@ const ErrorMessages = () => {
     formState: { errors },
   } = useFormContext();
 
+  const flattenErrors = (
+    errorObj: unknown,
+    visited = new WeakSet<object>(),
+  ): string[] => {
+    const messages: string[] = [];
+
+    if (!errorObj || typeof errorObj !== 'object') {
+      return messages;
+    }
+
+    // 순환 참조 방지: 이미 방문한 객체는 건너뛰기
+    if (visited.has(errorObj as object)) {
+      return messages;
+    }
+    visited.add(errorObj as object);
+
+    // message 속성이 있으면 메시지 추가
+    if ('message' in errorObj && errorObj.message) {
+      messages.push(String(errorObj.message));
+    }
+
+    // 객체의 모든 값들을 재귀적으로 순회
+    for (const [key, value] of Object.entries(errorObj)) {
+      // react hook form에서 ref도 관리한다
+      // ref를 도는 것 방지
+      if (key === 'ref') continue;
+      if (value && typeof value === 'object') {
+        messages.push(...flattenErrors(value, visited));
+      }
+      if (messages.length > 5) break;
+    }
+
+    return messages;
+  };
+
+  const errorMessages = flattenErrors(errors);
+
+  if (errorMessages.length === 0) {
+    return null;
+  }
+
   return (
-    <ul className="text-md text-[#FF0000]">
-      {Object.values(errors).map((error, idx) => (
-        <li key={idx}>{error?.message?.toString()}</li>
+    <ul className="text-sm font-normal text-red-600 space-y-1">
+      {errorMessages.map((message, idx) => (
+        <li key={idx}>{message}</li>
       ))}
     </ul>
   );

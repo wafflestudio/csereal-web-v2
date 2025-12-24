@@ -55,7 +55,7 @@ export default function StudentClubsEdit({ loaderData }: Route.ComponentProps) {
     },
   };
 
-  const methods = useForm({ defaultValues });
+  const methods = useForm({ defaultValues, shouldFocusError: false });
 
   const onCancel = () => {
     navigate(`/${locale}/about/student-clubs`);

@@ -32,7 +32,7 @@ export default function FacilitiesCreate() {
     imageURL: null,
   };
 
-  const methods = useForm({ defaultValues });
+  const methods = useForm({ defaultValues, shouldFocusError: false });
 
   const onCancel = () => {
     navigate(`/${locale}/about/facilities`);

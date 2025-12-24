@@ -63,7 +63,7 @@ export default function AboutEdit({ loaderData }: Route.ComponentProps) {
     files: koData.attachments.map((file) => ({ type: 'UPLOADED_FILE', file })),
   };
 
-  const methods = useForm({ defaultValues });
+  const methods = useForm({ defaultValues, shouldFocusError: false });
 
   const onCancel = () => {
     navigate(`/${locale}/about/${type}`);

@@ -58,7 +58,7 @@ export default function DirectionsEdit({ loaderData }: Route.ComponentProps) {
     htmlEn: direction.en.description,
   };
 
-  const methods = useForm({ defaultValues });
+  const methods = useForm({ defaultValues, shouldFocusError: false });
 
   const onCancel = () => {
     navigate(`/${locale}/about/directions`);

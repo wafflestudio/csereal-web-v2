@@ -32,7 +32,7 @@ export default function StudentClubsCreate() {
     image: null,
   };
 
-  const methods = useForm({ defaultValues });
+  const methods = useForm({ defaultValues, shouldFocusError: false });
 
   const onCancel = () => {
     navigate(`/${locale}/about/student-clubs`);
