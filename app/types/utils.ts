@@ -9,3 +9,7 @@ export const isNotFalsy = <T>(value: T | Falsy): value is T => {
     value !== ''
   );
 };
+
+export const isFalsy = <T>(value: T | Falsy): value is Falsy => {
+  return !isNotFalsy(value);
+};

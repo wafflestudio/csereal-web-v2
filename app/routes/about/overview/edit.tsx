@@ -13,9 +13,11 @@ import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { AboutContent } from '~/types/api/v2/about/content';
-import { type EditorFile, type EditorImage, isLocalImage } from '~/types/form';
+import type { EditorFile, EditorImage } from '~/types/form';
+import { LOCALES } from '~/types/i18n';
+import { FormData2, getDeleteIds } from '~/utils/form';
 
-interface AboutFormData {
+interface OverviewFormData {
   htmlKo: string;
   htmlEn: string;
   image: EditorImage;
@@ -23,14 +25,13 @@ interface AboutFormData {
 }
 
 export async function loader() {
-  const [koData, enData] = await Promise.all([
-    fetch(`${BASE_URL}/v2/about/overview?language=ko`).then(
-      (res) => res.json() as Promise<AboutContent>,
+  const [koData, enData] = await Promise.all(
+    LOCALES.map((locale) =>
+      fetch(`${BASE_URL}/v2/about/overview?language=${locale}`).then(
+        (res) => res.json() as Promise<AboutContent>,
+      ),
     ),
-    fetch(`${BASE_URL}/v2/about/overview?language=en`).then(
-      (res) => res.json() as Promise<AboutContent>,
-    ),
-  ]);
+  );
 
   return { koData, enData };
 }
@@ -41,24 +42,14 @@ export default function OverviewEdit({ loaderData }: Route.ComponentProps) {
   const { locale } = useLanguage({});
   const [language, setLanguage] = useState<Language>('ko');
 
-  const defaultValues: AboutFormData = {
+  const defaultValues: OverviewFormData = {
     htmlKo: koData.description,
     htmlEn: enData.description,
-    image: koData.imageURL
-      ? { type: 'UPLOADED_IMAGE', url: koData.imageURL }
-      : null,
-    files: koData.attachments.map((file) => ({
-      type: 'UPLOADED_FILE' as const,
-      file: {
-        id: file.id,
-        name: file.name,
-        url: file.url,
-        bytes: file.bytes,
-      },
-    })),
+    image: koData.imageURL && { type: 'UPLOADED_IMAGE', url: koData.imageURL },
+    files: koData.attachments.map((file) => ({ type: 'UPLOADED_FILE', file })),
   };
 
-  const methods = useForm<AboutFormData>({ defaultValues });
+  const methods = useForm({ defaultValues });
 
   const onCancel = () => {
     navigate(`/${locale}/about/overview`);
@@ -66,44 +57,17 @@ export default function OverviewEdit({ loaderData }: Route.ComponentProps) {
 
   const onSubmit = methods.handleSubmit(
     async ({ htmlKo, htmlEn, image, files }) => {
-      const formData = new FormData();
+      const formData = new FormData2();
 
-      // Request object
-      const deleteIds = defaultValues.files
-        .filter(
-          (originalFile) =>
-            originalFile.type === 'UPLOADED_FILE' &&
-            !files.some(
-              (currentFile) =>
-                currentFile.type === 'UPLOADED_FILE' &&
-                currentFile.file.id === originalFile.file.id,
-            ),
-        )
-        .map((file) => (file.type === 'UPLOADED_FILE' ? file.file.id : -1));
+      const deleteIds = getDeleteIds({ prev: defaultValues.files, cur: files });
 
-      const requestObject = {
+      formData.appendJson('request', {
         ko: { description: htmlKo, deleteIds },
         en: { description: htmlEn, deleteIds: [] },
         removeImage: defaultValues.image !== null && image === null,
-      };
-
-      formData.append(
-        'request',
-        new Blob([JSON.stringify(requestObject)], { type: 'application/json' }),
-      );
-
-      // Image
-      if (isLocalImage(image)) {
-        formData.append('mainImage', image.file);
-      }
-
-      // Files
-      const newFiles = files.filter((file) => file.type === 'LOCAL_FILE');
-      newFiles.forEach((file) => {
-        if (file.type === 'LOCAL_FILE') {
-          formData.append('newAttachments', file.file);
-        }
       });
+      formData.appendIfLocal('newMainImage', image);
+      formData.appendIfLocal('newAttachments', files);
 
       try {
         const response = await fetch(`/api/v2/about/overview`, {

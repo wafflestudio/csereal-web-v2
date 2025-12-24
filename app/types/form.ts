@@ -1,4 +1,5 @@
 import type { FieldValues, RegisterOptions } from 'react-hook-form';
+import type { Falsy } from '~/types/utils';
 
 export type Rules =
   | Omit<
@@ -30,7 +31,7 @@ export const isLocalFile = (file: EditorFile): file is LocalFile =>
 export const isUploadedFile = (file: EditorFile): file is UploadedFile =>
   file.type === 'UPLOADED_FILE';
 
-export type EditorImage = LocalImage | UploadedImage | null;
+export type EditorImage = LocalImage | UploadedImage | Falsy;
 
 export interface LocalImage {
   type: 'LOCAL_IMAGE';
@@ -43,7 +44,7 @@ export interface UploadedImage {
 }
 
 export const isLocalImage = (image: EditorImage): image is LocalImage =>
-  image !== null && image.type === 'LOCAL_IMAGE';
+  !!image && image.type === 'LOCAL_IMAGE';
 
 export const isUploadedImage = (image: EditorImage): image is UploadedImage =>
-  image !== null && image.type === 'UPLOADED_IMAGE';
+  !!image && image.type === 'UPLOADED_IMAGE';
