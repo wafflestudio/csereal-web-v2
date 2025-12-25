@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Image from '~/components/common/Image';
 import SnuLogo from '~/components/layout/LeftNav/assets/SNU_Logo.svg?react';
 
 interface ImageWithFallbackProps {
@@ -34,7 +35,7 @@ export default function ImageWithFallback({
   }
 
   return (
-    <img
+    <Image
       src={encodeURI(src)}
       alt={alt}
       className={className}

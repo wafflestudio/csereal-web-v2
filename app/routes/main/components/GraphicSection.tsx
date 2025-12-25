@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import Image from '~/components/common/Image';
 import backgroundImg from '../assets/background.png';
 import DownArrowIcon from '../assets/down_arrow.svg?react';
 import mainGraphicImg from '../assets/mainGraphic.png';
@@ -6,7 +7,7 @@ import mainGraphicImg from '../assets/mainGraphic.png';
 export default function GraphicSection() {
   return (
     <div className="relative flex w-fit min-w-full flex-col items-center justify-between gap-[50px] pb-[67px] pt-[60px] sm:flex-row-reverse sm:justify-center sm:gap-[75px] sm:pb-[170px] sm:pt-[80px] xl:gap-[125px]">
-      <img
+      <Image
         src={backgroundImg}
         alt=""
         className="object-cover sm:hidden"
@@ -18,7 +19,7 @@ export default function GraphicSection() {
         }}
       />
       <DownArrowIcon className="bottom-20 left-1/2 hidden -translate-x-1/2 animate-arrowBounce sm:absolute" />
-      <img
+      <Image
         src={mainGraphicImg}
         width={200}
         height={416}

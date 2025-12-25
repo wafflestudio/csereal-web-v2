@@ -2,7 +2,7 @@ import type { ChangeEventHandler, MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import type { RegisterOptions } from 'react-hook-form';
 import { useFormContext, useWatch } from 'react-hook-form';
-
+import Image from '~/components/common/Image';
 import type { LocalImage, UploadedImage } from '~/types/form';
 
 interface Props {
@@ -64,7 +64,7 @@ const SelectedImageViewer = ({
   if (file.type !== 'LOCAL_IMAGE') {
     return (
       <div className="flex w-fit items-end gap-2 border border-neutral-200 bg-neutral-50 p-2">
-        <img src={file.url} alt="선택된 이미지" width={100} height={100} />
+        <Image src={file.url} alt="선택된 이미지" width={100} height={100} />
         <button
           type="button"
           className="text-xs underline"
@@ -85,7 +85,7 @@ const SelectedImageViewer = ({
 
   return (
     <div className="relative flex gap-3 self-start rounded-sm border border-neutral-200 bg-neutral-50 pb-2 pl-2 pr-4 pt-2">
-      <img
+      <Image
         src={imageURL}
         alt="선택된 이미지"
         width={IMAGE_WIDTH}

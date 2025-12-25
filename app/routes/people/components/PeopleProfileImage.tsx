@@ -1,3 +1,5 @@
+import Image from '~/components/common/Image';
+
 export default function ProfileImage({
   imageURL,
   alt = '대표 이미지',
@@ -15,7 +17,7 @@ export default function ProfileImage({
   }
 
   return (
-    <img
+    <Image
       alt={alt}
       src={imageURL}
       width={200}

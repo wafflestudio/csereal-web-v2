@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import Image from '~/components/common/Image';
 
 interface PeopleGridProps {
   items: PeopleCardProps[];
@@ -45,7 +46,7 @@ function PeopleCard({
         aria-label={`${name} 교수 상세 페이지로 이동`}
       >
         {imageURL ? (
-          <img
+          <Image
             src={imageURL}
             alt={`${name} 프로필`}
             className="h-[192px] w-[144px] object-cover"

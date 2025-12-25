@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import AlertDialog from '~/components/common/AlertDialog';
 import Button from '~/components/common/Button';
 import HTMLViewer from '~/components/common/HTMLViewer';
+import Image from '~/components/common/Image';
 import LoginVisible from '~/components/common/LoginVisible';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { Facility } from '~/types/api/v2/about/facilities';
@@ -54,7 +55,7 @@ function FacilitiesRow({ facility }: { facility: Facility }) {
           </h3>
           <HTMLViewer html={facility.description} />
           <div className="flex translate-x-[-4px] items-start gap-px">
-            <img src={distanceIcon} alt="" className="shrink-0" />
+            <Image src={distanceIcon} alt="" className="shrink-0" />
             <p className="pt-0.5 text-md text-neutral-500">
               {facility.locations.join(', ')}
             </p>
@@ -98,7 +99,7 @@ function FacilitiesRow({ facility }: { facility: Facility }) {
 function FacilitiesRowImage({ imageURL }: { imageURL: string }) {
   return (
     <div className="relative h-44 w-full shrink-0 sm:w-60">
-      <img
+      <Image
         alt="대표 이미지"
         src={encodeURI(imageURL)}
         className="absolute inset-0 h-full w-full object-cover"

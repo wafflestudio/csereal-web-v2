@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { Link } from 'react-router';
+import Image from '~/components/common/Image';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { MainNews } from '~/types/api/v2';
 import { CARD_WIDTH_TAILWIND } from './constants';
@@ -13,7 +14,7 @@ export default function NewsCard({ news }: { news: MainNews }) {
       className={`flex h-76 shrink-0 flex-col bg-neutral-50 shadow-[0_0_31.9px_0_rgba(0,0,0,0.07)] ${CARD_WIDTH_TAILWIND}`}
     >
       <div className="relative h-25 w-full">
-        <img
+        <Image
           src={encodeURI(news.imageURL)}
           alt=""
           className="object-cover"

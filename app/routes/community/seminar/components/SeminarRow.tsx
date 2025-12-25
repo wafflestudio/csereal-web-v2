@@ -2,6 +2,7 @@ import dayjs, { type Dayjs } from 'dayjs';
 import type { ElementType, ReactNode } from 'react';
 import 'dayjs/locale/ko';
 import { Link, useSearchParams } from 'react-router';
+import Image from '~/components/common/Image';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { SeminarPreview } from '~/types/api/v2/seminar';
 import CalendarIcon from '../assets/calendar.svg?react';
@@ -49,7 +50,7 @@ function ImageCell({ imageURL }: { imageURL: string | null }) {
       }`}
     >
       {imageURL && (
-        <img
+        <Image
           src={imageURL}
           alt="대표 이미지"
           className="h-full w-full object-cover"

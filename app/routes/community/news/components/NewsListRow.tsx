@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { Link, useSearchParams } from 'react-router';
+import Image from '~/components/common/Image';
 import { Tag } from '~/components/common/Tag';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { NewsPreview } from '~/types/api/v2/news';
@@ -57,7 +58,7 @@ export default function NewsListRow({ post }: NewsListRowProps) {
 
       {post.imageURL ? (
         <Link to={detailPath} className="relative flex aspect-4/3 sm:h-37.5">
-          <img
+          <Image
             src={post.imageURL}
             alt="포스트 대표 이미지"
             className="h-full w-full object-cover"

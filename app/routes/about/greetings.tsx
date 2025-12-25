@@ -3,6 +3,7 @@ import type { LoaderFunctionArgs } from 'react-router';
 import Button from '~/components/common/Button';
 import ContentSection from '~/components/common/ContentSection';
 import HTMLViewer from '~/components/common/HTMLViewer';
+import Image from '~/components/common/Image';
 import LoginVisible from '~/components/common/LoginVisible';
 import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
@@ -66,7 +67,7 @@ function GreetingsContent({ data }: { data: AboutContent }) {
       </div>
       {data.imageURL && (
         <div>
-          <img src={data.imageURL} alt="학부장" width={212} height={280} />
+          <Image src={data.imageURL} alt="학부장" width={212} height={280} />
         </div>
       )}
     </div>

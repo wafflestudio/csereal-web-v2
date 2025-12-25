@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import Attachments from '~/components/common/Attachments';
 import Button from '~/components/common/Button';
 import HTMLViewer from '~/components/common/HTMLViewer';
+import Image from '~/components/common/Image';
 import LoginVisible from '~/components/common/LoginVisible';
 import Node from '~/components/common/Nodes';
 import PageLayout from '~/components/layout/PageLayout';
@@ -118,7 +119,7 @@ export default function SeminarDetailPage({
           </div>
           <div className="relative mx-7 aspect-square sm:h-60 sm:w-60">
             {seminar.imageURL && (
-              <img
+              <Image
                 alt="대표 이미지"
                 src={seminar.imageURL}
                 className="h-full w-full object-contain"

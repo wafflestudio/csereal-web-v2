@@ -3,6 +3,7 @@ import Attachments from '~/components/common/Attachments';
 import Button from '~/components/common/Button';
 import ContentSection from '~/components/common/ContentSection';
 import HTMLViewer from '~/components/common/HTMLViewer';
+import Image from '~/components/common/Image';
 import LoginVisible from '~/components/common/LoginVisible';
 import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
@@ -77,7 +78,7 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
           </div>
           {imageURL && (
             <div className="w-full sm:w-auto">
-              <img
+              <Image
                 src={imageURL}
                 alt="학교 전경"
                 width={320}
@@ -91,8 +92,8 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
       <ContentSection tone="white" padding="overviewBottom">
         <h2 className="mb-6 text-base font-semibold">{t('학부 소개 책자')}</h2>
         <div className="mb-10 flex flex-col gap-6 sm:flex-row">
-          <img src={brochure1} width={227} height={320} alt="소개 책자" />
-          <img src={brochure2} width={227} height={320} alt="소개 책자" />
+          <Image src={brochure1} width={227} height={320} alt="소개 책자" />
+          <Image src={brochure2} width={227} height={320} alt="소개 책자" />
         </div>
         <Attachments files={attachments} />
       </ContentSection>

@@ -1,6 +1,7 @@
 import './assets/suneditor-contents.css';
 
 import { Autolinker } from 'autolinker';
+import Image from '~/components/common/Image';
 import useIsMobile from '~/hooks/useResponsive';
 import { type Falsy, isNotFalsy } from '~/types/utils';
 
@@ -59,7 +60,7 @@ export default function HTMLViewer({
           className="relative mb-7 w-full sm:float-right sm:ml-7 sm:w-auto"
           style={imageWidth ? { width: `${imageWidth}px` } : undefined}
         >
-          <img
+          <Image
             src={image.src}
             alt="대표 이미지"
             width={image.width}

@@ -1,3 +1,4 @@
+import Image from '~/components/common/Image';
 import type { Attachment } from '~/types/api/v2/attachment';
 import { formatBytes } from '~/utils/string';
 import clipIcon from './assets/clip.svg';
@@ -45,7 +46,7 @@ export default function Attachments({
         );
       })}
 
-      <img src={clipIcon} alt="" className="absolute right-2 -top-6" />
+      <Image src={clipIcon} alt="" className="absolute right-2 -top-6" />
     </div>
   );
 }

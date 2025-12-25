@@ -1,4 +1,5 @@
 import type { Route } from '.react-router/types/app/routes/main/+types';
+import Image from '~/components/common/Image';
 import Header from '~/components/layout/Header';
 import { BASE_URL } from '~/constants/api';
 import type { MainResponse } from '~/types/api/v2';
@@ -20,7 +21,7 @@ export default function MainPage({ loaderData }: Route.ComponentProps) {
     <div className="relative w-full">
       <Header />
       <div className="absolute left-0 right-0 top-0 -z-50 hidden aspect-1336/800 sm:block">
-        <img
+        <Image
           src={backgroundImg}
           alt=""
           className="object-cover w-full h-full"

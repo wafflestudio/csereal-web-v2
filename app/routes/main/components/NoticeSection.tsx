@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router';
 import Button from '~/components/common/Button';
+import Image from '~/components/common/Image';
 import { useLanguage } from '~/hooks/useLanguage';
 import useIsMobile from '~/hooks/useResponsive';
 import type { AllMainNotice } from '~/types/api/v2';
@@ -24,7 +25,7 @@ export default function NoticeSection({
   return (
     <div className="relative mt-16 bg-[#212121] sm:mx-31 sm:mt-22 sm:h-112">
       <div className="absolute left-0 top-0 hidden aspect-827/295 w-[77%] sm:block">
-        <img
+        <Image
           src={noticeGraphicImg}
           alt=""
           style={{

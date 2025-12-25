@@ -1,6 +1,7 @@
 import type { Route } from '.react-router/types/app/routes/research/groups/+types/index';
 import { Link, type LoaderFunctionArgs } from 'react-router';
 import HTMLViewer from '~/components/common/HTMLViewer';
+import Image from '~/components/common/Image';
 import SelectionList from '~/components/common/SelectionList';
 import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
@@ -66,7 +67,7 @@ export default function ResearchGroupsPage({
           </div>
           {item.mainImageUrl && (
             <div className="relative mt-10 aspect-2/1 w-[80%] max-w-[720px] self-end">
-              <img
+              <Image
                 src={item.mainImageUrl}
                 alt={`${item.name} 연구 스트림 사진`}
                 className="h-full w-full object-cover"
