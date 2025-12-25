@@ -99,6 +99,8 @@ const getLocaleRoutes = (locale: Locale) => {
       route('/groups/create', 'routes/research/groups/create.tsx'),
       route('/groups/edit', 'routes/research/groups/edit.tsx'),
       route('/centers', 'routes/research/centers/index.tsx'),
+      route('/centers/create', 'routes/research/centers/create.tsx'),
+      route('/centers/edit', 'routes/research/centers/edit.tsx'),
       route('/labs', 'routes/research/labs/index.tsx'),
       route('/labs/:id', 'routes/research/labs/$id.tsx'),
       route(
