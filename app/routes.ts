@@ -106,34 +106,11 @@ const getLocaleRoutes = (locale: Locale) => {
     ]),
     ...prefix('/admissions', [
       route('/', 'routes/admissions/index.tsx'),
-      ...prefix('/undergraduate', [
-        route(
-          '/early-admission',
-          'routes/admissions/undergraduate/early-admission.tsx',
-        ),
-        route(
-          '/regular-admission',
-          'routes/admissions/undergraduate/regular-admission.tsx',
-        ),
-      ]),
-      ...prefix('/graduate', [
-        route(
-          '/regular-admission',
-          'routes/admissions/graduate/regular-admission.tsx',
-        ),
-      ]),
-      ...prefix('/international', [
-        route(
-          '/undergraduate',
-          'routes/admissions/international/undergraduate.tsx',
-        ),
-        route('/graduate', 'routes/admissions/international/graduate.tsx'),
-        route('/exchange', 'routes/admissions/international/exchange.tsx'),
-        route(
-          '/scholarships',
-          'routes/admissions/international/scholarships.tsx',
-        ),
-      ]),
+      // Dynamic route for all admissions display pages
+      route(
+        '/:mainType/:postType',
+        'routes/admissions/$mainType/$postType/index.tsx',
+      ),
       // Dynamic route for all admissions edit pages
       route(
         '/:mainType/:postType/edit',
