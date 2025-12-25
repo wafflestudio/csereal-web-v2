@@ -185,6 +185,7 @@ const getLocaleRoutes = (locale: Locale) => {
 
 export default [
   layout('routes/layout.tsx', [
+    _route('/img', 'routes/img.tsx'),
     ...getLocaleRoutes('ko'),
     ...prefix('/en', [...getLocaleRoutes('en')]),
     _route('/admin', 'routes/admin/index.tsx'),

@@ -1,47 +1,40 @@
 import type { ImgHTMLAttributes } from 'react';
-import { useEffect, useState } from 'react';
-import { DEV_FILE_BASE_URL } from '~/constants/api';
+import { buildOptimizedUrl, shouldOptimize } from '~/utils/image';
 
-type ImageProps = ImgHTMLAttributes<HTMLImageElement>;
+type ImageProps = ImgHTMLAttributes<HTMLImageElement> & { quality?: number };
 
-export default function Image({ src, onError, ...props }: ImageProps) {
-  const [imgSrc, setImgSrc] = useState(src);
+export default function Image({
+  src: _src,
+  onError,
+  quality,
+  width,
+  ...props
+}: ImageProps) {
+  const widthNum = typeof width === 'string' ? parseInt(width, 10) : width;
 
-  useEffect(() => {
-    // src가 변경되면 imgSrc를 리셋
-    // TODO: 이게 최선?
-    setImgSrc(src);
+  if (!shouldOptimize(_src)) {
+    return <img {...props} src={_src} alt={props.alt} width={width} />;
+  }
 
-    const shouldProxy =
-      import.meta.env.DEV && src && src.startsWith(DEV_FILE_BASE_URL);
-    if (!shouldProxy) return;
+  // width가 있으면 srcset 생성 (1x, 2x, 3x)
+  if (widthNum) {
+    const src1x = buildOptimizedUrl(_src, quality, widthNum);
+    const src2x = buildOptimizedUrl(_src, quality, widthNum * 2);
+    const src3x = buildOptimizedUrl(_src, quality, widthNum * 3);
+    const srcset = `${src1x} 1x, ${src2x} 2x, ${src3x} 3x`;
 
-    let isUnmounted = false;
+    return (
+      <img
+        {...props}
+        src={src1x}
+        srcSet={srcset}
+        alt={props.alt}
+        width={width}
+      />
+    );
+  }
 
-    (async () => {
-      const isValid = await isImageValid(src);
-      if (isValid || isUnmounted) return;
-
-      const proxySrc = src.replace(DEV_FILE_BASE_URL, '/dev-proxy-file');
-      setImgSrc(proxySrc);
-    })();
-
-    return () => {
-      isUnmounted = true;
-    };
-  }, [src]);
-
-  return <img {...props} src={imgSrc} alt={props.alt} />;
-}
-
-// https://github.com/facebook/react/issues/15446#issuecomment-484699248
-function isImageValid(src: string) {
-  const promise = new Promise((resolve) => {
-    const img = document.createElement('img');
-    img.onerror = () => resolve(false);
-    img.onload = () => resolve(true);
-    img.src = src;
-  });
-
-  return promise;
+  // width가 없으면 기존 방식
+  const src = buildOptimizedUrl(_src, quality);
+  return <img {...props} src={src} alt={props.alt} width={width} />;
 }

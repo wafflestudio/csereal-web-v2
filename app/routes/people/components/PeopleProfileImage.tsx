@@ -25,6 +25,7 @@ export default function ProfileImage({
       className="h-[264px] w-[200px] object-contain"
       style={style}
       loading="lazy"
+      quality={100}
     />
   );
 }

@@ -6,3 +6,6 @@
 /.react-router/
 /build/
 .mcp.json
+
+# Image optimization cache
+.cache/
