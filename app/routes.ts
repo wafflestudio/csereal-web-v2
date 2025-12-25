@@ -68,7 +68,14 @@ const getLocaleRoutes = (locale: Locale) => {
       route('/seminar/create', 'routes/community/seminar/create.tsx'),
       route('/seminar/edit/:id', 'routes/community/seminar/edit.$id.tsx'),
       route('/seminar/:id', 'routes/community/seminar/$id.tsx'),
-      route('/faculty-recruitment', 'routes/community/faculty-recruitment.tsx'),
+      route(
+        '/faculty-recruitment',
+        'routes/community/faculty-recruitment/index.tsx',
+      ),
+      route(
+        '/faculty-recruitment/edit',
+        'routes/community/faculty-recruitment/edit.tsx',
+      ),
     ]),
     ...prefix('/people', [
       route('/', 'routes/people/index.tsx'),

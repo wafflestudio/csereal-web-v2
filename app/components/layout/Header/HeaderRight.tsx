@@ -32,7 +32,6 @@ export default function HeaderRight() {
 
         <Divider />
 
-        {/* Language toggle */}
         <Button
           variant="text"
           tone="inverse"
@@ -43,7 +42,6 @@ export default function HeaderRight() {
         </Button>
       </div>
 
-      {/* Search bar */}
       <HeaderSearchBar />
     </div>
   );
