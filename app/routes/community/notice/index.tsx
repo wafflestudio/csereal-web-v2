@@ -11,6 +11,7 @@ import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
 import { NOTICE_TAGS } from '~/constants/tag';
 import { useLanguage } from '~/hooks/useLanguage';
+import { useSetToggle } from '~/hooks/useSetToggle';
 import { useCommunitySubNav } from '~/hooks/useSubNav';
 import type { NoticePreviewList } from '~/types/api/v2/notice';
 import { fetchJson } from '~/utils/fetch';
@@ -52,31 +53,20 @@ export default function NoticePage({ loaderData: data }: Route.ComponentProps) {
   });
   const subNav = useCommunitySubNav();
 
-  const [selectedIds, setSelectedIds] = useState<Set<number> | undefined>(
-    undefined,
-  );
-
-  const toggleSelection = (id: number) => {
-    setSelectedIds((prev) => {
-      if (!prev) return prev;
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
-  };
+  const [isEditMode, setIsEditMode] = useState(false);
+  const {
+    selected: selectedIds,
+    toggle: toggleSelection,
+    clear,
+  } = useSetToggle<number>();
 
   const toggleEditMode = () => {
-    setSelectedIds((prev) => (prev === undefined ? new Set() : undefined));
+    setIsEditMode((prev) => !prev);
+    clear();
   };
 
   const pageNum = parseInt(searchParams.get('pageNum') || '1', 10);
   const totalPages = Math.ceil(data.total / POST_LIMIT);
-
-  const isEditMode = selectedIds !== undefined;
 
   return (
     <PageLayout
@@ -118,7 +108,7 @@ export default function NoticePage({ loaderData: data }: Route.ComponentProps) {
                 key={post.id}
                 post={post}
                 isEditMode={isEditMode}
-                isSelected={selectedIds?.has(post.id) ?? false}
+                isSelected={selectedIds.has(post.id)}
                 onToggleSelect={() => toggleSelection(post.id)}
               />
             ))}
@@ -135,6 +125,7 @@ export default function NoticePage({ loaderData: data }: Route.ComponentProps) {
       <LoginVisible allow="ROLE_STAFF">
         <AdminFeatures
           selectedIds={selectedIds}
+          isEditMode={isEditMode}
           toggleEditMode={toggleEditMode}
         />
       </LoginVisible>

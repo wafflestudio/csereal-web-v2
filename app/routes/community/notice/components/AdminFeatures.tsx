@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useRevalidator } from 'react-router';
 import { toast } from 'sonner';
 import AlertDialog from '~/components/common/AlertDialog';
 import Button from '~/components/common/Button';
@@ -8,23 +8,23 @@ import { useLanguage } from '~/hooks/useLanguage';
 import { fetchOk } from '~/utils/fetch';
 
 interface AdminFeaturesProps {
-  selectedIds: Set<number> | undefined;
+  selectedIds: Set<number>;
+  isEditMode: boolean;
   toggleEditMode: () => void;
 }
 
 export default function AdminFeatures({
   selectedIds,
+  isEditMode,
   toggleEditMode,
 }: AdminFeaturesProps) {
   const { localizedPath } = useLanguage();
-  const navigate = useNavigate();
+  const revalidator = useRevalidator();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showUnpinDialog, setShowUnpinDialog] = useState(false);
 
-  const isEditMode = selectedIds !== undefined;
-
   const handleBatchDelete = async () => {
-    if (!selectedIds) return;
+    if (selectedIds.size === 0) return;
 
     try {
       await fetchOk(`${BASE_URL}/v2/notice`, {
@@ -34,7 +34,7 @@ export default function AdminFeatures({
       });
 
       toast.success('선택된 공지를 삭제했습니다.');
-      navigate(0); // reload
+      revalidator.revalidate();
     } catch {
       toast.error('공지를 삭제하지 못했습니다.');
     }
@@ -42,9 +42,7 @@ export default function AdminFeatures({
   };
 
   const handleBatchUnpin = async () => {
-    if (!selectedIds) return;
-
-    console.log(selectedIds);
+    if (selectedIds.size === 0) return;
 
     try {
       await fetchOk(`${BASE_URL}/v2/notice`, {
@@ -54,7 +52,7 @@ export default function AdminFeatures({
       });
 
       toast.success('선택된 공지를 고정 해제했습니다.');
-      navigate(0); // reload
+      revalidator.revalidate();
     } catch {
       toast.error('공지를 고정 해제하지 못했습니다.');
     }
@@ -71,14 +69,14 @@ export default function AdminFeatures({
                 check_box
               </span>
               <span className="text-sm tracking-wide text-neutral-500">
-                {selectedIds?.size ?? 0}개 게시물 선택
+                {selectedIds.size}개 게시물 선택
               </span>
             </div>
             <Button
               variant="outline"
               tone="neutral"
               size="sm"
-              disabled={(selectedIds?.size ?? 0) === 0}
+              disabled={selectedIds.size === 0}
               onClick={() => setShowDeleteDialog(true)}
             >
               일괄 삭제
@@ -87,7 +85,7 @@ export default function AdminFeatures({
               variant="outline"
               tone="neutral"
               size="sm"
-              disabled={(selectedIds?.size ?? 0) === 0}
+              disabled={selectedIds.size === 0}
               onClick={() => setShowUnpinDialog(true)}
             >
               일괄 고정 해제

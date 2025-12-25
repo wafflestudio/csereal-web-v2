@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useRevalidator } from 'react-router';
 import { toast } from 'sonner';
 import AlertDialog from '~/components/common/AlertDialog';
 import Button from '~/components/common/Button';
@@ -18,7 +18,7 @@ interface ClubDetailsProps {
 }
 
 export default function ClubDetails({ club, locale }: ClubDetailsProps) {
-  const navigate = useNavigate();
+  const revalidator = useRevalidator();
   const { localizedPath } = useLanguage();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
@@ -40,7 +40,7 @@ export default function ClubDetails({ club, locale }: ClubDetailsProps) {
 
       setShowDeleteDialog(false);
       toast.success('동아리를 삭제했습니다.');
-      navigate(0);
+      revalidator.revalidate();
     } catch {
       toast.error('삭제에 실패했습니다.');
     }

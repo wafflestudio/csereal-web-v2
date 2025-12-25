@@ -22,7 +22,6 @@ const getLocaleRoutes = (locale: Locale) => {
   return [
     route('/', 'routes/main/index.tsx'),
     route('/search', 'routes/search/index.tsx'),
-    route('/.internal', 'routes/internal.tsx'),
     ...prefix('/about', [
       route('/', 'routes/about/index.tsx'),
       route('/overview', 'routes/about/overview/index.tsx'),
@@ -196,5 +195,7 @@ export default [
   layout('routes/layout.tsx', [
     ...getLocaleRoutes('ko'),
     ...prefix('/en', [...getLocaleRoutes('en')]),
+    _route('/admin', 'routes/admin/index.tsx'),
+    _route('/.internal', 'routes/internal.tsx'),
   ]),
 ] satisfies RouteConfig;

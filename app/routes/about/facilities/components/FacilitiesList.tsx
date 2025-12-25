@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useRevalidator } from 'react-router';
 import { toast } from 'sonner';
 import AlertDialog from '~/components/common/AlertDialog';
 import Button from '~/components/common/Button';
@@ -29,7 +29,7 @@ export default function FacilitiesList({
 function FacilitiesRow({ facility }: { facility: Facility }) {
   const { localizedPath } = useLanguage({});
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const navigate = useNavigate();
+  const revalidator = useRevalidator();
 
   const handleDelete = async () => {
     try {
@@ -39,7 +39,7 @@ function FacilitiesRow({ facility }: { facility: Facility }) {
 
       setShowDeleteDialog(false);
       toast.success('시설을 삭제했습니다.');
-      navigate(0);
+      revalidator.revalidate();
     } catch {
       toast.error('삭제에 실패했습니다.');
     }

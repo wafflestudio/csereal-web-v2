@@ -1,6 +1,6 @@
 import { useReducer, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
+import { useRevalidator } from 'react-router';
 import { toast } from 'sonner';
 import AlertDialog from '~/components/common/AlertDialog';
 import Button from '~/components/common/Button';
@@ -17,7 +17,7 @@ interface CompanyTableRowProps {
 
 export function CompanyTableRow({ index, company }: CompanyTableRowProps) {
   const [edit, toggleEdit] = useReducer((x) => !x, false);
-  const navigate = useNavigate();
+  const revalidator = useRevalidator();
 
   const onSubmit = async (content: CareerCompanyFormData) => {
     try {
@@ -29,7 +29,7 @@ export function CompanyTableRow({ index, company }: CompanyTableRowProps) {
 
       toast.success('졸업생 창업 기업을 수정했습니다.');
       toggleEdit();
-      navigate(0);
+      revalidator.revalidate();
     } catch {
       toast.error('수정에 실패했습니다.');
     }
@@ -58,7 +58,7 @@ function CareerCompanyViewer({
 }: CompanyTableRowProps & { toggleEdit: () => void }) {
   const { id, name, url, year } = company;
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const navigate = useNavigate();
+  const revalidator = useRevalidator();
 
   const handleDelete = async () => {
     try {
@@ -69,7 +69,7 @@ function CareerCompanyViewer({
       setShowDeleteDialog(false);
       toast.success('졸업생 창업 기업을 삭제했습니다.');
       toggleEdit();
-      navigate(0);
+      revalidator.revalidate();
     } catch {
       toast.error('삭제에 실패했습니다.');
     }
