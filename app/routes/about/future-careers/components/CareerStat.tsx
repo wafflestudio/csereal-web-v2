@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import Button from '~/components/common/Button';
 import Dropdown from '~/components/common/Dropdown';

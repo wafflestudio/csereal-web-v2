@@ -19,7 +19,7 @@ export interface SimpleResearchLab {
 export interface ResearchLab extends SimpleResearchLab {
   description: string;
   websiteURL: string | null;
-  group: { id: number; name: string };
+  group: { id: number; name: string } | null;
 }
 
 export type ResearchLabWithLanguage = {

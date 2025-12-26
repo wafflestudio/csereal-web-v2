@@ -1,11 +1,13 @@
-const PROD_API_BASE = 'https://cse.snu.ac.kr/api';
-const DEV_API_BASE = 'https://168.107.16.249.nip.io/api';
+// Environment configuration
+export const PHASE = import.meta.env.VITE_PHASE;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-// In dev, route API calls through Vite's proxy to avoid CORS.
-export const BASE_URL = import.meta.env.DEV
+// Phase flags
+export const IS_DEV = PHASE === 'development';
+export const IS_BETA = PHASE === 'beta';
+export const IS_PROD = PHASE === 'production';
+
+// In dev mode, route API calls through Vite's proxy to avoid CORS.
+export const BASE_URL = IS_DEV
   ? 'http://localhost:3000/api'
-  : PROD_API_BASE;
-
-// File URLs (used for image src)
-export const DEV_FILE_BASE_URL = `${DEV_API_BASE}/v1/file`;
-export const PROD_FILE_BASE_URL = `${PROD_API_BASE}/v1/file`;
+  : `${API_BASE_URL}/api`;

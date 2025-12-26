@@ -1,5 +1,3 @@
-'use client';
-
 import type { Route } from '.react-router/types/app/routes/community/notice/+types/index';
 import { useState } from 'react';
 import type { LoaderFunctionArgs } from 'react-router';

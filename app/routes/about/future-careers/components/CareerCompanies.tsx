@@ -1,5 +1,3 @@
-'use client';
-
 import { useReducer } from 'react';
 import { toast } from 'sonner';
 import Button from '~/components/common/Button';

@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import Fieldset from '~/components/common/form/Fieldset';

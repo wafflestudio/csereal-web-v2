@@ -1,5 +1,3 @@
-'use client';
-
 import type { Route } from '.react-router/types/app/routes/people/staff/+types/edit.$id';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';

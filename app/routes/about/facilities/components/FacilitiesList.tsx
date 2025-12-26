@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { useRevalidator } from 'react-router';
 import { toast } from 'sonner';

@@ -1,5 +1,3 @@
-'use client';
-
 import SectionHeader from '~/components/common/SectionHeader';
 import { useLanguage } from '~/hooks/useLanguage';
 import useIsMobile from '~/hooks/useResponsive';

@@ -1,8 +1,10 @@
-import type { Route } from '.react-router/types/app/routes/research/labs/+types/$id';
+import type { Route } from '.react-router/types/app/routes/research/labs/$id/+types/index';
 import type { LoaderFunctionArgs } from 'react-router';
 import { Link } from 'react-router';
+import Button from '~/components/common/Button';
 import CornerFoldedRectangle from '~/components/common/CornerFoldedRectangle';
 import HTMLViewer from '~/components/common/HTMLViewer';
+import LoginVisible from '~/components/common/LoginVisible';
 import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
 import { COLOR_THEME } from '~/constants/color';
@@ -10,8 +12,8 @@ import { useLanguage } from '~/hooks/useLanguage';
 import { useResearchSubNav } from '~/hooks/useSubNav';
 import type { ResearchLabWithLanguage } from '~/types/api/v2/research/labs';
 import { encodeParam, getLocaleFromPathname } from '~/utils/string';
-import PentagonLong from './assets/pentagon_long.svg?react';
-import PentagonShort from './assets/pentagon_short.svg?react';
+import PentagonLong from '../assets/pentagon_long.svg?react';
+import PentagonShort from '../assets/pentagon_short.svg?react';
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
@@ -67,12 +69,28 @@ export default function ResearchLabDetailPage({
       ]}
       subNav={subNav}
     >
-      <StreamLink
-        groupName={lab.group.name}
-        localizedPath={localizedPath}
-        label={t('스트림')}
-      />
-      <div className="mt-6">
+      <LoginVisible allow="ROLE_STAFF">
+        <div className="mb-9 text-right">
+          <Button
+            as="link"
+            to={localizedPath(`/research/labs/${lab.id}/edit`)}
+            variant="outline"
+            tone="neutral"
+            size="md"
+          >
+            편집
+          </Button>
+        </div>
+      </LoginVisible>
+
+      {lab.group && (
+        <StreamLink
+          groupName={lab.group.name}
+          localizedPath={localizedPath}
+          label={t('스트림')}
+        />
+      )}
+      <div className={lab.group ? 'mt-6' : ''}>
         <div className="mx-2 mb-1 flex justify-end sm:hidden">
           {researchLabInfo}
         </div>

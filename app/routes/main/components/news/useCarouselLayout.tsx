@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useState } from 'react';
 import { CARD_GAP_REM, CARD_WIDTH_REM } from './constants';
 

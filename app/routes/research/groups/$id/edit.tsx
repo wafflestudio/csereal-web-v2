@@ -1,6 +1,5 @@
-'use client';
-
-import type { Route } from '.react-router/types/app/routes/research/groups/+types/edit';
+import type { Route } from '.react-router/types/app/routes/research/groups/$id/+types/edit';
+import type { LoaderFunctionArgs } from 'react-router';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import PageLayout from '~/components/layout/PageLayout';
@@ -11,20 +10,15 @@ import { fetchJson, fetchOk } from '~/utils/fetch';
 import { FormData2 } from '~/utils/form';
 import ResearchGroupEditor, {
   type ResearchGroupFormData,
-} from './components/ResearchGroupEditor';
+} from '../components/ResearchGroupEditor';
 
 interface ResearchGroupData {
   ko: ResearchGroup;
   en: ResearchGroup;
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const url = new URL(request.url);
-  const id = url.searchParams.get('id');
-
-  if (!id) {
-    throw new Error('ID is required');
-  }
+export async function loader({ params }: LoaderFunctionArgs) {
+  const id = params.id!;
 
   const data = await fetchJson<ResearchGroupData>(
     `${BASE_URL}/v2/research/${id}`,

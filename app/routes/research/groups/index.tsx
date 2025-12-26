@@ -118,7 +118,7 @@ export default function ResearchGroupsPage({
               </Button>
               <Button
                 as="link"
-                to={localizedPath(`/research/groups/edit?id=${item.id}`)}
+                to={localizedPath(`/research/groups/${item.id}/edit`)}
                 variant="outline"
                 tone="neutral"
                 size="md"

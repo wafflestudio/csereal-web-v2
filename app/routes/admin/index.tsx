@@ -21,7 +21,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   // Get cookies from request to pass to API (required for JSESSIONID)
   const cookie = request.headers.get('cookie');
-  if (!cookie) throw new Error('로그인이 필요합니다.');
+  if (!cookie) return;
 
   const headers: HeadersInit = { Cookie: cookie };
 
@@ -70,23 +70,27 @@ export default function AdminPage({ loaderData }: Route.ComponentProps) {
     >
       <SelectionList items={selectionItems} />
 
-      {loaderData.type === 'slide' ? (
-        <>
-          <SlideDescription />
-          <SlideManagement
-            slides={loaderData.data.slides}
-            total={loaderData.data.total}
-          />
-        </>
-      ) : (
-        <>
-          <ImportantDescription />
-          <ImportantManagement
-            importants={loaderData.data.importants}
-            total={loaderData.data.total}
-          />
-        </>
-      )}
+      {(() => {
+        // TODO: 문구
+        if (!loaderData) return <p>로그인이 필요합니다.</p>;
+        return loaderData.type === 'slide' ? (
+          <>
+            <SlideDescription />
+            <SlideManagement
+              slides={loaderData.data.slides}
+              total={loaderData.data.total}
+            />
+          </>
+        ) : (
+          <>
+            <ImportantDescription />
+            <ImportantManagement
+              importants={loaderData.data.importants}
+              total={loaderData.data.total}
+            />
+          </>
+        );
+      })()}
     </PageLayout>
   );
 }

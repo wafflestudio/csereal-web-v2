@@ -3,9 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "react-router build",
+    "build": "react-router build --mode production",
+    "build:beta": "react-router build --mode beta",
     "dev": "react-router dev",
-    "dev:prod": "VITE_API_TARGET=https://cse.snu.ac.kr react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "prepare": "node .husky/install.mjs"

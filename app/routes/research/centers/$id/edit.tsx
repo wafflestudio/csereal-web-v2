@@ -1,6 +1,5 @@
-'use client';
-
-import type { Route } from '.react-router/types/app/routes/research/centers/+types/edit';
+import type { Route } from '.react-router/types/app/routes/research/centers/$id/+types/edit';
+import type { LoaderFunctionArgs } from 'react-router';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import PageLayout from '~/components/layout/PageLayout';
@@ -11,20 +10,15 @@ import { fetchJson, fetchOk } from '~/utils/fetch';
 import { FormData2 } from '~/utils/form';
 import ResearchCenterEditor, {
   type ResearchCenterFormData,
-} from './components/ResearchCenterEditor';
+} from '../components/ResearchCenterEditor';
 
 interface ResearchCenterData {
   ko: ResearchCenter;
   en: ResearchCenter;
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const url = new URL(request.url);
-  const id = url.searchParams.get('id');
-
-  if (!id) {
-    throw new Error('ID is required');
-  }
+export async function loader({ params }: LoaderFunctionArgs) {
+  const id = params.id!;
 
   const data = await fetchJson<ResearchCenterData>(
     `${BASE_URL}/v2/research/${id}`,

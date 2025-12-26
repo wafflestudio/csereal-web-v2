@@ -111,7 +111,7 @@ export default function ResearchCentersPage({
               <Button
                 as="link"
                 to={localizedPath(
-                  `/research/centers/edit?id=${selectedCenter.id}`,
+                  `/research/centers/${selectedCenter.id}/edit`,
                 )}
                 variant="outline"
                 tone="neutral"

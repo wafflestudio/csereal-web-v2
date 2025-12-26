@@ -1,5 +1,3 @@
-'use client';
-
 import type { Route } from '.react-router/types/app/routes/people/faculty/+types/create';
 import type { LoaderFunctionArgs } from 'react-router';
 import { useNavigate } from 'react-router';

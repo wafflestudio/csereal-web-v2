@@ -1,9 +1,0 @@
-{
-  "feature": "../csereal-web을 여기로 마이그레이션할거야. 대부분의 페이지는 끝났는데 이제 관리자 관련 페이지들...",
-  "description": "../csereal-web을 여기로 마이그레이션할거야. 대부분의 페이지는 끝났는데 이제 관리자 관련 페이지들을 마이그레이션해야돼.",
-  "created_at": "2025-12-24T08:55:47.376Z",
-  "updated_at": "2025-12-24T08:59:43.535Z",
-  "status": "human_review",
-  "phases": [],
-  "planStatus": "review"
-}

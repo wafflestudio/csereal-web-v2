@@ -1,5 +1,7 @@
 import type { Route } from '.react-router/types/app/routes/research/labs/+types/index';
 import type { LoaderFunctionArgs } from 'react-router';
+import Button from '~/components/common/Button';
+import LoginVisible from '~/components/common/LoginVisible';
 import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
@@ -48,6 +50,20 @@ export default function ResearchLabsPage({
       ]}
       subNav={subNav}
     >
+      <LoginVisible allow="ROLE_STAFF">
+        <div className="mb-9 text-right">
+          <Button
+            as="link"
+            to={localizedPath('/research/labs/create')}
+            variant="solid"
+            tone="brand"
+            size="md"
+          >
+            연구실 추가
+          </Button>
+        </div>
+      </LoginVisible>
+
       <div className="sm:border-y sm:border-neutral-200">
         <h4 className="hidden h-10 items-center gap-2 whitespace-nowrap bg-neutral-100 px-2 text-sm font-medium tracking-[0.02em] sm:flex">
           <span className={LAB_ROW_ITEM_WIDTH.name}>{t('연구실')}</span>

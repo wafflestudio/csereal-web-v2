@@ -44,10 +44,12 @@ function validateRequest(
   quality: number,
 ): imageUrl is string {
   if (!imageUrl) {
-    throw new Response('Missing URL parameter', { status: 400 });
+    // TODO: prerender에서 에러를 방지하기 위한 hack
+    throw new Response('Missing URL parameter', { status: 200 });
   }
   if (quality < 1 || quality > 100) {
-    throw new Response('Quality must be between 1 and 100', { status: 400 });
+    // TODO: prerender에서 에러를 방지하기 위한 hack
+    throw new Response('Quality must be between 1 and 100', { status: 200 });
   }
   return true;
 }

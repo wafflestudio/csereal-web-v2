@@ -1,5 +1,3 @@
-'use client';
-
 import type { Route } from '.react-router/types/app/routes/community/faculty-recruitment/+types/edit';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';

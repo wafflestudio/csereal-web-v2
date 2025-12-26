@@ -1,5 +1,3 @@
-'use client';
-
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import PageLayout from '~/components/layout/PageLayout';

@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { IS_PROD } from '~/constants/api';
 import { navigationTree } from '~/constants/navigation';
 import { useLanguage } from '~/hooks/useLanguage';
 import { isAncestorNavItem, useNavItem } from '~/hooks/useNavItem';
@@ -44,13 +45,18 @@ function Logo() {
   const homePath = localizedPath('/');
 
   return (
-    <Link to={homePath} aria-label={t('메인으로 이동')}>
+    <Link to={homePath} aria-label={t('메인으로 이동')} className="relative">
       <SnuLogo
-        className="fill-white"
+        className={!IS_PROD ? 'fill-main-orange' : 'fill-white'}
         width="56"
         height="58"
         viewBox="0 0 45 47"
       />
+      {!IS_PROD && (
+        <div className="text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-mono font-bold">
+          beta
+        </div>
+      )}
     </Link>
   );
 }

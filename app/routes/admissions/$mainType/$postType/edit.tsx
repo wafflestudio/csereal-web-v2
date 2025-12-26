@@ -1,5 +1,3 @@
-'use client';
-
 import type { Route } from '.react-router/types/app/routes/admissions/$mainType/$postType/+types/edit';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';

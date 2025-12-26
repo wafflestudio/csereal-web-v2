@@ -1,5 +1,3 @@
-'use client';
-
 import type { Route } from '.react-router/types/app/routes/about/future-careers/description/+types/edit';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
