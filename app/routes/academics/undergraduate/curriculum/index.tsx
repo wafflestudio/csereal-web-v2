@@ -1,4 +1,4 @@
-import type { Route } from '.react-router/types/app/routes/academics/undergraduate/+types/curriculum';
+import type { Route } from '.react-router/types/app/routes/academics/undergraduate/curriculum/+types/index';
 import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';

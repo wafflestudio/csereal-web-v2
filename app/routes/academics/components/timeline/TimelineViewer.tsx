@@ -1,8 +1,14 @@
 import { useReducer, useState } from 'react';
+import { Link, useLocation, useRevalidator } from 'react-router';
+import { toast } from 'sonner';
+import AlertDialog from '~/components/common/AlertDialog';
 import Attachments from '~/components/common/Attachments';
+import Button from '~/components/common/Button';
 import HTMLViewer from '~/components/common/HTMLViewer';
+import LoginVisible from '~/components/common/LoginVisible';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { TimelineContent } from '~/types/api/v2/academics';
+import { fetchOk } from '~/utils/fetch';
 import Timeline from './Timeline';
 
 interface TimelineViewerProps<T> {
@@ -19,6 +25,7 @@ export default function TimelineViewer<T extends TimelineContent>({
   const { t, tUnsafe } = useLanguage({
     이하: 'or earlier',
     '내용은 없습니다.': 'No content available.',
+    '연도 추가': 'Add Year',
   });
   const [selectedYear, setSelectedYear] = useState(contents[0]?.year ?? 0);
   const timeLineYears = contents
@@ -31,6 +38,8 @@ export default function TimelineViewer<T extends TimelineContent>({
     contents,
     tUnsafe,
   );
+  const location = useLocation();
+  const pathname = location.pathname;
 
   if (contents.length === 0) {
     return null;
@@ -38,6 +47,17 @@ export default function TimelineViewer<T extends TimelineContent>({
 
   return (
     <>
+      <LoginVisible allow="ROLE_STAFF">
+        <Link
+          to={`${pathname}/create`}
+          className="mb-7 ml-0.5 flex h-[30px] w-fit items-center rounded-2xl border border-main-orange pl-0.5 pr-2 pt-px text-md text-main-orange duration-200 hover:bg-main-orange hover:text-white"
+        >
+          <span className="material-symbols-outlined text-xl font-light">
+            add
+          </span>
+          <span className="font-semibold">{t('연도 추가')}</span>
+        </Link>
+      </LoginVisible>
       <Timeline
         times={timeLineYears}
         selectedTime={selectedYear}
@@ -49,6 +69,8 @@ export default function TimelineViewer<T extends TimelineContent>({
             description={selectedContents[0].description}
             title={`${selectedContents[0].year}${title.unit} ${title.text}`}
             attachments={selectedContents[0].attachments}
+            year={selectedYear}
+            pathname={pathname}
           />
         ) : (
           selectedContents.map((change, i) => {
@@ -59,6 +81,8 @@ export default function TimelineViewer<T extends TimelineContent>({
                 expandDefault={i === 0}
                 title={`${change.year}${title.unit}${isLast ? ` ${t('이하')}` : ''} ${title.text}`}
                 attachments={change.attachments}
+                year={change.year}
+                pathname={pathname}
                 key={change.year}
               />
             );
@@ -69,14 +93,71 @@ export default function TimelineViewer<T extends TimelineContent>({
   );
 }
 
+function ActionButtons({ year, pathname }: { year: number; pathname: string }) {
+  const { t } = useLanguage({
+    삭제: 'Delete',
+    편집: 'Edit',
+    '삭제하시겠습니까?': 'Are you sure you want to delete?',
+  });
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const revalidator = useRevalidator();
+
+  const handleDelete = async () => {
+    try {
+      await fetchOk(`/v2${pathname}/${year}`, { method: 'DELETE' });
+      setShowDeleteDialog(false);
+      toast.success('삭제에 성공했습니다.');
+      revalidator.revalidate();
+    } catch {
+      toast.error('삭제에 실패했습니다.');
+    }
+  };
+
+  return (
+    <>
+      <LoginVisible allow="ROLE_STAFF">
+        <div className="mt-7 flex justify-end gap-3">
+          <Button
+            variant="outline"
+            tone="neutral"
+            onClick={() => setShowDeleteDialog(true)}
+          >
+            {t('삭제')}
+          </Button>
+          <Button
+            variant="outline"
+            tone="neutral"
+            as="link"
+            to={`${pathname}/edit/${year}`}
+          >
+            {t('편집')}
+          </Button>
+        </div>
+      </LoginVisible>
+
+      <AlertDialog
+        open={showDeleteDialog}
+        onOpenChange={setShowDeleteDialog}
+        description={t('삭제하시겠습니까?')}
+        confirmText={t('삭제')}
+        onConfirm={handleDelete}
+      />
+    </>
+  );
+}
+
 function ContentViewer({
   description,
   title,
   attachments,
+  year,
+  pathname,
 }: {
   description: string;
   title: string;
   attachments: TimelineContent['attachments'];
+  year: number;
+  pathname: string;
 }) {
   return (
     <div className="mb-5">
@@ -85,6 +166,7 @@ function ContentViewer({
       <div className="rounded-sm bg-neutral-50 p-5">
         <HTMLViewer html={description} />
       </div>
+      <ActionButtons year={year} pathname={pathname} />
     </div>
   );
 }
@@ -94,11 +176,15 @@ function TogglableContentViewer({
   expandDefault = false,
   title,
   attachments,
+  year,
+  pathname,
 }: {
   description: string;
   expandDefault?: boolean;
   title: string;
   attachments: TimelineContent['attachments'];
+  year: number;
+  pathname: string;
 }) {
   const [isExpanded, toggleContent] = useReducer((x) => !x, expandDefault);
 
@@ -120,6 +206,7 @@ function TogglableContentViewer({
           <div className="rounded-sm bg-neutral-50 p-5">
             <HTMLViewer html={description} />
           </div>
+          <ActionButtons year={year} pathname={pathname} />
         </>
       )}
     </div>

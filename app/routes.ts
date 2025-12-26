@@ -129,7 +129,18 @@ const getLocaleRoutes = (locale: Locale) => {
         route('/guide', 'routes/academics/undergraduate/guide/index.tsx'),
         route('/guide/edit', 'routes/academics/undergraduate/guide/edit.tsx'),
         route('/courses', 'routes/academics/undergraduate/courses.tsx'),
-        route('/curriculum', 'routes/academics/undergraduate/curriculum.tsx'),
+        route(
+          '/curriculum',
+          'routes/academics/undergraduate/curriculum/index.tsx',
+        ),
+        route(
+          '/curriculum/create',
+          'routes/academics/undergraduate/curriculum/create.tsx',
+        ),
+        route(
+          '/curriculum/edit/:year',
+          'routes/academics/undergraduate/curriculum/edit.$year.tsx',
+        ),
         route(
           '/general-studies-requirements',
           'routes/academics/undergraduate/general-studies-requirements.tsx',

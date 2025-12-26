@@ -9,7 +9,7 @@ import { BASE_URL } from '~/constants/api';
 import type { Guide } from '~/types/api/v2/academics/guide';
 import type { EditorFile } from '~/types/form';
 import { fetchJson, fetchOk } from '~/utils/fetch';
-import { contentToFormData, getAttachmentDeleteIds } from '~/utils/formData';
+import { FormData2, getDeleteIds } from '~/utils/form';
 
 interface GuideFormData {
   description: string;
@@ -23,25 +23,33 @@ export async function loader() {
 export default function GraduateGuideEditPage({
   loaderData,
 }: Route.ComponentProps) {
+  const defaultValues = {
+    description: loaderData.description,
+    file: loaderData.attachments.map((file) => ({
+      type: 'UPLOADED_FILE' as const,
+      file,
+    })),
+  };
+
   const methods = useForm<GuideFormData>({
-    defaultValues: {
-      description: loaderData.description,
-      file: loaderData.attachments.map((file) => ({
-        type: 'UPLOADED_FILE' as const,
-        file,
-      })),
-    },
+    defaultValues,
     shouldFocusError: false,
   });
 
   const navigate = useNavigate();
 
   const onSubmit = async (data: GuideFormData) => {
-    const deleteIds = getAttachmentDeleteIds(data.file, loaderData.attachments);
-    const formData = contentToFormData('EDIT', {
-      requestObject: { description: data.description, deleteIds },
-      attachments: data.file,
+    const deleteIds = getDeleteIds({
+      prev: defaultValues.file,
+      cur: data.file,
     });
+
+    const formData = new FormData2();
+    formData.appendJson('request', {
+      description: data.description,
+      deleteIds,
+    });
+    formData.appendIfLocal('newAttachments', data.file);
 
     try {
       await fetchOk(`${BASE_URL}/v2/academics/graduate/guide`, {

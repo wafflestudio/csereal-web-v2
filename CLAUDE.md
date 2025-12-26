@@ -365,6 +365,15 @@ Fieldset은 spacing과 titleSpacing을 variant로 관리:
   - `useForm`에 항상 `shouldFocusError: false` 설정
   - required 필드는 반드시 `options={{ required: { value: true, message: '메시지' } }}` 형식으로 에러 메시지 포함
 
+## 중요: 편집 페이지 마이그레이션 시 주의사항
+
+**편집/생성 페이지를 마이그레이션할 때는 반드시 조회 페이지의 편집/삭제/생성 버튼도 함께 마이그레이션해야 함**
+
+- 편집 페이지만 만들고 버튼을 빼먹으면 편집 페이지로 갈 수 없어서 사용 불가
+- 기존 프로젝트의 조회 페이지에서 편집/삭제/추가 버튼 관련 코드를 찾아서 함께 마이그레이션
+- `LoginVisible`로 권한 체크 (대부분 `allow="ROLE_STAFF"`)
+- 삭제 기능이 있으면 `AlertDialog`로 확인 모달도 함께 구현
+
 ## 공용 컴포넌트 가이드 (기존 프로젝트 기준)
 
 ### 공용화 기준
