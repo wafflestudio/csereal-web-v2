@@ -1,11 +1,11 @@
 import type { Route } from '.react-router/types/app/routes/about/+types/greetings';
 import type { LoaderFunctionArgs } from 'react-router';
-import Button from '~/components/ui/Button';
+import LoginVisible from '~/components/feature/auth/LoginVisible';
 import ContentSection from '~/components/feature/content/ContentSection';
+import PageLayout from '~/components/layout/PageLayout';
+import Button from '~/components/ui/Button';
 import HTMLViewer from '~/components/ui/HTMLViewer';
 import Image from '~/components/ui/Image';
-import LoginVisible from '~/components/feature/auth/LoginVisible';
-import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useAboutSubNav } from '~/hooks/useSubNav';
@@ -49,23 +49,22 @@ export default function GreetingsPage({ loaderData }: Route.ComponentProps) {
             </Button>
           </div>
         </LoginVisible>
-        <GreetingsContent data={loaderData} />
+        <div className="flex flex-col-reverse items-start gap-6 sm:flex-row sm:gap-10">
+          <div className="sm:w-100 sm:grow">
+            <HTMLViewer html={loaderData.description} />
+          </div>
+          {loaderData.imageURL && (
+            <div>
+              <Image
+                src={loaderData.imageURL}
+                alt="학부장"
+                width={212}
+                height={280}
+              />
+            </div>
+          )}
+        </div>
       </ContentSection>
     </PageLayout>
-  );
-}
-
-function GreetingsContent({ data }: { data: AboutContent }) {
-  return (
-    <div className="flex flex-col-reverse items-start gap-6 sm:flex-row sm:gap-10">
-      <div className="sm:w-100 sm:grow">
-        <HTMLViewer html={data.description} />
-      </div>
-      {data.imageURL && (
-        <div>
-          <Image src={data.imageURL} alt="학부장" width={212} height={280} />
-        </div>
-      )}
-    </div>
   );
 }

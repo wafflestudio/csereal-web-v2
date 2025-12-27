@@ -50,7 +50,7 @@ tests/
 **중요:** 타임스탬프는 **테스트 시작 시 한 번만 생성**하여 모든 데이터에서 공유합니다.
 
 ```typescript
-// ✅ 좋은 예: 타임스탬프를 한 번만 생성
+// ✅ 좋은 예: 타임스탬프를 한 번만 생성하여 모든 데이터에서 공유
 const dateTimeString = getKoreanDateTime();
 const koText = `Playwright KO ${dateTimeString}`;
 const { imagePath } = await createTestImage(testInfo, dateTimeString);
@@ -109,6 +109,7 @@ fillHTMLEditor(page, { ko, en })  // 언어 전환 + 입력 동시 수행
 ```
 
 **제공하는 함수들:**
+- `fillTextInput(page, fieldName, content)` - 현재 언어의 텍스트 필드에 내용 입력
 - `fillHTMLEditor(page, content)` - 현재 언어의 에디터에 내용 입력
 - `switchEditorLanguage(page, lang)` - 폼 에디터의 한/영 언어 전환 (300ms 대기 포함)
 - `uploadImage(page, imagePath)` - Form.Image 업로드
@@ -161,6 +162,108 @@ await page.goto('http://localhost:3000/about/overview');
 - 환경별 baseURL 설정 가능
 
 ## 테스트 작성 패턴
+
+### 테스트 설명 언어
+**모든 테스트 설명(test description)은 한글로 작성합니다.**
+
+```typescript
+// ✅ 좋은 예: 한글 테스트 설명
+test('학부 소개 편집 및 한/영 내용 검증', async ({ page }, testInfo) => {
+  // ...
+});
+
+// ❌ 나쁜 예: 영문 테스트 설명
+test('edit about overview and verify ko/en content', async ({ page }, testInfo) => {
+  // ...
+});
+```
+
+**이유:**
+- 한국어 프로젝트이므로 테스트 리포트도 한글로 읽기 쉬워야 함
+- 테스트 실패 시 에러 메시지를 바로 이해할 수 있음
+- 팀원 간 커뮤니케이션 효율성 향상
+
+### 테스트 플로우 규칙
+페이지 기능에 따라 테스트 플로우를 다르게 작성합니다.
+
+#### 1. 편집만 가능한 페이지
+편집 기능만 테스트합니다.
+
+```typescript
+// 예: overview, greetings, history, contact 등
+test('학부 소개 편집 및 한/영 내용 검증', async ({ page }, testInfo) => {
+  // 1. 편집 페이지로 이동
+  // 2. 폼 입력
+  // 3. 제출
+  // 4. 검증 - 한글/영문
+});
+```
+
+#### 2. 추가 기능이 있는 페이지
+**추가 → 검증 → 편집 → 검증 → 삭제 → 검증** 순서로 전체 플로우를 테스트합니다.
+
+```typescript
+// 예: student-clubs, facilities 등
+test('학생 동아리 추가->편집->삭제 플로우 검증', async ({ page }, testInfo) => {
+  // === 1단계: 추가 ===
+  // 새 항목 생성
+
+  // === 2단계: 추가된 항목 검증 ===
+  // 한글/영문 페이지에서 내용 확인
+
+  // === 3단계: 편집 ===
+  // 추가한 항목 수정
+
+  // === 4단계: 편집된 항목 검증 ===
+  // 한글/영문 페이지에서 수정된 내용 확인
+
+  // === 5단계: 삭제 ===
+  // 항목 삭제 (AlertDialog 처리 포함)
+
+  // === 6단계: 삭제 검증 ===
+  // 삭제된 항목이 목록에 없는지 확인
+});
+```
+
+**중요:**
+- 추가 기능이 있으면 **반드시 편집과 삭제도 함께 테스트**해야 함
+- 각 단계마다 한글/영문 페이지 모두 검증
+- 삭제 시 AlertDialog가 있는 경우 확인 버튼 클릭까지 처리
+
+### 복합 페이지의 모든 편집 기능 테스트하기
+
+**하나의 페이지에 여러 편집 기능이 있는 경우, 모든 편집 기능을 별도 테스트로 작성해야 합니다.**
+
+예: `/about/future-careers` 페이지는 3개의 독립적인 편집 기능이 있음
+1. 졸업생 진로 본문 (description) - 별도 편집 페이지
+2. 졸업생 진로 현황 (stat) - 별도 편집 페이지
+3. 졸업생 창업 기업 (companies) - 인라인 편집 (추가/편집/삭제)
+
+**올바른 테스트 작성 방법:**
+```typescript
+// future-careers.spec.ts 파일에 3개의 별도 테스트 작성
+test('졸업생 진로 본문 편집 및 한/영 내용 검증', async ({ page }) => {
+  // description 편집 테스트
+});
+
+test('졸업생 진로 현황 편집 및 검증', async ({ page }) => {
+  // stat 편집 테스트
+});
+
+test('졸업생 창업 기업 추가->편집->삭제 플로우 검증', async ({ page }) => {
+  // companies 추가/편집/삭제 테스트
+});
+```
+
+**편집 기능 찾는 방법:**
+1. 페이지에서 '편집' 버튼이 여러 개 있는지 확인
+2. 컴포넌트 내부에 인라인 편집 기능이 있는지 확인 (예: 기업 추가, 항목 편집 버튼)
+3. 별도 섹션마다 독립적인 데이터를 관리하는지 확인
+
+**놓치기 쉬운 경우:**
+- 같은 페이지에 여러 편집 버튼이 있는데 하나만 테스트하는 경우
+- 테이블/리스트 형태의 인라인 편집 기능을 놓치는 경우
+- 탭이나 섹션으로 나뉘어진 편집 기능을 놓치는 경우
 
 ### 기본 구조
 모든 편집 테스트는 다음 흐름을 따릅니다:
@@ -231,13 +334,13 @@ page.locator('label[for="en"]').click()
 Form.File의 기존 파일을 삭제할 때 주의사항:
 
 ```typescript
-// ✅ 올바른 방법: 항상 첫 번째 항목 삭제 (리스트가 재정렬되므로)
+// ✅ 올바른 방법: 항상 첫 번째 항목 삭제 (삭제 시마다 리스트가 재정렬되므로)
 for (let i = 0; i < fileCount; i++) {
   const deleteButton = fileFieldset.locator('ol li button').first();
   await deleteButton.click();
 }
 
-// ❌ 잘못된 방법: nth(i) 사용 시 오류
+// ❌ 잘못된 방법: nth(i) 사용 시 인덱스 오류 발생
 for (let i = 0; i < fileCount; i++) {
   await fileFieldset.locator('ol li button').nth(i).click(); // 동작 안 함
 }

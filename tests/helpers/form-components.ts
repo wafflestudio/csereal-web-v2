@@ -1,6 +1,19 @@
 import { expect, type Page } from '@playwright/test';
 
 /**
+ * 텍스트 입력 (Form.Text)
+ * 현재 선택된 언어의 텍스트 필드에 내용을 입력합니다.
+ */
+export async function fillTextInput(
+  page: Page,
+  fieldName: string,
+  content: string,
+) {
+  const input = page.locator(`input[name="${fieldName}"]`);
+  await input.fill(content);
+}
+
+/**
  * HTML 에디터 (suneditor)에 내용 입력
  * 현재 선택된 언어의 에디터에 내용을 입력합니다.
  */

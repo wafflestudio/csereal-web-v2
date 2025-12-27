@@ -130,9 +130,11 @@ export default function AboutEdit({ loaderData }: Route.ComponentProps) {
             <Form.Image name="image" />
           </Fieldset.Image>
 
-          <Fieldset.File>
-            <Form.File name="files" />
-          </Fieldset.File>
+          {type === 'overview' && (
+            <Fieldset.File>
+              <Form.File name="files" />
+            </Fieldset.File>
+          )}
 
           <Form.Action onCancel={onCancel} onSubmit={onSubmit} />
         </Form>
