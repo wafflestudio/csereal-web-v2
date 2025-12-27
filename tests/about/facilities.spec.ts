@@ -64,7 +64,7 @@ test('시설 추가->편집->삭제 플로우 검증', async ({ page }, testInfo
   await expect(page.getByText(koLocation)).toBeVisible();
 
   // === 3단계: 추가된 시설 검증 (영문) ===
-  await switchPageLanguage(page, 'en');
+  await switchPageLanguage(page, 'en', '/about/facilities');
   await expect(page.getByText(enName)).toBeVisible();
   await expect(page.getByText(enDescription)).toBeVisible();
   await expect(page.getByText(enLocation)).toBeVisible();
@@ -90,7 +90,7 @@ test('시설 추가->편집->삭제 플로우 검증', async ({ page }, testInfo
   await expect(page.getByText(koDescriptionEdited)).toBeVisible();
 
   // === 6단계: 편집된 시설 검증 (영문) ===
-  await switchPageLanguage(page, 'en');
+  await switchPageLanguage(page, 'en', '/about/facilities');
   await expect(page.getByText(enNameEdited)).toBeVisible();
   await expect(page.getByText(enDescriptionEdited)).toBeVisible();
 

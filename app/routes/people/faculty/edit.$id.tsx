@@ -4,7 +4,6 @@ import { toast } from 'sonner';
 
 import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
-import { useLanguage } from '~/hooks/useLanguage';
 import FacultyEditor, {
   type FacultyFormData,
 } from '~/routes/people/components/FacultyEditor';
@@ -31,7 +30,6 @@ export async function loader({ params }: Route.LoaderArgs) {
 export default function FacultyEdit({ loaderData }: Route.ComponentProps) {
   const { faculty, labs } = loaderData;
   const navigate = useNavigate();
-  const { locale } = useLanguage({});
 
   const defaultValues = {
     status: faculty.ko.status,
@@ -75,7 +73,7 @@ export default function FacultyEdit({ loaderData }: Route.ComponentProps) {
         content.status === 'INACTIVE'
           ? '/people/emeritus-faculty'
           : '/people/faculty';
-      navigate(`/${locale}${path}/${faculty[locale].id}`);
+      navigate(`${path}/${faculty.ko.id}`);
     } catch {
       toast.error('수정에 실패했습니다.');
     }
@@ -91,7 +89,7 @@ export default function FacultyEdit({ loaderData }: Route.ComponentProps) {
       );
 
       toast.success('교수진을 삭제했습니다.');
-      navigate(`/${locale}/people/faculty`);
+      navigate('/people/faculty');
     } catch {
       toast.error('삭제에 실패했습니다.');
     }

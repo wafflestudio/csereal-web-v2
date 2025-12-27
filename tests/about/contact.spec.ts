@@ -41,6 +41,6 @@ test('연락처 편집 및 한/영 내용 검증', async ({ page }, testInfo) =>
   await expect(page.getByText(koText)).toBeVisible();
 
   // 6. 검증 - 영문 페이지
-  await switchPageLanguage(page, 'en');
+  await switchPageLanguage(page, 'en', '/about/contact');
   await expect(page.getByText(enText)).toBeVisible();
 });

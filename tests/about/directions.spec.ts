@@ -35,6 +35,6 @@ test('찾아오는 길 편집 및 한/영 내용 검증', async ({ page }) => {
   await expect(page.getByText(koText)).toBeVisible();
 
   // 6. 검증 - 영문 페이지
-  await switchPageLanguage(page, 'en');
+  await switchPageLanguage(page, 'en', '/about/directions');
   await expect(page.getByText(enText)).toBeVisible();
 });

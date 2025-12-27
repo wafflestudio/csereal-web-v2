@@ -50,7 +50,7 @@ test('학생 동아리 추가->편집->삭제 플로우 검증', async ({ page }
   await expect(page.getByText(koDescription)).toBeVisible();
 
   // === 3단계: 추가된 동아리 검증 (영문) ===
-  await switchPageLanguage(page, 'en');
+  await switchPageLanguage(page, 'en', '/about/student-clubs');
   await page.getByRole('link', { name: enTitle }).click();
   await expect(page.getByText(enDescription)).toBeVisible();
 
@@ -75,7 +75,7 @@ test('학생 동아리 추가->편집->삭제 플로우 검증', async ({ page }
   await expect(page.getByText(koDescriptionEdited)).toBeVisible();
 
   // === 6단계: 편집된 동아리 검증 (영문) ===
-  await switchPageLanguage(page, 'en');
+  await switchPageLanguage(page, 'en', '/about/student-clubs');
   await page.getByRole('link', { name: enTitleEdited }).click();
   await expect(page.getByText(enDescriptionEdited)).toBeVisible();
 

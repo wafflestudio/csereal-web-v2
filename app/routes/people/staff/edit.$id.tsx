@@ -4,7 +4,6 @@ import { toast } from 'sonner';
 
 import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
-import { useLanguage } from '~/hooks/useLanguage';
 import StaffEditor, {
   type StaffFormData,
 } from '~/routes/people/components/StaffEditor';
@@ -25,7 +24,6 @@ export async function loader({ params }: Route.LoaderArgs) {
 export default function StaffEdit({ loaderData }: Route.ComponentProps) {
   const { staff } = loaderData;
   const navigate = useNavigate();
-  const { locale } = useLanguage({});
 
   const defaultValues = {
     ko: staff.ko,
@@ -50,7 +48,7 @@ export default function StaffEdit({ loaderData }: Route.ComponentProps) {
       });
 
       toast.success('행정직원을 수정했습니다.');
-      navigate(`/${locale}/people/staff/${staff[locale].id}`);
+      navigate(`/people/staff/${staff.ko.id}`);
     } catch {
       toast.error('수정에 실패했습니다.');
     }
@@ -63,7 +61,7 @@ export default function StaffEdit({ loaderData }: Route.ComponentProps) {
       });
 
       toast.success('행정직원을 삭제했습니다.');
-      navigate(`/${locale}/people/staff`);
+      navigate('/people/staff');
     } catch {
       toast.error('삭제에 실패했습니다.');
     }

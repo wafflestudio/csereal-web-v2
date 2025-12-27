@@ -41,6 +41,6 @@ test('학부장 인사말 편집 및 한/영 내용 검증', async ({ page }, te
   await expect(page.getByText(koText)).toBeVisible();
 
   // 6. 검증 - 영문 페이지
-  await switchPageLanguage(page, 'en');
+  await switchPageLanguage(page, 'en', '/about/greetings');
   await expect(page.getByText(enText)).toBeVisible();
 });
