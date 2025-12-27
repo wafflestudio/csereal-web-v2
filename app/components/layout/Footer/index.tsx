@@ -70,7 +70,6 @@ function LinkGroup({
         className={`${itemColor} flex flex-col gap-2.5 text-sm font-light sm:font-normal`}
       >
         {links.map((link, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: 고정 값임
           <li key={i}>
             <Link to={link.href} className="whitespace-nowrap">
               {t(link.title)}

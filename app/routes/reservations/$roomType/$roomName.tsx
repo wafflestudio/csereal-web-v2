@@ -18,7 +18,7 @@ import {
   formatDateParam,
   getStartOfWeek,
   parseDateParam,
-} from '~/routes/reservations/utils/date';
+} from '~/utils/reservation';
 
 export async function loader({ params, request }: Route.LoaderArgs) {
   const roomId = roomNameToId[params.roomName];
@@ -68,11 +68,13 @@ export default function RoomReservationPage({
         reservations: mobileReservations,
         columnCount: 3,
         startDate: dayjs(selectedDate),
+        roomId,
       }
     : {
         reservations: desktopReservations,
         columnCount: 7,
         startDate: getStartOfWeek(dayjs(selectedDate)),
+        roomId,
       };
 
   const isStaffOnlyRoom = STAFF_ONLY_ROOM_ID.includes(roomId);

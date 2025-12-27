@@ -1,9 +1,6 @@
 import dayjs from 'dayjs';
 import { useSearchParams } from 'react-router';
-import {
-  formatDateParam,
-  parseDateParam,
-} from '~/routes/reservations/utils/date';
+import { formatDateParam, parseDateParam } from '~/utils/reservation';
 
 export default function useSelectedDate() {
   const [searchParams, setSearchParams] = useSearchParams();

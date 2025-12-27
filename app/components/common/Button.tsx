@@ -174,13 +174,18 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     children,
   } = props;
 
-  const className = getButtonClass({
-    variant,
-    tone,
-    size,
-    fullWidth,
-    selected,
-  });
+  const className = clsx(
+    getButtonClass({
+      variant,
+      tone,
+      size,
+      fullWidth,
+      selected,
+    }),
+    props.as === 'button' || props.as === undefined
+      ? 'disabled:cursor-not-allowed disabled:opacity-40'
+      : '',
+  );
 
   const content = (
     <>

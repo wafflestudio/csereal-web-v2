@@ -4,18 +4,25 @@ import {
   type DetailedHTMLProps,
   useReducer,
   useRef,
+  useState,
 } from 'react';
+import Button from '~/components/common/Button';
 import Calendar from '~/components/common/Calendar';
+import LoginVisible from '~/components/common/LoginVisible';
 import { useClickOutside } from '~/hooks/useClickOutside';
 import useSelectedDate from '~/routes/reservations/hooks/useSelectedDate';
+import AddReservationModal from './AddReservationModal';
 
 export default function CalendarToolbar({
   columnCount,
+  roomId,
 }: {
   columnCount: number;
+  roomId: number;
 }) {
   const { selectedDate } = useSelectedDate();
   const todayButtonVisible = !dayjs().isSame(selectedDate, 'day');
+  const [showAddModal, setShowAddModal] = useState(false);
 
   return (
     <div className="mb-6 flex h-7.5 items-stretch justify-between">
@@ -31,6 +38,21 @@ export default function CalendarToolbar({
         />
         {todayButtonVisible && <TodayButton />}
       </div>
+      <LoginVisible allow={['ROLE_STAFF', 'ROLE_RESERVATION']}>
+        <Button
+          variant="solid"
+          tone="brand"
+          size="md"
+          onClick={() => setShowAddModal(true)}
+        >
+          예약하기
+        </Button>
+      </LoginVisible>
+      <AddReservationModal
+        roomId={roomId}
+        open={showAddModal}
+        onOpenChange={setShowAddModal}
+      />
     </div>
   );
 }

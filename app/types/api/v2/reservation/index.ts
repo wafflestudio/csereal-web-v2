@@ -20,3 +20,16 @@ export interface Reservation {
   contactEmail: string | null;
   contactPhone: string | null;
 }
+
+export interface ReservationPostBody {
+  roomId: number;
+  startTime: string;
+  endTime: string;
+  recurringWeeks: number;
+  title: string;
+  contactEmail: string;
+  contactPhone: string;
+  professor: string;
+  purpose: string;
+  agreed: boolean;
+}

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import dayjs from 'dayjs';
 import { useReducer, useRef } from 'react';
 import { useController } from 'react-hook-form';
@@ -7,9 +8,20 @@ import { useClickOutside } from '~/hooks/useClickOutside';
 interface DateProps {
   name: string;
   hideTime?: boolean;
+  onSelect?: (date: Date) => void;
+  buttonClassName?: string;
+  calendarClassName?: string;
+  disablePast?: boolean;
 }
 
-export default function DatePicker({ name, hideTime = false }: DateProps) {
+export default function DatePicker({
+  name,
+  hideTime = false,
+  onSelect,
+  buttonClassName,
+  calendarClassName,
+  disablePast = false,
+}: DateProps) {
   const {
     field: { value, onChange },
   } = useController({ name });
@@ -36,12 +48,23 @@ export default function DatePicker({ name, hideTime = false }: DateProps) {
     return `${hours}:${minutes}`;
   };
 
+  const disabled = disablePast
+    ? (() => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return { before: today };
+      })()
+    : undefined;
+
   return (
     <div className="flex items-center gap-2">
       <div className="relative">
         <button
           type="button"
-          className="flex h-7.5 items-center gap-2 rounded-sm border border-neutral-300 bg-white px-2.5 text-sm hover:bg-neutral-50"
+          className={clsx(
+            'flex h-7.5 items-center gap-2 rounded-sm border border-neutral-300 bg-white px-2.5 text-sm hover:bg-neutral-50',
+            buttonClassName,
+          )}
           onClick={toggleCalendar}
         >
           <span className="material-symbols-rounded text-sm">
@@ -51,13 +74,15 @@ export default function DatePicker({ name, hideTime = false }: DateProps) {
         </button>
         {showCalendar && (
           <div className="relative" ref={calendarRef}>
-            <div className="absolute top-2 z-10">
+            <div className={clsx('absolute top-2 z-10', calendarClassName)}>
               <Calendar
                 selected={date}
+                disabled={disabled}
                 onSelect={(selectedDate) => {
                   const newDate = new Date(selectedDate);
                   newDate.setHours(date.getHours(), date.getMinutes());
                   onChange(newDate);
+                  onSelect?.(newDate);
                   toggleCalendar();
                 }}
               />
