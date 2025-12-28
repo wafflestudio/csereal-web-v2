@@ -1,6 +1,7 @@
-import Button from '~/components/ui/Button';
 import LoginVisible from '~/components/feature/auth/LoginVisible';
 import HeaderSearchBar from '~/components/layout/Header/HeaderSearchBar';
+import Button from '~/components/ui/Button';
+import { IS_BETA, IS_DEV } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useStore } from '~/store';
 
@@ -28,7 +29,7 @@ export default function HeaderRight() {
           <Divider />
         </LoginVisible>
 
-        {import.meta.env.DEV ? <DevLogin /> : <ProdLogin t={t} />}
+        {IS_DEV || IS_BETA ? <DevLogin /> : <ProdLogin t={t} />}
 
         <Divider />
 

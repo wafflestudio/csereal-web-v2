@@ -41,8 +41,6 @@ export const useStore = create<Store>()((set) => ({
     window.location.reload();
   },
   mockLogin: async (role: Role) => {
-    if (!import.meta.env.DEV) return;
-
     const response = await fetch(`${BASE_URL}/v2/mock-login?role=${role}`, {
       method: 'GET',
       credentials: 'include',
@@ -50,8 +48,6 @@ export const useStore = create<Store>()((set) => ({
     if (response.ok) set({ role });
   },
   mockLogout: async () => {
-    if (!import.meta.env.DEV) return;
-
     await fetch(`${BASE_URL}/v1/logout`, {
       method: 'GET',
       credentials: 'include',
@@ -59,7 +55,6 @@ export const useStore = create<Store>()((set) => ({
       // CORS 에러 무시 (리다이렉트로 인한 에러)
     });
 
-    // CORS 에러가 떠서 임시 처리
     // TODO: 추후 수정
     window.location.reload();
   },
