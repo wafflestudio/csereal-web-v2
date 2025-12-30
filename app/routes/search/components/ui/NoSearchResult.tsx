@@ -1,9 +1,8 @@
 import { useLanguage } from '~/hooks/useLanguage';
-import MagnificentGlass from '../assets/magnificent_glass.svg?react';
-import { SEARCH_TRANSLATIONS } from '../constants';
+import MagnificentGlass from '../../assets/magnificent_glass.svg?react';
 
 export default function NoSearchResult() {
-  const { t } = useLanguage(SEARCH_TRANSLATIONS);
+  const { t } = useLanguage();
   return (
     <div className="flex flex-col items-center">
       <p className="text-base font-medium text-neutral-300">

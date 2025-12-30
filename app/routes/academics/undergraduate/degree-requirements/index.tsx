@@ -57,7 +57,7 @@ export default function DegreeRequirementsPage({
         </div>
       </LoginVisible>
       <Attachments files={loaderData.attachments} />
-      <div className="mb-4 mt-6 flex w-[200px] flex-col">
+      <div className="mb-7 mt-6 flex w-[200px] flex-col">
         <h3 className="mb-2 pl-3 text-lg font-bold">
           {t('공통: 졸업사정 유의사항')}
         </h3>

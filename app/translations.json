@@ -56,5 +56,10 @@
   "더보기": "More",
   "바로가기": "Quick Links",
   "전체": "All",
-  "장학": "Scholarship"
+  "장학": "Scholarship",
+  "통합 검색": "Search",
+  "통합검색": "Search",
+  "검색어를 두글자 이상 입력해주세요": "Please enter at least two characters.",
+  "검색 결과가 존재하지 않습니다": "No search results found.",
+  "결과 더보기": "More results"
 }

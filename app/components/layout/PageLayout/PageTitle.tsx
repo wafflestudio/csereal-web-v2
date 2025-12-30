@@ -28,12 +28,12 @@ export default function PageTitle({
       <div
         className={`col-start-1 row-start-1 w-fit min-w-62.5 max-w-207.5 ${margin}`}
       >
-        {breadcrumb && breadcrumb.length > 0 && (
-          <div className="mb-2 flex items-center justify-center gap-2">
+        <div className="mb-2 flex items-center justify-center gap-2">
+          {breadcrumb && breadcrumb.length > 0 && (
             <Breadcrumb items={breadcrumb} />
-            <Node variant="curvedHorizontalGray" />
-          </div>
-        )}
+          )}
+          <Node variant="curvedHorizontalGray" />
+        </div>
         {title && (
           <h3 className="mr-25">
             {subtitle ? (
@@ -43,7 +43,7 @@ export default function PageTitle({
                 >
                   {title}
                 </span>
-                <span className="ml-2 text-md font-normal leading-7 text-neutral-300">
+                <span className="ml-2 text-md font-normal leading-7 text-neutral-500 tracking-wider">
                   {subtitle}
                 </span>
               </span>

@@ -10,6 +10,8 @@ import { useLanguage } from '~/hooks/useLanguage';
 import { useAboutSubNav } from '~/hooks/useSubNav';
 import { getLocaleFromPathname } from '~/utils/string';
 
+import './assets/contactfix.css';
+
 interface ContactResponse {
   description: string;
   imageURL: string | null;
@@ -76,7 +78,6 @@ export default function ContactPage({
               src: imageURL,
               width: 240,
               height: 360,
-              mobileFullWidth: true,
             }
           }
         />

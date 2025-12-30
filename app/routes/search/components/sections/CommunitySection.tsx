@@ -6,13 +6,13 @@ import type {
   NoticeSearchResult,
 } from '~/types/api/v2/search';
 import type { SeminarPreviewList } from '~/types/api/v2/seminar';
-import SeminarRow from '../../community/seminar/components/SeminarRow';
-import { SEARCH_TRANSLATIONS } from '../constants';
-import CircleTitle from './CircleTitle';
-import Divider from './Divider';
-import NewsRow from './NewsRow';
-import NoticeRow from './NoticeRow';
-import Section from './Section';
+import SeminarRow from '../../../community/seminar/components/SeminarRow';
+import CircleTitle from '../ui/CircleTitle';
+import NewsRow from '../ui/NewsRow';
+import NoticeRow from '../ui/NoticeRow';
+import Section from '../ui/Section';
+
+type TranslationKey = keyof typeof import('~/translations.json');
 
 export default function CommunitySection({
   keyword,
@@ -94,7 +94,7 @@ const CommunitySubSection = ({
   sectionId,
   children,
 }: {
-  title: string;
+  title: TranslationKey;
   size: number;
   href: string;
   divider?: boolean;
@@ -113,13 +113,13 @@ const CommunitySubSection = ({
         {children}
       </div>
       <MoreResultLink href={href} />
-      {divider && <Divider />}
+      {divider && <div className="my-10 border-b border-neutral-300" />}
     </>
   );
 };
 
 const MoreResultLink = ({ href }: { href: string }) => {
-  const { t, localizedPath } = useLanguage(SEARCH_TRANSLATIONS);
+  const { t, localizedPath } = useLanguage();
   return (
     <Link
       to={localizedPath(href)}

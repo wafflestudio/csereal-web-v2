@@ -16,6 +16,8 @@ import { useLanguage } from '~/hooks/useLanguage';
 
 import 'dayjs/locale/ko';
 import { Toaster } from 'sonner';
+import useIsMobile from '~/hooks/useResponsive';
+import { useStore } from '~/store';
 
 // Loader for handling redirects
 export async function loader({ request }: Route.LoaderArgs) {
@@ -47,12 +49,16 @@ export default function App() {
   const isMain = pathWithoutLocale === '/';
   const paddingLeft = isMain ? `sm:pl-[11rem]` : 'sm:pl-[6.25rem]';
 
+  const isMobile = useIsMobile();
+  const isOpen = useStore((s) => s.navbarState.type !== 'closed');
+  const isScrollBlocked = isMobile && isOpen;
+
   return (
     <html lang={locale}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="favicon.ico" />
+        <link rel="icon" href="/favicon.ico" />
         <Meta />
         <Links />
       </head>
@@ -60,7 +66,11 @@ export default function App() {
         <LNB />
         <MobileNav />
         <main
-          className={clsx('flex min-h-full min-w-full flex-col', paddingLeft)}
+          className={clsx(
+            'flex min-h-full min-w-full flex-col',
+            paddingLeft,
+            isScrollBlocked ? 'overflow-hidden h-full' : '',
+          )}
         >
           <Outlet />
           <Footer />

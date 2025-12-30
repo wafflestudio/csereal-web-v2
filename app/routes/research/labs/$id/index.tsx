@@ -74,7 +74,7 @@ export default function ResearchLabDetailPage({
   return (
     <PageLayout
       title={lab.name}
-      titleSize="xl"
+      titleSize="lg"
       subNav={subNav}
       pageTitle={pageTitle}
       pageDescription={pageDescription}
@@ -101,13 +101,17 @@ export default function ResearchLabDetailPage({
         />
       )}
       <div className={lab.group ? 'mt-6' : ''}>
-        <div className="mx-2 mb-1 flex justify-end sm:hidden">
+        <div className="mx-2 mb-6 flex justify-end sm:hidden sm:mb-0">
           {researchLabInfo}
         </div>
-        <div className="hidden sm:float-right sm:block sm:ml-7 sm:mt-0">
-          {researchLabInfo}
-        </div>
-        <HTMLViewer html={lab.description} />
+        <HTMLViewer
+          html={lab.description}
+          component={
+            <div className="hidden sm:float-right sm:block">
+              {researchLabInfo}
+            </div>
+          }
+        />
       </div>
     </PageLayout>
   );

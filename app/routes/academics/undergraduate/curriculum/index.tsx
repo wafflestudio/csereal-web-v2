@@ -7,6 +7,8 @@ import TimelineViewer from '~/routes/academics/components/timeline/TimelineViewe
 import type { TimelineContent } from '~/types/api/v2/academics';
 import { fetchJson } from '~/utils/fetch';
 
+import './assets/curriculumfix.css';
+
 export async function loader() {
   return await fetchJson<TimelineContent[]>(
     `${BASE_URL}/v2/academics/undergraduate/curriculum`,

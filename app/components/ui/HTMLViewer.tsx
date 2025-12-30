@@ -15,9 +15,14 @@ interface TopRightImage {
 interface HTMLViewerProps {
   html: string;
   image?: TopRightImage | Falsy;
+  component?: React.ReactNode | Falsy;
 }
 
-export default function HTMLViewer({ html, image }: HTMLViewerProps) {
+export default function HTMLViewer({
+  html,
+  image,
+  component,
+}: HTMLViewerProps) {
   const isMobile = useIsMobile();
 
   // 400.XXX같은 값들이 링크 처리되는걸 막기 위해 tldMatches false처리
@@ -41,6 +46,8 @@ export default function HTMLViewer({ html, image }: HTMLViewerProps) {
       : image?.width
     : undefined;
 
+  const hasComponent = isNotFalsy(component);
+
   return (
     <div className="flow-root">
       {hasImage && (
@@ -57,6 +64,7 @@ export default function HTMLViewer({ html, image }: HTMLViewerProps) {
           />
         </div>
       )}
+      {hasComponent && <div className="relative float-right">{component}</div>}
       <div
         className="sun-editor-editable"
         // biome-ignore lint/security/noDangerouslySetInnerHtml: TODO 근데 대안이 있나?

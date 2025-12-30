@@ -17,7 +17,7 @@ const TONE_CLASSES: Record<Tone, string> = {
 
 const PADDING_CLASSES: Record<Padding, string> = {
   default: 'px-5 pb-12 pt-7 sm:py-11 sm:pl-25 sm:pr-90',
-  subNav: 'px-5 pb-12 pt-7 sm:py-11 sm:pl-25 sm:pr-[360px]',
+  subNav: 'px-5 pb-12 pt-7 sm:pt-11 sm:pb-[150px] sm:pl-25 sm:pr-[360px]',
   overviewTop: 'px-5 pb-12 pt-7 sm:py-11 sm:pl-25 sm:pr-90',
   overviewBottom: 'px-5 pb-16 pt-10 sm:pb-[7.88rem] sm:pl-25 sm:pr-90',
 };

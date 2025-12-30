@@ -5,6 +5,7 @@ import PageLayout from '~/components/layout/PageLayout';
 import Button from '~/components/ui/Button';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
+import { usePeopleSubNav } from '~/hooks/useSubNav';
 import PeopleInfoList from '~/routes/people/components/PeopleInfoList';
 import PeopleLabNode from '~/routes/people/components/PeopleLabNode';
 import PeopleProfileInfo from '~/routes/people/components/PeopleProfileInfo';
@@ -35,6 +36,7 @@ export default function FacultyDetailPage({
     교수진: 'Faculty',
     구성원: 'People',
   });
+  const subNav = usePeopleSubNav();
 
   // 동적 메타데이터 생성
   const pageTitle =
@@ -62,6 +64,7 @@ export default function FacultyDetailPage({
     <PageLayout
       title={faculty.name}
       subtitle={faculty.academicRank}
+      subNav={subNav}
       titleSize="xl"
       pageTitle={pageTitle}
       pageDescription={pageDescription}

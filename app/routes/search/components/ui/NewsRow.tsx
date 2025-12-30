@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { Link } from 'react-router';
+import Image from '~/components/ui/Image';
 import { useLanguage } from '~/hooks/useLanguage';
-import ImageWithFallback from './ImageWithFallback';
 
 interface NewsRowProps {
   href: string;
@@ -24,17 +24,17 @@ export default function NewsRow({
   boldEndIndex,
 }: NewsRowProps) {
   const { locale, localizedPath } = useLanguage();
-  const dateStr = dayjs(date).locale(locale).format('YYYY/M/D (ddd)');
+  const dateStr = dayjs(date).locale(locale).format('YYYY년 M월 D일 ddd요일');
 
   return (
     <article className="flex flex-col gap-5 sm:flex-row sm:gap-6">
       <Link
         to={localizedPath(href)}
-        className="relative flex aspect-[4/3] sm:h-[9.375rem]"
+        className="relative flex aspect-4/3 sm:h-37.5"
       >
-        <ImageWithFallback
+        <Image
           alt="포스트 대표 이미지"
-          src={imageURL}
+          src={imageURL ?? undefined}
           className="h-full w-full object-cover"
         />
       </Link>

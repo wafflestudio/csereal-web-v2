@@ -32,7 +32,7 @@ export default function HeaderSearchBar() {
 
   return (
     <form
-      className="flex h-7.5 w-54 justify-center rounded-[.0625rem] bg-neutral-200 pr-2 outline-none"
+      className="flex h-7.5 w-54 justify-center rounded-[.0625rem] bg-neutral-200 pr-1 outline-none"
       onSubmit={(e) => {
         e.preventDefault();
         search();

@@ -58,10 +58,9 @@ export default function ReservationDetailModal({
     setReservation(null);
 
     (async () => {
-      const response = await fetch(
-        `${BASE_URL}/v2/reservation/${reservationId}`,
-        { credentials: 'include' },
-      );
+      const response = await fetch(`/api/v2/reservation/${reservationId}`, {
+        credentials: 'include',
+      });
       if (!response.ok) throw new Error('Failed to fetch reservation detail');
       const data = (await response.json()) as Reservation;
       setReservation(data);

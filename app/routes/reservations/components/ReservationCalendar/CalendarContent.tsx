@@ -54,7 +54,7 @@ const RowIndex = () => {
     ...Array(4)
       .fill(0)
       .map((_, x) => `${x + 8}${isMobile ? '' : 'AM'}`),
-    '12PM',
+    isMobile ? '12' : '12PM',
     ...Array(10)
       .fill(0)
       .map((_, x) => `${x + 1}${isMobile ? '' : 'PM'}`),

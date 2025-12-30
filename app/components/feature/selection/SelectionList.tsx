@@ -1,7 +1,7 @@
-import { Link } from "react-router";
-import CornerFoldedRectangle from "~/components/ui/CornerFoldedRectangle";
-import { COLOR_THEME } from "~/constants/color";
-import type { SelectionListItem } from "~/hooks/useSelectionList";
+import { Link } from 'react-router';
+import CornerFoldedRectangle from '~/components/ui/CornerFoldedRectangle';
+import { COLOR_THEME } from '~/constants/color';
+import type { SelectionListItem } from '~/hooks/useSelectionList';
 
 interface SelectionListProps {
   items: SelectionListItem[];
@@ -9,7 +9,7 @@ interface SelectionListProps {
 
 export default function SelectionList({ items }: SelectionListProps) {
   return (
-    <ul className="mb-6 grid grid-cols-2 gap-3 pt-7 sm:mb-9 sm:pt-11 lg:grid-cols-[repeat(auto-fit,minmax(200px,auto))]">
+    <ul className="mb-6 grid grid-cols-2 gap-3 pt-7 sm:mb-9 sm:pt-11 lg:grid-cols-[repeat(auto-fit,minmax(236px,auto))]">
       {items.map((item) => (
         <SelectionItem
           key={item.id}
@@ -30,10 +30,10 @@ interface SelectionItemProps {
 
 function SelectionItem({ name, isSelected, href }: SelectionItemProps) {
   const itemCommonStyle =
-    "flex items-center justify-center w-full h-10 py-3 text-center text-[11px] sm:text-sm lg:text-md tracking-wide";
+    'flex items-center justify-center w-full h-10 py-3 text-center text-[11px] sm:text-sm lg:text-md tracking-wide';
   const triangleLength = 1.25; // 20px
   const radius = 0.125; // 2px
-  const dropShadow = "drop-shadow(1px 2px 2px rgba(0,0,0,0.3)";
+  const dropShadow = 'drop-shadow(1px 2px 2px rgba(0,0,0,0.3)';
 
   return (
     <li>

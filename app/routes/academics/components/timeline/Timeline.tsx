@@ -50,7 +50,7 @@ function TimeSpot({
         <span className="flex items-center text-sm tracking-[0.02em] text-main-orange relative">
           {time}
           {showDownArrow && (
-            <span className="material-symbols-rounded text-base font-light absolute -right-2 translate-x-1/2">
+            <span className="material-symbols-rounded text-base font-light">
               arrow_downward
             </span>
           )}

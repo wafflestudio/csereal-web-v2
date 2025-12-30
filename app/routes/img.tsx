@@ -37,7 +37,7 @@ function replaceHostWithProd(url: string): string {
   }
 }
 
-function validateRequest(
+function throwIfInvalidRequest(
   imageUrl: string | null,
   quality: number,
 ): imageUrl is string {
@@ -162,7 +162,7 @@ export async function loader({ request }: { request: Request }) {
   const widthParam = url.searchParams.get('w');
   const width = widthParam ? parseInt(widthParam, 10) : undefined;
 
-  if (!validateRequest(imageUrlParam, quality)) {
+  if (!throwIfInvalidRequest(imageUrlParam, quality)) {
     return; // unreachable
   }
 
@@ -185,6 +185,7 @@ export async function loader({ request }: { request: Request }) {
   if (cached) return cached;
 
   // 원본 이미지 fetch
+  console.log('fetching image from', imageUrl);
   const imageResponse = await fetchImageWithProdFallback(imageUrl);
 
   // 이미 AVIF면 스킵

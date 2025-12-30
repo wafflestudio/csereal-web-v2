@@ -1,15 +1,16 @@
 import { useLanguage } from '~/hooks/useLanguage';
 import type { ResearchSearchResult, ResearchType } from '~/types/api/v2/search';
-import { SEARCH_TRANSLATIONS } from '../constants';
-import BasicRow from './BasicRow';
-import Section from './Section';
+import BasicRow from '../ui/BasicRow';
+import Section from '../ui/Section';
+
+type TranslationKey = keyof typeof import('~/translations.json');
 
 export default function ResearchSection({
   research,
 }: {
   research: ResearchSearchResult;
 }) {
-  const { t } = useLanguage(SEARCH_TRANSLATIONS);
+  const { t } = useLanguage();
 
   return (
     <Section title="연구·교육" size={research.total} sectionId="research">
@@ -20,10 +21,9 @@ export default function ResearchSection({
             result.id,
             result.name,
           );
-          const metaLabel = `${t('연구')} > ${t(
-            toResearchLabel(result.researchType),
-          )}`;
-          const metaHref = toResearchBasePath(result.researchType);
+          const basePath = toResearchBasePath(result.researchType);
+          const itemLabel = toResearchLabel(result.researchType);
+          const metaLabel = `${t('연구·교육')} > ${t(itemLabel)}`;
 
           return (
             <BasicRow
@@ -31,7 +31,7 @@ export default function ResearchSection({
               href={href}
               title={result.name}
               metaLabel={metaLabel}
-              metaHref={metaHref}
+              metaHref={basePath}
               partialDescription={result.partialDescription}
               boldStartIndex={result.boldStartIndex}
               boldEndIndex={result.boldEndIndex}
@@ -43,16 +43,16 @@ export default function ResearchSection({
   );
 }
 
-const toResearchLabel = (researchType: ResearchType) => {
+const toResearchLabel = (researchType: ResearchType): TranslationKey => {
   switch (researchType) {
     case 'CONFERENCE':
       return 'Top Conference List';
     case 'LAB':
-      return '연구실';
+      return '연구실 목록';
     case 'RESEARCH_CENTER':
-      return '연구센터';
+      return '연구 센터';
     case 'RESEARCH_GROUP':
-      return '연구그룹';
+      return '연구·교육 스트림';
   }
 };
 

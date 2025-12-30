@@ -6,7 +6,6 @@ import AlertDialog from '~/components/ui/AlertDialog';
 import Attachments from '~/components/ui/Attachments';
 import Button from '~/components/ui/Button';
 import HTMLViewer from '~/components/ui/HTMLViewer';
-import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { TimelineContent } from '~/types/api/v2/academics';
 import { fetchOk } from '~/utils/fetch';
@@ -164,7 +163,7 @@ function ContentViewer({
     <div className="mb-5">
       <div className="mb-4 font-semibold">{title}</div>
       <Attachments files={attachments} />
-      <div className="rounded-sm bg-neutral-50 p-5">
+      <div className="rounded-sm bg-neutral-75 p-5">
         <HTMLViewer html={description} />
       </div>
       <ActionButtons year={year} pathname={pathname} />
@@ -204,7 +203,7 @@ function TogglableContentViewer({
       {isExpanded && (
         <>
           <Attachments files={attachments} />
-          <div className="rounded-sm bg-neutral-50 p-5">
+          <div className="rounded-sm bg-neutral-75 p-5">
             <HTMLViewer html={description} />
           </div>
           <ActionButtons year={year} pathname={pathname} />

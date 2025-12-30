@@ -5,6 +5,7 @@ import PageLayout from '~/components/layout/PageLayout';
 import Button from '~/components/ui/Button';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
+import { usePeopleSubNav } from '~/hooks/useSubNav';
 import PeopleContactList from '~/routes/people/components/PeopleContactList';
 import PeopleInfoList from '~/routes/people/components/PeopleInfoList';
 import PeopleProfileImage from '~/routes/people/components/PeopleProfileImage';
@@ -37,6 +38,8 @@ export default function StaffDetailPage({
     '주요 업무': 'Tasks',
   });
 
+  const subNav = usePeopleSubNav();
+
   // 동적 메타데이터 생성
   const pageTitle =
     locale === 'en' ? `${staff.name} | Staff` : `${staff.name} | 행정직원`;
@@ -61,6 +64,7 @@ export default function StaffDetailPage({
       title={staff.name}
       subtitle={staff.role}
       titleSize="xl"
+      subNav={subNav}
       pageTitle={pageTitle}
       pageDescription={pageDescription}
       noImageIndex

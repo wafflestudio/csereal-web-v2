@@ -99,7 +99,7 @@ export default function SeminarDetailPage({
       <h2 className="px-5 py-9 text-[1.25rem] font-semibold leading-[1.4] sm:pl-[100px] sm:pr-[340px]">
         {seminar.title}
       </h2>
-      <div className="bg-neutral-50 px-5 pb-16 pt-9 sm:pl-[100px] sm:pr-[340px]">
+      <div className="bg-neutral-50 px-5 pb-36 pt-9 sm:pl-[100px] sm:pr-[340px]">
         <Attachments files={seminar.attachments} />
         <div className="mb-9 flex flex-col-reverse justify-between gap-5 text-md sm:flex-row">
           <div className="flex flex-col gap-3">
@@ -129,15 +129,13 @@ export default function SeminarDetailPage({
               {t('위치')}: {seminar.location}
             </div>
           </div>
-          <div className="relative mx-7 aspect-square sm:h-60 sm:w-60">
-            {seminar.imageURL && (
-              <Image
-                alt="대표 이미지"
-                src={seminar.imageURL}
-                className="h-full w-full object-contain"
-              />
-            )}
-          </div>
+          {seminar.imageURL && (
+            <Image
+              alt="대표 이미지"
+              src={seminar.imageURL}
+              className="object-contain mx-7 aspect-square sm:h-60 sm:w-60"
+            />
+          )}
         </div>
 
         {seminar.description && (
@@ -153,6 +151,8 @@ export default function SeminarDetailPage({
             <HTMLViewer html={seminar.introduction} />
           </>
         )}
+
+        <div className="h-10" />
 
         <Node variant="straight" />
 

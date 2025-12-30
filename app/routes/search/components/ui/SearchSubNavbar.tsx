@@ -1,24 +1,25 @@
 import clsx from 'clsx';
 import Node from '~/components/ui/Nodes';
 import { useLanguage } from '~/hooks/useLanguage';
-import { SEARCH_TRANSLATIONS } from '../constants';
+
+type TranslationKey = keyof typeof import('~/translations.json');
 
 export type TreeNode = {
   id: string;
-  name: string;
+  name: TranslationKey;
   size?: number;
   children?: TreeNode[];
   bold?: boolean;
 };
 
 export default function SearchSubNavbar({ node }: { node: TreeNode[] }) {
-  const { t } = useLanguage(SEARCH_TRANSLATIONS);
+  const { t } = useLanguage();
 
   return (
     <div className="absolute right-[80px] top-0 hidden h-full sm:block">
       <div className="sticky top-[52px] mb-8 mt-13 flex">
         <div>
-          <Node variant="curvedVertical" tone="neutral" grow />
+          <Node variant="curvedVertical" tone="brand" grow />
         </div>
         <div className="pl-1.5 pt-2.75">
           <h3 className="mb-4 text-base font-semibold text-neutral-800">
@@ -57,7 +58,7 @@ function NavbarButton({
   node: TreeNode;
   className: string;
 }) {
-  const { tUnsafe } = useLanguage(SEARCH_TRANSLATIONS);
+  const { t } = useLanguage();
   const isDisabled = node.size === undefined || node.size === 0;
 
   return (
@@ -71,7 +72,7 @@ function NavbarButton({
         className,
       )}
     >
-      {tUnsafe(node.name)}
+      {t(node.name)}
       {node.size !== undefined && `(${node.size})`}
     </button>
   );

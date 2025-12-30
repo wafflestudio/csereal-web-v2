@@ -70,11 +70,25 @@ function SubNavItem({ item }: { item: SubNavItem }) {
           to={localizedItemPath}
           className={'whitespace-nowrap hover:text-main-orange'}
         >
-          {item.name}
+          <NavLabel text={item.name} />
         </Link>
       ) : (
-        <span className={'whitespace-nowrap'}>{item.name}</span>
+        <span className={'whitespace-nowrap'}>
+          <NavLabel text={item.name} />
+        </span>
       )}
     </li>
+  );
+}
+
+function NavLabel({ text }: { text: string }) {
+  const idx = text.indexOf('(');
+  if (idx === -1) return text;
+
+  return (
+    <>
+      {text.slice(0, idx)}
+      <span className="text-xs font-medium leading-5">{text.slice(idx)}</span>
+    </>
   );
 }

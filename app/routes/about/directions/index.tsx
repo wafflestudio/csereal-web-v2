@@ -66,7 +66,7 @@ export default function DirectionsPage({
       pageDescription={meta.description}
     >
       <div className="mb-12 pt-7 sm:pt-11">
-        <p className="mb-8 text-md leading-[200%] text-neutral-700">
+        <p className="mb-8 text-md leading-[200%]">
           {t('컴퓨터공학부는 서울대학교 관악 301동(신공학관1)에 있습니다.')}
           <br />
           {t('주소')}:{' '}
@@ -91,7 +91,7 @@ export default function DirectionsPage({
 
       {selectedDirection && (
         <div>
-          <div className="mb-4 justify-between sm:flex">
+          <div className="mb-7 justify-between sm:flex">
             <h4 className="text-base font-semibold sm:text-2xl">
               {selectedDirection[locale]?.name}
             </h4>
@@ -99,7 +99,9 @@ export default function DirectionsPage({
               <Button
                 as="link"
                 to={localizedPath(
-                  `/about/directions/edit?selected=${encodeParam(selectedDirection.en.name || selectedDirection.ko.name)}`,
+                  `/about/directions/edit?selected=${encodeParam(
+                    selectedDirection.en.name || selectedDirection.ko.name,
+                  )}`,
                 )}
                 variant="outline"
                 tone="neutral"
@@ -109,7 +111,9 @@ export default function DirectionsPage({
               </Button>
             </LoginVisible>
           </div>
-          <HTMLViewer html={selectedDirection[locale]?.description} />
+          <div className="ml-2.5">
+            <HTMLViewer html={selectedDirection[locale]?.description} />
+          </div>
         </div>
       )}
     </PageLayout>

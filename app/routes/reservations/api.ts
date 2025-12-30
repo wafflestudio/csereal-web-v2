@@ -18,9 +18,7 @@ export const fetchWeeklyReservation = async (
 
   const response = await fetch(
     `${BASE_URL}/v2/reservation/week?${params.toString()}`,
-    {
-      credentials: 'include',
-    },
+    { credentials: 'include' },
   );
 
   if (!response.ok) {
@@ -46,7 +44,6 @@ export const postReservation = async (body: ReservationPostBody) => {
 export const deleteReservation = async (reservationId: number) => {
   const response = await fetch(`${BASE_URL}/v2/reservation/${reservationId}`, {
     method: 'DELETE',
-    credentials: 'include',
   });
 
   if (!response.ok) {
@@ -57,10 +54,7 @@ export const deleteReservation = async (reservationId: number) => {
 export const deleteRecurringReservation = async (recurrenceId: string) => {
   const response = await fetch(
     `${BASE_URL}/v2/reservation/recurring/${recurrenceId}`,
-    {
-      method: 'DELETE',
-      credentials: 'include',
-    },
+    { method: 'DELETE' },
   );
 
   if (!response.ok) {

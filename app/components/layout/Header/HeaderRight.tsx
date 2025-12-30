@@ -39,7 +39,11 @@ export default function HeaderRight() {
           size="sm"
           onClick={changeLanguage}
         >
-          {isEnglish ? '한국어' : 'ENG'}
+          {isEnglish ? (
+            '한국어'
+          ) : (
+            <span className="tracking-[0.025rem]">ENG</span>
+          )}
         </Button>
       </div>
 

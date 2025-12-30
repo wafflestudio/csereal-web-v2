@@ -5,6 +5,7 @@ import PageLayout from '~/components/layout/PageLayout';
 import Button from '~/components/ui/Button';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
+import { usePeopleSubNav } from '~/hooks/useSubNav';
 import PeopleContactList from '~/routes/people/components/PeopleContactList';
 import PeopleInfoList from '~/routes/people/components/PeopleInfoList';
 import PeopleProfileImage from '~/routes/people/components/PeopleProfileImage';
@@ -41,7 +42,7 @@ export default function EmeritusFacultyDetailPage({
     '연구 분야': 'Research Areas',
     '재직 기간': 'Service Period',
   });
-
+  const subNav = usePeopleSubNav();
   // 동적 메타데이터 생성
   const pageTitle =
     locale === 'en'
@@ -80,6 +81,7 @@ export default function EmeritusFacultyDetailPage({
       title={faculty.name}
       subtitle={faculty.academicRank}
       titleSize="xl"
+      subNav={subNav}
       pageTitle={pageTitle}
       pageDescription={pageDescription}
     >

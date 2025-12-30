@@ -65,11 +65,23 @@ function SearchPage({ onClose }: { onClose: () => void }) {
   const search = () => {
     if (text.trim()) {
       navigate(`${localizedPath('/search')}?keyword=${text}`);
+      useStore.getState().closeNavbar();
     }
   };
 
   return (
     <div className="absolute bottom-0 left-0 right-0 top-0 z-50 bg-[#1F2021]">
+      <div className="absolute left-1/2 bottom-4 -translate-x-1/2">
+        <Button
+          variant="text"
+          tone="muted"
+          size="sm"
+          onClick={onClose}
+          ariaLabel="검색 닫기"
+        >
+          <span className="material-symbols-rounded text-white">close</span>
+        </Button>
+      </div>
       <div className="mx-[1.94rem] mt-9 flex items-center border-b border-neutral-400">
         <input
           value={text}

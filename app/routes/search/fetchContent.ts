@@ -9,7 +9,7 @@ import type {
   ResearchSearchResult,
 } from '~/types/api/v2/search';
 import type { SeminarPreviewList } from '~/types/api/v2/seminar';
-import type { TreeNode } from './components/SearchSubNavbar';
+import type { TreeNode } from './components/ui/SearchSubNavbar';
 
 export type SectionContent = {
   about?: AboutSearchResult;
@@ -38,8 +38,8 @@ export default async function fetchContent(
     const searchParams = new URLSearchParams({
       keyword: params.keyword,
       number: `${params.number}`,
+      ...(params.amount ? { amount: `${params.amount}` } : {}),
     });
-    if (params.amount) searchParams.set('amount', `${params.amount}`);
 
     const response = await fetch(
       `${BASE_URL}${path}?${searchParams.toString()}`,
@@ -60,7 +60,6 @@ export default async function fetchContent(
     );
     if (!response.ok) throw new Error('Failed to fetch seminar data');
     return (await response.json()) as SeminarPreviewList;
-    // return { total: 0, searchList: [] } satisfies SeminarPreviewList;
   };
 
   const [about, notice, news, seminar, member, research, admission, academics] =

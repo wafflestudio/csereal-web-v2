@@ -1,12 +1,10 @@
 import { Link } from 'react-router';
+import Image from '~/components/ui/Image';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { Member, MemberSearchResult } from '~/types/api/v2/search';
-import { SEARCH_TRANSLATIONS } from '../constants';
-import styles from '../style.module.css';
-import CircleTitle from './CircleTitle';
-import Divider from './Divider';
-import ImageWithFallback from './ImageWithFallback';
-import Section from './Section';
+import styles from '../../style.module.css';
+import CircleTitle from '../ui/CircleTitle';
+import Section from '../ui/Section';
 
 export default function MemberSection({
   member,
@@ -32,7 +30,9 @@ export default function MemberSection({
           </div>
         </>
       )}
-      {professorList.length !== 0 && staffList.length !== 0 && <Divider />}
+      {professorList.length !== 0 && staffList.length !== 0 && (
+        <div className="my-10 border-b border-neutral-300" />
+      )}
       {staffList.length !== 0 && (
         <>
           <CircleTitle title="행정직원" />
@@ -54,7 +54,7 @@ function MemberCell({
   memberType,
   id,
 }: Member) {
-  const { localizedPath } = useLanguage(SEARCH_TRANSLATIONS);
+  const { localizedPath } = useLanguage();
   const href =
     memberType === 'PROFESSOR'
       ? `/people/faculty/${id}`
@@ -62,8 +62,8 @@ function MemberCell({
 
   return (
     <Link className="group flex flex-col gap-3" to={localizedPath(href)}>
-      <ImageWithFallback
-        src={imageURL}
+      <Image
+        src={imageURL ?? undefined}
         alt={`${name} 프로필`}
         className={`h-[192px] w-[144px] object-cover ${styles.memberImage}`}
         width={144}

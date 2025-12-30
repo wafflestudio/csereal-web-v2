@@ -106,22 +106,27 @@ export default function NoticeDetailPage({
         </div>
       </div>
 
-      <div className="bg-neutral-50 px-5 pt-9 pb-16 sm:pl-[100px] sm:pr-[340px]">
+      <div className="bg-neutral-50 px-5 pt-9 pb-36 sm:pl-[100px] sm:pr-[340px]">
         <Attachments files={notice.attachments} />
 
         <HTMLViewer html={notice.description} />
+
+        <div className="h-10" />
 
         <Node variant="straight" />
 
         {notice.tags.length > 0 && (
           <div className="mt-3 ml-6 flex flex-wrap gap-2.5">
-            {notice.tags.map((tag: string) => (
-              <Tag
-                key={tag}
-                label={tag}
-                href={localizedPath(`/community/notice?tag=${tag}`)}
-              />
-            ))}
+            {/* 서버에서 랜덤 순서로 오는듯  */}
+            {notice.tags
+              .toSorted((a, b) => a.localeCompare(b))
+              .map((tag: string) => (
+                <Tag
+                  key={tag}
+                  label={tag}
+                  href={localizedPath(`/community/notice?tag=${tag}`)}
+                />
+              ))}
           </div>
         )}
 

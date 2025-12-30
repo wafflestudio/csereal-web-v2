@@ -24,7 +24,7 @@ export default function NewsListRow({ post }: NewsListRowProps) {
     <article className="flex flex-col-reverse gap-4 border-b border-neutral-100 pb-5 sm:flex-row sm:gap-8">
       <div className="flex flex-1 flex-col justify-between break-keep">
         <time className="mb-2.5 mt-5 text-md text-neutral-800 sm:hidden">
-          {dayjs(post.date).locale(locale).format('YYYY/M/DD')}
+          {dayjs(post.date).locale(locale).format('YYYY/M/DD (ddd)')}
         </time>
 
         <div className="flex flex-col items-start">
@@ -51,7 +51,7 @@ export default function NewsListRow({ post }: NewsListRowProps) {
             ))}
           </div>
           <time className="hidden self-end whitespace-nowrap text-sm leading-[26px] text-neutral-800 sm:inline">
-            {dayjs(post.date).locale(locale).format('YYYY/M/DD')}
+            {dayjs(post.date).locale(locale).format('YYYY/M/DD (ddd)')}
           </time>
         </div>
       </div>

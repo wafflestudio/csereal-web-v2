@@ -49,13 +49,11 @@ function ImageCell({ imageURL }: { imageURL: string | null }) {
         !imageURL ? 'bg-neutral-100' : ''
       }`}
     >
-      {imageURL && (
-        <Image
-          src={imageURL}
-          alt="대표 이미지"
-          className="h-full w-full object-cover"
-        />
-      )}
+      <Image
+        src={imageURL ?? undefined}
+        alt="대표 이미지"
+        className="h-full w-full object-cover"
+      />
     </div>
   );
 }

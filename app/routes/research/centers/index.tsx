@@ -91,7 +91,7 @@ export default function ResearchCentersPage({
       pageTitle={meta.title}
       pageDescription={meta.description}
     >
-      <div className="px-7 sm:pl-[100px] sm:pr-[320px]">
+      <div className="px-5 sm:pl-[100px] sm:pr-[320px]">
         <LoginVisible allow="ROLE_STAFF">
           <div className="mt-11 text-right">
             <Button
@@ -108,7 +108,7 @@ export default function ResearchCentersPage({
         <SelectionList items={selectionItems} />
       </div>
       {selectedCenter && (
-        <div className="px-7 pb-9 sm:pb-[100px] sm:pl-[100px] sm:pr-[320px]">
+        <div className="px-5 pb-9 sm:pb-[100px] sm:pl-[100px] sm:pr-[320px]">
           <LoginVisible allow="ROLE_STAFF">
             <div className="mb-7 flex justify-end gap-3">
               <Button

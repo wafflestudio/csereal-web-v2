@@ -169,13 +169,15 @@ export default function AddReservationModal({
 
           <fieldset className="mb-6 flex flex-col font-normal">
             <div className="flex flex-wrap items-center gap-4">
-              <Form.Checkbox
-                name="agreed"
-                value="true"
-                label={t('개인정보 수집 및 이용동의')}
-                options={{ validate: (value) => value === 'true' }}
-              />
-              <span className="text-main-orange">*</span>
+              <div className="flex items-center">
+                <Form.Checkbox
+                  name="agreed"
+                  value="true"
+                  label={t('개인정보 수집 및 이용동의')}
+                  options={{ validate: (value) => value === 'true' }}
+                />
+                <span className="text-main-orange">*</span>
+              </div>
 
               <Link
                 className="text-neutral-400"

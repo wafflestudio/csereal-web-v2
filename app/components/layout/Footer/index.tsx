@@ -1,23 +1,40 @@
+import { useState } from 'react';
 import { Link } from 'react-router';
 import {
   getLinkGroups,
   type LinkGroupProps,
 } from '~/components/layout/Footer/linkGroups';
+import Dialog from '~/components/ui/Dialog';
 import { useLanguage } from '~/hooks/useLanguage';
-import { useNavItem } from '~/hooks/useNavItem';
 import commonTranslations from '~/translations.json';
 import SnuEngineeringIcon from './assets/SNU_Engineering.svg?react';
 import SnuLogoWithText from './assets/SNU_Logo_with_Text.svg?react';
 import footerOnlyTranslations from './translations.json';
 
 const footerTranslations = { ...commonTranslations, ...footerOnlyTranslations };
+const CSEREAL_MEMBERS = [
+  { part: 'Designer', members: ['유채원', '최유진'] },
+  { part: 'Frontend Dev', members: ['이성열', '임찬솔'] },
+  { part: 'Backend Dev', members: ['김준형', '우혁준', '조성규'] },
+];
 
 export default function Footer() {
   const { locale, pathWithoutLocale } = useLanguage(footerTranslations);
-  const { topLevelItem } = useNavItem();
 
   // Main page or navigationTree의 top-level 페이지들은 dark mode
-  const mode = pathWithoutLocale === '/' || topLevelItem ? 'dark' : 'light';
+  const mode = [
+    '/',
+    '/about',
+    '/community',
+    '/people',
+    '/research',
+    '/admissions',
+    '/academics',
+    '/reservations',
+  ].includes(pathWithoutLocale)
+    ? 'dark'
+    : 'light';
+
   const topBg =
     mode === 'light' ? 'bg-neutral-50' : 'bg-[#262728] sm:bg-neutral-900';
   const bottomBg = mode === 'light' ? 'bg-neutral-100' : 'bg-[rgb(30,30,30)]';
@@ -83,6 +100,7 @@ function LinkGroup({
 
 function FooterBottomLeft() {
   const { t } = useLanguage(footerTranslations);
+  const [cserealOpen, setCserealOpen] = useState(false);
 
   return (
     <div className="text-xs text-neutral-500 sm:text-sm">
@@ -108,11 +126,62 @@ function FooterBottomLeft() {
 
       <p className="leading-4.5">
         Powered by{' '}
-        <span className="cursor-pointer hover:underline">CSEREAL</span>
+        <button
+          type="button"
+          className="cursor-pointer font-semibold text-inherit hover:underline"
+          onClick={() => setCserealOpen(true)}
+        >
+          CSEREAL
+        </button>
         <br />
         <span className="whitespace-nowrap">© Department of CSE, SNU.</span>
         <span className="whitespace-nowrap"> All Rights Reserved.</span>
       </p>
+      <Dialog
+        open={cserealOpen}
+        onOpenChange={setCserealOpen}
+        ariaLabel="CSEREAL 팀 소개"
+        contentClassName="w-[92vw] max-w-3xl p-0"
+      >
+        <div className="relative flex flex-col gap-5 overflow-y-auto overflow-x-hidden px-8 pb-12 pt-12 sm:px-12 sm:pb-16 sm:pt-14">
+          <h1 className="text-3xl font-semibold text-neutral-900 sm:text-4xl">
+            Team <span className="text-main-orange">CSEREAL</span>
+            <br />
+            <span className="text-sm leading-6 text-neutral-500 sm:text-base">
+              컴퓨터공학부 디자인 · 개발 팀입니다.
+            </span>
+          </h1>
+          <CserealMembers />
+        </div>
+      </Dialog>
+    </div>
+  );
+}
+
+function CserealMembers() {
+  return (
+    <div className="grid gap-6 sm:grid-cols-3">
+      {CSEREAL_MEMBERS.map((info) => (
+        <CserealPart part={info.part} members={info.members} key={info.part} />
+      ))}
+    </div>
+  );
+}
+
+function CserealPart({ part, members }: { part: string; members: string[] }) {
+  return (
+    <div className="rounded-xl border border-neutral-200 bg-neutral-50 px-5 py-5">
+      <h4 className="text-sm font-semibold text-main-orange">{part}</h4>
+      <div className="mt-4 flex flex-wrap gap-2">
+        {members.map((member) => (
+          <span
+            key={member}
+            className="rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs font-medium text-neutral-600"
+          >
+            {member}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }

@@ -126,12 +126,12 @@ function CourseCardFront({
           <span>{sortedProperties[2]}</span>
         </span>
       </div>
-      <h2 className="mb-2 whitespace-nowrap">
+      <h2 className="mb-2 whitespace-nowrap text-start">
         <span className="mr-2 text-base font-bold leading-normal">{name}</span>
         <span className="text-xs leading-normal text-neutral-500">{code}</span>
       </h2>
       <div className="flex">
-        <p className="line-clamp-2 w-0 grow text-xs leading-normal text-neutral-500">
+        <p className="line-clamp-2 w-0 grow text-xs leading-normal text-neutral-500 text-start">
           {description}
         </p>
       </div>
@@ -156,12 +156,14 @@ function CourseCardBack({
       )}
       ref={ref}
     >
-      <h2 className="mb-2 whitespace-nowrap">
+      <h2 className="mb-2 whitespace-nowrap text-start">
         <span className="mr-2 text-base font-bold leading-normal">{name}</span>
         <span className="text-xs leading-normal text-neutral-500">{code}</span>
       </h2>
       <div className="flex">
-        <p className="w-0 grow text-xs leading-normal">{description}</p>
+        <p className="w-0 grow text-xs leading-normal text-start">
+          {description}
+        </p>
       </div>
     </div>
   );
