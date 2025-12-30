@@ -3,7 +3,13 @@
 # 데브 서버 배포 스크립트
 # 사용법: ./deploy-dev.sh
 
-source .env
+ENV_FILE="env/.env.local"
+if [ ! -f "$ENV_FILE" ]; then
+    echo -e "${RED}ERROR: $ENV_FILE not found${NC}"
+    echo "Create it from env/.env.example and set CSEREAL_DEV_SSH_KEY."
+    exit 1
+fi
+source "$ENV_FILE"
 set -e  # 에러 발생 시 스크립트 중단
 
 # 색상 코드

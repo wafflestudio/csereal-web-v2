@@ -111,7 +111,7 @@ async function fetchImageWithProdFallback(imageUrl: string): Promise<Response> {
 
     // dev 모드에서 404 발생 시 prod 환경으로 fallback
     if (
-      (import.meta.env.DEV || import.meta.env.VITE_PHASE === 'beta') &&
+      (import.meta.env.DEV || import.meta.env.MODE === 'beta') &&
       imageResponse.status === 404
     ) {
       actualImageUrl = replaceHostWithProd(imageUrl);

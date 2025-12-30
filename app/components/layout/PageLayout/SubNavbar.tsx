@@ -1,7 +1,6 @@
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import Node from '~/components/ui/Nodes';
 import { useLanguage } from '~/hooks/useLanguage';
-import { useNavItem } from '~/hooks/useNavItem';
 
 export interface SubNavItem {
   name: string;
@@ -51,9 +50,10 @@ export default function SubNavbar({ title, titlePath, items }: SubNavbarProps) {
 
 function SubNavItem({ item }: { item: SubNavItem }) {
   const { localizedPath } = useLanguage();
-  const { isActive } = useNavItem();
+  const { pathname } = useLocation();
   const localizedItemPath = item.path ? localizedPath(item.path) : undefined;
-  const isCurrent = isActive(localizedItemPath);
+  const isCurrent =
+    localizedItemPath !== undefined && pathname.startsWith(localizedItemPath);
   const marginLeft = `${(item.depth || 0) * INDENTATION}px`;
 
   return (

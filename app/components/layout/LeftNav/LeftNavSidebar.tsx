@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import { IS_PROD } from '~/constants/api';
 import { navigationTree } from '~/constants/navigation';
 import { useLanguage } from '~/hooks/useLanguage';
-import { isAncestorNavItem, useNavItem } from '~/hooks/useNavItem';
+import { useNavItem } from '~/hooks/useNavItem';
 import { useStore } from '~/store';
 import DotEmpty from './assets/dot_empty.svg?react';
 import DotFill from './assets/dot_fill.svg?react';
@@ -66,7 +66,7 @@ function DotList() {
 
   const isDotFilled = (item: (typeof navigationTree)[0]) => {
     if (!activeItem) return false;
-    return isAncestorNavItem(item, activeItem) || item.path === activeItem.path;
+    return item.path?.startsWith(activeItem.path || '') ?? false;
   };
 
   const dotArr = navigationTree.map(isDotFilled);
@@ -104,7 +104,9 @@ function NavList() {
     if (navbarState.type === 'hovered') {
       return item.key === navbarState.navItem.key;
     }
-    return activeItem ? isAncestorNavItem(item, activeItem) : false;
+    return activeItem
+      ? (item.path?.startsWith(activeItem.path || '') ?? false)
+      : false;
   };
 
   return (

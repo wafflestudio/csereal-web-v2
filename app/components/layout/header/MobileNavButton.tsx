@@ -1,5 +1,5 @@
 import { navigationTree } from '~/constants/navigation';
-import { useNavItem } from '~/hooks/useNavItem';
+import { useLanguage } from '~/hooks/useLanguage';
 import { useStore } from '~/store';
 import MenuSVG from './assets/menu.svg?react';
 
@@ -7,7 +7,11 @@ export default function MobileNavButton() {
   const navbarState = useStore((s) => s.navbarState);
   const hoverNavItem = useStore((s) => s.hoverNavItem);
   const closeNavbar = useStore((s) => s.closeNavbar);
-  const { topLevelItem: topLevelNavItem } = useNavItem();
+  const { pathWithoutLocale } = useLanguage();
+
+  const topLevelNavItem = navigationTree.find(
+    (item) => item.path && pathWithoutLocale.startsWith(item.path),
+  );
 
   const isOpen = navbarState.type !== 'closed';
 

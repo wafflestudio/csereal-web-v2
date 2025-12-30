@@ -1,5 +1,5 @@
 // Environment configuration
-export const PHASE = import.meta.env.VITE_PHASE;
+export const PHASE = import.meta.env.MODE;
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // Phase flags

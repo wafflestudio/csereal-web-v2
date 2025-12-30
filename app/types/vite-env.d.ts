@@ -2,8 +2,8 @@
 /// <reference types="vite-plugin-svgr/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_PHASE: 'production' | 'beta' | 'development';
   readonly VITE_API_BASE_URL: string;
+  readonly VITE_KAKAO_MAP_API_KEY?: string;
 }
 
 interface ImportMeta {

@@ -1,5 +1,5 @@
 import type { NavItem } from '~/constants/navigation';
-import { isPathActive, useNavItem } from '~/hooks/useNavItem';
+import { useNavItem } from '~/hooks/useNavItem';
 import { useStore } from '~/store';
 import LNBMenuItem from './LeftNavMenuItem';
 
@@ -30,7 +30,7 @@ function NavTree({ item, activeItem, depth = 0 }: NavTreeProps) {
   const childItems = item.children || [];
   const closeNavbar = useStore((s) => s.closeNavbar);
 
-  const isHighlighted = isPathActive(activeItem?.path || '', item.path);
+  const isHighlighted = item.path?.startsWith(activeItem?.path || '') ?? false;
 
   return (
     <>

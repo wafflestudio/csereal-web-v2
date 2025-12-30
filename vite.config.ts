@@ -6,7 +6,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(({ mode }) => {
   // Load env file based on mode from env/ directory
-  const env = loadEnv(mode, 'env', '');
+  const env = loadEnv(mode, 'env');
   const API_TARGET = env.VITE_API_BASE_URL;
 
   return {
