@@ -66,7 +66,7 @@ export default function HTMLViewer({
       />
       {/* https://github.com/facebook/react/issues/32449 */}
       {cssRules.length > 0 && (
-        <style href={styleKey} nonce={nonce} precedence="low">
+        <style href={styleKey} nonce={nonce} precedence="blahblah">
           {cssRules}
         </style>
       )}

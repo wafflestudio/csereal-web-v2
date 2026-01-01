@@ -86,7 +86,7 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {import.meta.env.PROD && <meta property="csp-nonce" nonce={nonce} />}
+        {import.meta.env.DEV && <meta property="csp-nonce" nonce={nonce} />}
         <link rel="icon" href="/favicon.ico" />
         <Meta />
         <Links />

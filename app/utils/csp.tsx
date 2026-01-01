@@ -69,7 +69,10 @@ export const processHtmlForCsp = (html: string): ProcessedHtml => {
         .slice(0, 8);
       const className = `uwu-${hash}`;
       propertyToClassMap.set(property, className);
-      cssRules.push(`.${className} { ${property} }`);
+      // !important를 붙여서 기존 스타일보다 높은 우선순위 보장
+      // property는 이미 세미콜론으로 끝나므로, 세미콜론 전에 !important 삽입
+      const propertyWithImportant = property.replace(/;$/, ' !important');
+      cssRules.push(`.${className} { ${propertyWithImportant} }`);
 
       return className;
     });
