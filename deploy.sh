@@ -67,12 +67,17 @@ echo -e "${GREEN}  $TITLE${NC}"
 echo -e "${GREEN}=====================================${NC}"
 echo ""
 
-# 현재 Git 상태 확인
-echo -e "${BLUE}현재 Git 상태:${NC}"
-echo "브랜치: $(git branch --show-current)"
-echo "커밋: $(git log -1 --format='%h - %s')"
-echo "작성자: $(git log -1 --format='%an <%ae>')"
-echo "날짜:   $(git log -1 --format='%cd' --date=format:'%Y-%m-%d %H:%M:%S')"
+# GitHub 원격 저장소 최신 커밋 확인
+echo -e "${BLUE}GitHub 원격 저장소 최신 커밋 가져오는 중...${NC}"
+git fetch origin --quiet
+CURRENT_BRANCH=$(git branch --show-current)
+REMOTE_BRANCH="origin/$CURRENT_BRANCH"
+
+echo -e "${BLUE}배포될 커밋 (GitHub):${NC}"
+echo "브랜치: $CURRENT_BRANCH"
+echo "커밋: $(git log -1 $REMOTE_BRANCH --format='%h - %s')"
+echo "작성자: $(git log -1 $REMOTE_BRANCH --format='%an <%ae>')"
+echo "날짜:   $(git log -1 $REMOTE_BRANCH --format='%cd' --date=format:'%Y-%m-%d %H:%M:%S')"
 echo ""
 
 # 배포 확인 (dev/prod 공통)
