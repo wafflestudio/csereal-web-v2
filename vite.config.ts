@@ -35,5 +35,10 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
+    build: {
+      // CSP 관련
+      // https://vite.dev/guide/features#data
+      assetsInlineLimit: 0,
+    },
   };
 });

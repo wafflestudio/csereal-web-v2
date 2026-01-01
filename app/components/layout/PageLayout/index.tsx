@@ -1,20 +1,15 @@
 import type { ReactNode } from 'react';
 import { useBreadcrumb } from '~/hooks/useBreadcrumb';
 import { useLanguage } from '~/hooks/useLanguage';
+import type { SubNavConfig } from '~/hooks/useSubNav';
 import { SITE_NAME } from '~/utils/metadata';
 import Header from '../Header';
 import PageTitle from './PageTitle';
-import SubNavbar, { type SubNavItem } from './SubNavbar';
+import SubNavbar from './SubNavbar';
 
 export interface BreadcrumbItem {
   name: string;
   path?: string;
-}
-
-export interface SubNavConfig {
-  title: string;
-  titlePath: string;
-  items: SubNavItem[];
 }
 
 interface PageLayoutProps {

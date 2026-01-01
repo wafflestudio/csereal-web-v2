@@ -26,12 +26,7 @@ export default function NoticeSection({
         <Image
           src={noticeGraphicImg}
           alt=""
-          style={{
-            position: 'absolute',
-            height: '100%',
-            width: '100%',
-            inset: 0,
-          }}
+          className="absolute inset-0 h-full w-full"
         />
       </div>
       <div className="flex flex-col px-7 pb-6.5 pt-12 sm:absolute sm:bottom-12 sm:right-12 sm:w-132 sm:p-0">

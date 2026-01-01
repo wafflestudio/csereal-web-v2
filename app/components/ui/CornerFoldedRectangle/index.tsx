@@ -1,69 +1,82 @@
-import type { CSSProperties, ReactNode } from 'react';
-
-import type { ColorTheme } from '~/constants/color';
+import clsx from 'clsx';
+import type { ReactNode } from 'react';
 
 import styles from './style.module.css';
 
+type ColorTheme = 'orange' | 'lightGray' | 'black' | 'darkGray';
+type Size = 'small' | 'large';
+type Shadow = 'light' | 'medium';
+
 interface CornerFoldedRectangleProps {
   colorTheme: ColorTheme;
-  triangleLength: number; // rem 단위
-  triangleDropShadow: string; // 기본 css `filter` 속성에 들어가는 형식 (tailwind X)
-  rectangleDropShadow?: string; // 기본 css `filter` 속성에 들어가는 형식 (tailwind X)
-  margin?: string; // tailwind 형식
-  radius: number; // rem 단위
+  size?: Size;
+  shadow?: Shadow;
+  margin?: string;
   animationType?: 'folding' | 'unfolding';
   width?: string;
   children: ReactNode;
 }
 
+const colorThemeMap: Record<ColorTheme, { rect: string; triangle: string }> = {
+  orange: { rect: styles.themeOrange, triangle: styles.triangleOrange },
+  lightGray: {
+    rect: styles.themeLightGray,
+    triangle: styles.triangleLightGray,
+  },
+  black: { rect: styles.themeBlack, triangle: styles.triangleBlack },
+  darkGray: { rect: styles.themeDarkGray, triangle: styles.triangleDarkGray },
+};
+
+const sizeMap: Record<Size, string> = {
+  small: styles.triangleSizeSmall,
+  large: styles.triangleSizeLarge,
+};
+
+const shadowMap: Record<Shadow, string> = {
+  light: styles.shadowLight,
+  medium: styles.shadowMedium,
+};
+
 export default function CornerFoldedRectangle({
   colorTheme,
-  triangleLength,
-  triangleDropShadow,
-  rectangleDropShadow,
+  size = 'small',
+  shadow = 'medium',
   margin,
-  radius,
   animationType,
   width = 'w-fit',
   children,
 }: CornerFoldedRectangleProps) {
-  const rectangleStyle: CSSProperties = {
-    backgroundColor: colorTheme.bgColor,
-    border: `1px solid ${colorTheme.borderColor}`,
-    borderRadius: `${radius}rem`,
-    filter: rectangleDropShadow,
-  };
-
-  const triangleStyle: CSSProperties = {
-    borderWidth: `${triangleLength}rem 0 0 ${triangleLength}rem`,
-    borderColor: `transparent transparent ${colorTheme.triangleColor} ${colorTheme.triangleColor}`,
-    borderBottomLeftRadius: `${radius}rem`,
-    filter: triangleDropShadow,
-  };
+  const themeClasses = colorThemeMap[colorTheme];
+  const sizeClass = sizeMap[size];
+  const shadowClass = shadowMap[shadow];
 
   if (animationType) {
     return (
       <div
-        className={`relative ${width} ${margin} ${styles.animated} ${styles[animationType]}`}
-        style={rectangleStyle}
+        className={clsx(
+          'relative',
+          width,
+          margin,
+          themeClasses.rect,
+          styles.animated,
+          styles[animationType],
+        )}
       >
         {children}
       </div>
     );
   }
+
   return (
-    <div className={`relative ${width} ${margin}`} style={rectangleStyle}>
+    <div className={clsx('relative', width, margin, themeClasses.rect)}>
+      <div className={clsx(styles.triangle, styles.triangleWhite, sizeClass)} />
       <div
-        className={`absolute -right-px -top-px h-0 w-0 border-solid`}
-        style={{
-          borderWidth: `${triangleLength}rem 0 0 ${triangleLength}rem`,
-          borderColor: `#ffffff #ffffff ${colorTheme.triangleColor} ${colorTheme.triangleColor}`,
-          borderBottomLeftRadius: `${radius}rem`,
-        }}
-      />
-      <div
-        className={`absolute -right-px -top-px h-0 w-0 border-solid`}
-        style={triangleStyle}
+        className={clsx(
+          styles.triangle,
+          themeClasses.triangle,
+          sizeClass,
+          shadowClass,
+        )}
       />
       {children}
     </div>

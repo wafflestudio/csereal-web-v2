@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
+import { toast } from '~/components/ui/sonner';
 import Fieldset from '~/components/form/Fieldset';
 import Form from '~/components/form/Form';
 import LanguagePicker, {

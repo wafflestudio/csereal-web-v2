@@ -10,6 +10,7 @@ import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useAboutSubNav } from '~/hooks/useSubNav';
 import type { AboutContent } from '~/types/api/v2/about/content';
+import { processHtmlForCsp } from '~/utils/csp';
 import { getLocaleFromPathname } from '~/utils/string';
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -21,7 +22,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   );
   if (!response.ok) throw new Error('Failed to fetch greetings');
 
-  return (await response.json()) as AboutContent;
+  const data = (await response.json()) as AboutContent;
+
+  return {
+    ...data,
+    description: processHtmlForCsp(data.description),
+  };
 }
 
 const META = {

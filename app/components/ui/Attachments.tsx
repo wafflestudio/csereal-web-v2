@@ -1,7 +1,7 @@
 import Image from '~/components/ui/Image';
 import type { Attachment } from '~/types/api/v2/attachment';
 import { formatBytes } from '~/utils/string';
-import clipIcon from './assets/clip.svg';
+import ClipIcon from './assets/clip.svg?react';
 
 interface AttachmentsProps {
   files: Attachment[];
@@ -38,7 +38,7 @@ export default function Attachments({ files }: AttachmentsProps) {
         );
       })}
 
-      <Image src={clipIcon} alt="" className="absolute right-2 -top-6" />
+      <ClipIcon className="absolute right-2 -top-6" />
     </div>
   );
 }

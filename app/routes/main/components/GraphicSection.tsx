@@ -10,13 +10,7 @@ export default function GraphicSection() {
       <Image
         src={backgroundImg}
         alt=""
-        className="object-cover sm:hidden"
-        style={{
-          position: 'absolute',
-          height: '100%',
-          width: '100%',
-          inset: 0,
-        }}
+        className="absolute inset-0 h-full w-full object-cover sm:hidden"
       />
       <DownArrowIcon className="bottom-20 left-1/2 hidden -translate-x-1/2 animate-arrowBounce sm:absolute" />
       <Image
@@ -43,10 +37,7 @@ const SloganP = ({
   className: string;
   children: ReactNode;
 }) => (
-  <p
-    className={`font-gowun-batang text-[1.8rem] text-white ${className}`}
-    style={{ fontFamily: 'Gowun Batang, serif' }}
-  >
+  <p className={`font-[Gowun_Batang] text-[1.8rem] text-white ${className}`}>
     {children}
   </p>
 );

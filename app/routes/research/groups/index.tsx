@@ -6,7 +6,6 @@ import {
   useNavigate,
   useRevalidator,
 } from 'react-router';
-import { toast } from 'sonner';
 import LoginVisible from '~/components/feature/auth/LoginVisible';
 import SelectionList from '~/components/feature/selection/SelectionList';
 import PageLayout from '~/components/layout/PageLayout';
@@ -14,11 +13,13 @@ import AlertDialog from '~/components/ui/AlertDialog';
 import Button from '~/components/ui/Button';
 import HTMLViewer from '~/components/ui/HTMLViewer';
 import Image from '~/components/ui/Image';
+import { toast } from '~/components/ui/sonner';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useSelectionList } from '~/hooks/useSelectionList';
 import { useResearchSubNav } from '~/hooks/useSubNav';
 import type { ResearchGroupsResponse } from '~/types/api/v2/research/groups';
+import { processHtmlForCsp } from '~/utils/csp';
 import { fetchJson, fetchOk } from '~/utils/fetch';
 import { getLocaleFromPathname } from '~/utils/string';
 
@@ -34,7 +35,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   );
   if (!response.ok) throw new Error('Failed to fetch research groups');
 
-  return (await response.json()) as ResearchGroupsResponse;
+  const data = (await response.json()) as ResearchGroupsResponse;
+
+  return data.map((group) => ({
+    ...group,
+    description: processHtmlForCsp(group.description),
+  }));
 }
 
 const META = {

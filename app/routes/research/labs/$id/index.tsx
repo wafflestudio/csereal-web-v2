@@ -7,10 +7,10 @@ import Button from '~/components/ui/Button';
 import CornerFoldedRectangle from '~/components/ui/CornerFoldedRectangle';
 import HTMLViewer from '~/components/ui/HTMLViewer';
 import { BASE_URL } from '~/constants/api';
-import { COLOR_THEME } from '~/constants/color';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useResearchSubNav } from '~/hooks/useSubNav';
 import type { ResearchLabWithLanguage } from '~/types/api/v2/research/labs';
+import { processHtmlForCsp } from '~/utils/csp';
 import { stripHtml, truncateDescription } from '~/utils/metadata';
 import { encodeParam, getLocaleFromPathname } from '~/utils/string';
 import PentagonLong from '../assets/pentagon_long.svg?react';
@@ -32,7 +32,11 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   }
 
   const data = (await response.json()) as ResearchLabWithLanguage;
-  return data[locale];
+
+  return {
+    ...data[locale],
+    description: processHtmlForCsp(data[locale].description),
+  };
 }
 
 export default function ResearchLabDetailPage({
@@ -53,8 +57,8 @@ export default function ResearchLabDetailPage({
     locale === 'en' ? `${lab.name} | Research Lab` : `${lab.name} | 연구실`;
 
   const professorNames = lab.professors.map((p) => p.name).join(', ');
-  const pageDescription = lab.description
-    ? truncateDescription(stripHtml(lab.description))
+  const pageDescription = lab.description?.html
+    ? truncateDescription(stripHtml(lab.description.html))
     : locale === 'en'
       ? `${lab.name} research laboratory${professorNames ? ` - Professor: ${professorNames}` : ''}`
       : `${lab.name} 연구실${professorNames ? ` - 교수: ${professorNames}` : ''}`;
@@ -122,20 +126,15 @@ function LabSummary({
   localizedPath,
   labels,
 }: {
-  lab: ResearchLabWithLanguage['ko'];
+  lab: ProcessedLab;
   localizedPath: (path: string) => string;
   labels: { professor: string; lab: string; tel: string };
 }) {
-  const dropShadow = 'drop-shadow(1px 2px 2px rgba(0,0,0,0.25))';
-  const triangleLength = 2.5; // 20px
-  const radius = 0.125; // 2px
-
   return (
     <CornerFoldedRectangle
-      triangleDropShadow={dropShadow}
-      radius={radius}
-      triangleLength={triangleLength}
-      colorTheme={COLOR_THEME.black}
+      colorTheme="black"
+      size="large"
+      shadow="light"
       margin="sm:mt-[-64px] sm:mb-11 sm:ml-11"
     >
       <ul className="flex h-40 w-60 flex-col gap-1 px-6 py-5">
@@ -180,6 +179,10 @@ function LabSummary({
     </CornerFoldedRectangle>
   );
 }
+
+type ProcessedLab = Omit<ResearchLabWithLanguage['ko'], 'description'> & {
+  description: import('~/utils/csp').ProcessedHtml;
+};
 
 function StreamLink({
   groupName,

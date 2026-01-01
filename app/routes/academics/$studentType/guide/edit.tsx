@@ -1,7 +1,7 @@
 import type { Route } from '.react-router/types/app/routes/academics/$studentType/guide/+types/edit';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
+import { toast } from '~/components/ui/sonner';
 import Fieldset from '~/components/form/Fieldset';
 import Form from '~/components/form/Form';
 import PageLayout from '~/components/layout/PageLayout';

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
+import { toast } from '~/components/ui/sonner';
 import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
 import { isLocalFile } from '~/types/form';

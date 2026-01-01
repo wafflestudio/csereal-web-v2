@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import { useRevalidator } from 'react-router';
-import { toast } from 'sonner';
 import LoginVisible from '~/components/feature/auth/LoginVisible';
 import SelectionTitle from '~/components/feature/selection/SelectionTitle';
 import AlertDialog from '~/components/ui/AlertDialog';
 import Button from '~/components/ui/Button';
 import HTMLViewer from '~/components/ui/HTMLViewer';
+import { toast } from '~/components/ui/sonner';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { Club } from '~/types/api/v2/about/student-clubs';
+import type { ProcessedHtml } from '~/utils/csp';
 import { fetchOk } from '~/utils/fetch';
 
 interface ClubDetailsProps {
-  club: { ko: Club; en: Club };
+  club: { ko: ProcessedClub; en: ProcessedClub };
   locale: 'ko' | 'en';
 }
+
+type ProcessedClub = Omit<Club, 'description'> & { description: ProcessedHtml };
 
 export default function ClubDetails({ club, locale }: ClubDetailsProps) {
   const revalidator = useRevalidator();
@@ -22,12 +25,12 @@ export default function ClubDetails({ club, locale }: ClubDetailsProps) {
 
   const oppositeLocale = locale === 'ko' ? 'en' : 'ko';
   const image = club[locale].imageURL
-    ? {
+    ? ({
         src: club[locale].imageURL,
         width: 320,
         height: 200,
         mobileFullWidth: true,
-      }
+      } as const)
     : undefined;
 
   const handleDelete = async () => {

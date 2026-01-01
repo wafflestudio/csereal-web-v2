@@ -1,6 +1,5 @@
 import { Link } from 'react-router';
 import CornerFoldedRectangle from '~/components/ui/CornerFoldedRectangle';
-import { COLOR_THEME } from '~/constants/color';
 import type { SelectionListItem } from '~/hooks/useSelectionList';
 
 interface SelectionListProps {
@@ -31,18 +30,14 @@ interface SelectionItemProps {
 function SelectionItem({ name, isSelected, href }: SelectionItemProps) {
   const itemCommonStyle =
     'flex items-center justify-center w-full h-10 py-3 text-center text-[11px] sm:text-sm lg:text-md tracking-wide';
-  const triangleLength = 1.25; // 20px
-  const radius = 0.125; // 2px
-  const dropShadow = 'drop-shadow(1px 2px 2px rgba(0,0,0,0.3)';
 
   return (
     <li>
       {isSelected ? (
         <CornerFoldedRectangle
-          colorTheme={COLOR_THEME.orange}
-          triangleLength={triangleLength}
-          radius={radius}
-          triangleDropShadow={dropShadow}
+          colorTheme="orange"
+          size="small"
+          shadow="medium"
           width="w-full"
         >
           <span className={`${itemCommonStyle} font-medium text-neutral-50`}>
@@ -51,10 +46,9 @@ function SelectionItem({ name, isSelected, href }: SelectionItemProps) {
         </CornerFoldedRectangle>
       ) : (
         <CornerFoldedRectangle
-          colorTheme={COLOR_THEME.lightGray}
-          triangleLength={triangleLength}
-          radius={radius}
-          triangleDropShadow={dropShadow}
+          colorTheme="lightGray"
+          size="small"
+          shadow="medium"
           animationType="folding"
           width="w-full"
         >

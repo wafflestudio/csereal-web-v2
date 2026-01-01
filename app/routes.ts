@@ -232,7 +232,6 @@ export default [
     ...getLocaleRoutes('ko'),
     ...prefix('/en', [...getLocaleRoutes('en')]),
     _route('/admin', 'routes/admin/index.tsx'),
-    _route('/.ui', 'routes/ui/index.tsx'),
     _route('/.internal', 'routes/internal.tsx'),
   ]),
 ] satisfies RouteConfig;

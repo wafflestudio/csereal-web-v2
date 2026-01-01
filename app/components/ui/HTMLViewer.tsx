@@ -1,19 +1,21 @@
 import './assets/suneditor-contents.css';
 
-import { Autolinker } from 'autolinker';
+import clsx from 'clsx';
 import Image from '~/components/ui/Image';
+import { useNonce } from '~/hooks/useNonce';
 import useIsMobile from '~/hooks/useResponsive';
 import { type Falsy, isNotFalsy } from '~/types/utils';
+import type { ProcessedHtml } from '~/utils/csp';
 
 interface TopRightImage {
   src: string;
-  width: number;
+  width: 200 | 240 | 320;
   height: number;
   mobileFullWidth?: boolean;
 }
 
 interface HTMLViewerProps {
-  html: string;
+  html: ProcessedHtml;
   image?: TopRightImage | Falsy;
   component?: React.ReactNode | Falsy;
 }
@@ -24,19 +26,9 @@ export default function HTMLViewer({
   component,
 }: HTMLViewerProps) {
   const isMobile = useIsMobile();
+  const nonce = useNonce();
 
-  // 400.XXX같은 값들이 링크 처리되는걸 막기 위해 tldMatches false처리
-  const linkedHTML = Autolinker.link(html, {
-    urls: { tldMatches: false },
-  }).trim();
-
-  // TODO: 이거 필요한지 확인
-  const trimmedHTML = linkedHTML.startsWith('<html>')
-    ? linkedHTML.slice(
-        linkedHTML.indexOf('<body>') + '<body>'.length,
-        linkedHTML.lastIndexOf('</body>') - '</body>'.length,
-      )
-    : linkedHTML;
+  const { html: trimmedHTML, cssRules, styleKey } = html;
 
   // image width 계산
   const hasImage = isNotFalsy(image);
@@ -52,8 +44,10 @@ export default function HTMLViewer({
     <div className="flow-root">
       {hasImage && (
         <div
-          className="relative mb-7 w-full sm:float-right sm:ml-7 sm:w-auto"
-          style={imageWidth ? { width: `${imageWidth}px` } : undefined}
+          className={clsx(
+            'relative mb-7 w-full sm:float-right sm:ml-7 sm:w-auto',
+            imageWidth ? IMAGE_WIDTH_CLASS[imageWidth] : null,
+          )}
         >
           <Image
             src={image.src}
@@ -67,9 +61,19 @@ export default function HTMLViewer({
       {hasComponent && <div className="relative float-right">{component}</div>}
       <div
         className="sun-editor-editable"
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: TODO 근데 대안이 있나?
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: HTML 콘텐츠 렌더링 필요
         dangerouslySetInnerHTML={{ __html: trimmedHTML }}
       />
+      {/* https://github.com/facebook/react/issues/32449 */}
+      <style href={styleKey} nonce={nonce} precedence="low">
+        {cssRules.join('\n')}
+      </style>
     </div>
   );
 }
+
+const IMAGE_WIDTH_CLASS: Record<TopRightImage['width'], string> = {
+  200: 'sm:w-[200px]',
+  240: 'sm:w-[240px]',
+  320: 'sm:w-[320px]',
+};

@@ -9,13 +9,19 @@ import { useAcademicsSubNav } from '~/hooks/useSubNav';
 import ScholarshipList from '~/routes/academics/components/ScholarshipList';
 import type { StudentType } from '~/types/api/v2/academics';
 import type { ScholarshipList as ScholarshipListType } from '~/types/api/v2/academics/scholarship';
+import { processHtmlForCsp } from '~/utils/csp';
 import { fetchJson } from '~/utils/fetch';
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { studentType } = params;
-  return await fetchJson<ScholarshipListType>(
+  const data = await fetchJson<ScholarshipListType>(
     `${BASE_URL}/v2/academics/${studentType}/scholarship`,
   );
+
+  return {
+    ...data,
+    description: processHtmlForCsp(data.description),
+  };
 }
 
 const META = {

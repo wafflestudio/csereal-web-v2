@@ -3,17 +3,18 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import type { LoaderFunctionArgs } from 'react-router';
 import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
 import PageLayout from '~/components/layout/PageLayout';
 import Attachments from '~/components/ui/Attachments';
 import HTMLViewer from '~/components/ui/HTMLViewer';
 import Node from '~/components/ui/Nodes';
+import { toast } from '~/components/ui/sonner';
 import { Tag } from '~/components/ui/Tag';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useCommunitySubNav } from '~/hooks/useSubNav';
 import PostFooter from '~/routes/community/components/PostFooter';
 import type { Notice } from '~/types/api/v2/notice';
+import { processHtmlForCsp } from '~/utils/csp';
 import { fetchOk } from '~/utils/fetch';
 import { stripHtml, truncateDescription } from '~/utils/metadata';
 import { getLocaleFromPathname } from '~/utils/string';
@@ -45,7 +46,12 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     throw new Response('Not Found', { status: 404 });
   }
 
-  return (await response.json()) as Notice;
+  const notice = (await response.json()) as Notice;
+
+  return {
+    ...notice,
+    description: processHtmlForCsp(notice.description),
+  };
 }
 
 export default function NoticeDetailPage({
@@ -62,8 +68,8 @@ export default function NoticeDetailPage({
   const pageTitle =
     locale === 'en' ? `${notice.title} | Notice` : `${notice.title} | 공지사항`;
 
-  const pageDescription = notice.description
-    ? truncateDescription(stripHtml(notice.description))
+  const pageDescription = notice.description?.html
+    ? truncateDescription(stripHtml(notice.description.html))
     : locale === 'en'
       ? 'Notice details from the Department of Computer Science and Engineering at Seoul National University.'
       : '서울대학교 컴퓨터공학부 공지사항 상세 내용입니다.';

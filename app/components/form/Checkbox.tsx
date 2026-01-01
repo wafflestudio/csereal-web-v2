@@ -25,7 +25,10 @@ export default function Checkbox({
   const isChecked = Array.isArray(tags) ? tags.includes(value) : Boolean(tags);
   const iconName = isChecked ? 'check_box' : 'check_box_outline_blank';
 
-  const { onChange: onChangeFromRegister, ...registerProps } = register(name, options);
+  const { onChange: onChangeFromRegister, ...registerProps } = register(
+    name,
+    options,
+  );
 
   const onChange: ChangeHandler = (e) => {
     onChangeFromProp?.(!isChecked);
@@ -35,14 +38,18 @@ export default function Checkbox({
   return (
     <label
       htmlFor={value}
-      className={clsx('group flex h-5 w-fit items-center gap-1 whitespace-nowrap', {
-        'cursor-pointer': !disabled,
-      })}
+      className={clsx(
+        'group flex h-5 w-fit items-center gap-1 whitespace-nowrap',
+        {
+          'cursor-pointer': !disabled,
+        },
+      )}
     >
       <span
         className={clsx(
           'material-symbols-rounded text-lg font-light text-neutral-400',
-          !disabled && 'group-hover:text-neutral-600 group-active:text-main-orange',
+          !disabled &&
+            'group-hover:text-neutral-600 group-active:text-main-orange',
           tags && 'text-neutral-600',
         )}
       >

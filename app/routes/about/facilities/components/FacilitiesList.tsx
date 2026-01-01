@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import { useRevalidator } from 'react-router';
-import { toast } from 'sonner';
 import LoginVisible from '~/components/feature/auth/LoginVisible';
 import AlertDialog from '~/components/ui/AlertDialog';
 import Button from '~/components/ui/Button';
 import HTMLViewer from '~/components/ui/HTMLViewer';
 import Image from '~/components/ui/Image';
+import { toast } from '~/components/ui/sonner';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { Facility } from '~/types/api/v2/about/facilities';
+import type { ProcessedHtml } from '~/utils/csp';
 import { fetchOk } from '~/utils/fetch';
-import distanceIcon from '../assets/distance.svg';
+import DistanceIcon from '../assets/distance.svg?react';
 
 export default function FacilitiesList({
   facilities,
 }: {
-  facilities: Facility[];
+  facilities: ProcessedFacility[];
 }) {
   return (
     <div className="mt-[-20px] flex flex-col divide-y divide-neutral-200">
@@ -25,7 +26,7 @@ export default function FacilitiesList({
   );
 }
 
-function FacilitiesRow({ facility }: { facility: Facility }) {
+function FacilitiesRow({ facility }: { facility: ProcessedFacility }) {
   const { localizedPath } = useLanguage({});
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const revalidator = useRevalidator();
@@ -53,7 +54,7 @@ function FacilitiesRow({ facility }: { facility: Facility }) {
           </h3>
           <HTMLViewer html={facility.description} />
           <div className="flex translate-x-[-4px] items-start gap-px">
-            <Image src={distanceIcon} alt="" className="shrink-0" />
+            <DistanceIcon className="shrink-0" />
             <p className="pt-0.5 text-md text-neutral-500">
               {facility.locations.join(', ')}
             </p>
@@ -105,3 +106,7 @@ function FacilitiesRowImage({ imageURL }: { imageURL: string }) {
     </div>
   );
 }
+
+type ProcessedFacility = Omit<Facility, 'description'> & {
+  description: ProcessedHtml;
+};

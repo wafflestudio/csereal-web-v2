@@ -7,6 +7,7 @@ import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useAboutSubNav } from '~/hooks/useSubNav';
 import type { FacilitiesResponse } from '~/types/api/v2/about/facilities';
+import { processHtmlForCsp } from '~/utils/csp';
 import { getLocaleFromPathname } from '~/utils/string';
 import FacilitiesList from './components/FacilitiesList';
 
@@ -17,7 +18,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if (!response.ok) throw new Error('Failed to fetch facilities');
 
   const facilities = (await response.json()) as FacilitiesResponse;
-  return facilities.map((facility) => facility[locale]);
+  return facilities.map((facility) => ({
+    ...facility[locale],
+    description: processHtmlForCsp(facility[locale].description),
+  }));
 }
 
 const META = {

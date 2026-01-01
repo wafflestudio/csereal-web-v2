@@ -8,6 +8,7 @@ import HTMLViewer from '~/components/ui/HTMLViewer';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useAboutSubNav } from '~/hooks/useSubNav';
+import { processHtmlForCsp } from '~/utils/csp';
 import { getLocaleFromPathname } from '~/utils/string';
 
 import './assets/contactfix.css';
@@ -25,7 +26,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   );
   if (!response.ok) throw new Error('Failed to fetch contact');
 
-  return (await response.json()) as ContactResponse;
+  const data = (await response.json()) as ContactResponse;
+
+  return {
+    ...data,
+    description: processHtmlForCsp(data.description),
+  };
 }
 
 const META = {

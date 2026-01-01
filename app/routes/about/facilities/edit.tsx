@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import type { LoaderFunctionArgs } from 'react-router';
 import { useNavigate, useSearchParams } from 'react-router';
-import { toast } from 'sonner';
+import { toast } from '~/components/ui/sonner';
 import Fieldset from '~/components/form/Fieldset';
 import Form from '~/components/form/Form';
 import LanguagePicker, {

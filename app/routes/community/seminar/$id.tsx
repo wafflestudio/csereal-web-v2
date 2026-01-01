@@ -4,17 +4,18 @@ import type { LoaderFunctionArgs } from 'react-router';
 import { useNavigate } from 'react-router';
 import 'dayjs/locale/ko';
 import type { ReactNode } from 'react';
-import { toast } from 'sonner';
 import PageLayout from '~/components/layout/PageLayout';
 import Attachments from '~/components/ui/Attachments';
 import HTMLViewer from '~/components/ui/HTMLViewer';
 import Image from '~/components/ui/Image';
 import Node from '~/components/ui/Nodes';
+import { toast } from '~/components/ui/sonner';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useCommunitySubNav } from '~/hooks/useSubNav';
 import PostFooter from '~/routes/community/components/PostFooter';
 import type { Seminar } from '~/types/api/v2/seminar';
+import { processHtmlForCsp } from '~/utils/csp';
 import { fetchOk } from '~/utils/fetch';
 import { stripHtml, truncateDescription } from '~/utils/metadata';
 import { getLocaleFromPathname } from '~/utils/string';
@@ -42,7 +43,17 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     throw new Response('Not Found', { status: 404 });
   }
 
-  return (await response.json()) as Seminar;
+  const seminar = (await response.json()) as Seminar;
+
+  return {
+    ...seminar,
+    description: seminar.description
+      ? processHtmlForCsp(seminar.description)
+      : null,
+    introduction: seminar.introduction
+      ? processHtmlForCsp(seminar.introduction)
+      : null,
+  };
 }
 
 export default function SeminarDetailPage({
@@ -69,8 +80,8 @@ export default function SeminarDetailPage({
       ? `${seminar.title} | Seminar`
       : `${seminar.title} | 세미나`;
 
-  const pageDescription = seminar.introduction
-    ? truncateDescription(stripHtml(seminar.introduction))
+  const pageDescription = seminar.introduction?.html
+    ? truncateDescription(stripHtml(seminar.introduction.html))
     : locale === 'en'
       ? 'Seminar information from the Department of Computer Science and Engineering at Seoul National University.'
       : '서울대학교 컴퓨터공학부 세미나 정보입니다.';

@@ -9,6 +9,7 @@ import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useAboutSubNav } from '~/hooks/useSubNav';
 import type { FutureCareersResponse } from '~/types/api/v2/about/future-careers';
+import { processHtmlForCsp } from '~/utils/csp';
 import { getLocaleFromPathname } from '~/utils/string';
 import CareerCompanies from './components/CareerCompanies';
 import CareerStat from './components/CareerStat';
@@ -22,7 +23,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   );
   if (!response.ok) throw new Error('Failed to fetch future careers');
 
-  return (await response.json()) as FutureCareersResponse;
+  const data = (await response.json()) as FutureCareersResponse;
+
+  return {
+    ...data,
+    description: processHtmlForCsp(data.description),
+  };
 }
 
 const META = {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRevalidator, useSearchParams } from 'react-router';
-import { toast } from 'sonner';
+import { toast } from '~/components/ui/sonner';
 import AlertDialog from '~/components/ui/AlertDialog';
 import Button from '~/components/ui/Button';
 import Pagination from '~/components/ui/Pagination';

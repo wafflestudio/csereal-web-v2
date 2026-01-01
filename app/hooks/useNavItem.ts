@@ -4,7 +4,6 @@ import { useLanguage } from '~/hooks/useLanguage';
 export function useNavItem() {
   const { pathWithoutLocale } = useLanguage();
   const activeItem = findNavItemByPath(navigationTree, pathWithoutLocale);
-
   return { activeItem };
 }
 

@@ -1,10 +1,10 @@
 import type { Route } from '.react-router/types/app/routes/community/faculty-recruitment/+types/edit';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
 import Fieldset from '~/components/form/Fieldset';
 import Form from '~/components/form/Form';
 import PageLayout from '~/components/layout/PageLayout';
+import { toast } from '~/components/ui/sonner';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { FacultyRecruitment } from '~/types/api/v2/recruit';
@@ -17,6 +17,7 @@ export async function loader() {
 }
 
 interface FormData {
+  title: string;
   description: string;
   image: EditorImage | null;
 }
@@ -42,33 +43,42 @@ export default function FacultyRecruitmentEditPage({
     navigate(localizedPath('/community/faculty-recruitment'));
   };
 
-  const onSubmit = methods.handleSubmit(async ({ description, image }) => {
-    try {
-      const formData = new FormData2();
-      formData.appendJson('request', {
-        // TODO: api에서도 필요없게
-        title: '',
-        description,
-        removeImage: data.mainImageUrl !== null && image === null,
-      });
-      formData.appendIfLocal('newMainImage', image);
+  const onSubmit = methods.handleSubmit(
+    async ({ title, description, image }) => {
+      try {
+        const formData = new FormData2();
+        formData.appendJson('request', {
+          title,
+          description,
+          removeImage: data.mainImageUrl !== null && image === null,
+        });
+        formData.appendIfLocal('newMainImage', image);
 
-      await fetchOk(`${BASE_URL}/v2/recruit`, {
-        method: 'PUT',
-        body: formData,
-      });
+        await fetchOk(`${BASE_URL}/v2/recruit`, {
+          method: 'PUT',
+          body: formData,
+        });
 
-      toast.success('신임교수초빙을 수정했습니다.');
-      navigate(localizedPath('/community/faculty-recruitment'));
-    } catch {
-      toast.error('신임교수초빙을 수정하지 못했습니다.');
-    }
-  });
+        toast.success('신임교수초빙을 수정했습니다.');
+        navigate(localizedPath('/community/faculty-recruitment'));
+      } catch {
+        toast.error('신임교수초빙을 수정하지 못했습니다.');
+      }
+    },
+  );
 
   return (
     <PageLayout title="신임교수초빙 편집" titleSize="xl">
       <FormProvider {...methods}>
         <Form>
+          <Fieldset.Title>
+            <Form.Text
+              name="title"
+              options={{
+                required: { value: true, message: '제목을 입력해주세요.' },
+              }}
+            />
+          </Fieldset.Title>
           <Fieldset.HTML>
             <Form.HTML
               name="description"

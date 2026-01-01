@@ -1,6 +1,18 @@
 import { useLanguage } from '~/hooks/useLanguage';
 
-export const useAboutSubNav = () => {
+export interface SubNavConfig {
+  title: string;
+  titlePath: string;
+  items: SubNavConfigItem[];
+}
+
+export interface SubNavConfigItem {
+  name: string;
+  path?: string;
+  depth?: 0 | 1 | 2;
+}
+
+export const useAboutSubNav = (): SubNavConfig => {
   const { t } = useLanguage();
 
   return {
@@ -19,7 +31,7 @@ export const useAboutSubNav = () => {
   };
 };
 
-export const useAdmissionsSubNav = () => {
+export const useAdmissionsSubNav = (): SubNavConfig => {
   const { t } = useLanguage();
 
   return {
@@ -77,7 +89,7 @@ export const useAdmissionsSubNav = () => {
   };
 };
 
-export const useCommunitySubNav = () => {
+export const useCommunitySubNav = (): SubNavConfig => {
   const { t } = useLanguage();
 
   return {
@@ -96,7 +108,7 @@ export const useCommunitySubNav = () => {
   };
 };
 
-export const usePeopleSubNav = () => {
+export const usePeopleSubNav = (): SubNavConfig => {
   const { t } = useLanguage();
 
   return {
@@ -110,7 +122,7 @@ export const usePeopleSubNav = () => {
   };
 };
 
-export const useResearchSubNav = () => {
+export const useResearchSubNav = (): SubNavConfig => {
   const { t } = useLanguage();
 
   return {
@@ -129,7 +141,7 @@ export const useResearchSubNav = () => {
   };
 };
 
-export const useReservationsSubNav = () => {
+export const useReservationsSubNav = (): SubNavConfig => {
   const { tUnsafe } = useLanguage();
 
   return {
@@ -228,7 +240,7 @@ export const useReservationsSubNav = () => {
   };
 };
 
-export const useAcademicsSubNav = () => {
+export const useAcademicsSubNav = (): SubNavConfig => {
   const { t } = useLanguage();
 
   return {

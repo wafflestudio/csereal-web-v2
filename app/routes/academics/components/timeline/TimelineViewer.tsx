@@ -1,15 +1,20 @@
 import { useReducer, useState } from 'react';
 import { Link, useLocation, useRevalidator } from 'react-router';
-import { toast } from 'sonner';
 import LoginVisible from '~/components/feature/auth/LoginVisible';
 import AlertDialog from '~/components/ui/AlertDialog';
 import Attachments from '~/components/ui/Attachments';
 import Button from '~/components/ui/Button';
 import HTMLViewer from '~/components/ui/HTMLViewer';
+import { toast } from '~/components/ui/sonner';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { TimelineContent } from '~/types/api/v2/academics';
+import type { ProcessedHtml } from '~/utils/csp';
 import { fetchOk } from '~/utils/fetch';
 import Timeline from './Timeline';
+
+type ProcessedTimelineContent = Omit<TimelineContent, 'description'> & {
+  description: ProcessedHtml;
+};
 
 interface TimelineViewerProps<T> {
   contents: T[];
@@ -17,7 +22,7 @@ interface TimelineViewerProps<T> {
   yearLimitCount?: number;
 }
 
-export default function TimelineViewer<T extends TimelineContent>({
+export default function TimelineViewer<T extends ProcessedTimelineContent>({
   contents,
   title,
   yearLimitCount = 10,
@@ -153,7 +158,7 @@ function ContentViewer({
   year,
   pathname,
 }: {
-  description: string;
+  description: ProcessedHtml;
   title: string;
   attachments: TimelineContent['attachments'];
   year: number;
@@ -179,7 +184,7 @@ function TogglableContentViewer({
   year,
   pathname,
 }: {
-  description: string;
+  description: ProcessedHtml;
   expandDefault?: boolean;
   title: string;
   attachments: TimelineContent['attachments'];
@@ -213,12 +218,12 @@ function TogglableContentViewer({
   );
 }
 
-const getSelectedContents = <T extends TimelineContent>(
+const getSelectedContents = <T extends ProcessedTimelineContent>(
   year: number,
   yearLimit: number,
   data: T[],
   t: (key: string) => string,
-): T[] | TimelineContent[] => {
+): T[] | ProcessedTimelineContent[] => {
   if (year <= yearLimit) return data.filter((d) => d.year <= yearLimit);
 
   const change = data.find((d) => d.year === year);
@@ -227,7 +232,11 @@ const getSelectedContents = <T extends TimelineContent>(
     : [
         {
           year,
-          description: `${year} ${t('내용은 없습니다.')}`,
+          description: {
+            html: `${year} ${t('내용은 없습니다.')}`,
+            cssRules: [],
+            styleKey: '0',
+          },
           attachments: [],
         },
       ];

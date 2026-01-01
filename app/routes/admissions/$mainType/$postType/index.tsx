@@ -1,4 +1,5 @@
 import type { Route } from '.react-router/types/app/routes/admissions/$mainType/$postType/+types/index';
+import { processHtmlForCsp } from '~/utils/csp';
 import { getLocaleFromPathname } from '~/utils/string';
 import AdmissionsPageContent from '../../components/AdmissionsPageContent';
 import { fetchAdmissions } from '../../components/fetchAdmissions';
@@ -38,7 +39,10 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     config.apiPostType as any,
   );
 
-  return { description: data[locale].description, layout: config.layout };
+  return {
+    description: processHtmlForCsp(data[locale].description),
+    layout: config.layout,
+  };
 }
 
 export default function AdmissionsPage({

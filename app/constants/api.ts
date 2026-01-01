@@ -2,8 +2,8 @@
 export const PHASE = import.meta.env.MODE;
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-// Phase flags
-export const IS_DEV = PHASE === 'development';
+export const IS_DEV = import.meta.env.DEV;
+
 export const IS_BETA = PHASE === 'beta';
 export const IS_PROD = PHASE === 'production';
 

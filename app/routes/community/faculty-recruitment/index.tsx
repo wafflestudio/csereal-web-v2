@@ -7,10 +7,16 @@ import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useCommunitySubNav } from '~/hooks/useSubNav';
 import type { FacultyRecruitment } from '~/types/api/v2/recruit';
+import { processHtmlForCsp } from '~/utils/csp';
 import { fetchJson } from '~/utils/fetch';
 
 export async function loader() {
-  return fetchJson<FacultyRecruitment>(`${BASE_URL}/v2/recruit`);
+  const data = await fetchJson<FacultyRecruitment>(`${BASE_URL}/v2/recruit`);
+
+  return {
+    ...data,
+    description: processHtmlForCsp(data.description),
+  };
 }
 
 const META = {
@@ -54,7 +60,7 @@ export default function FacultyRecruitmentPage({
           </Button>
         </div>
       </LoginVisible>
-
+      <h1 className="my-5 text-3xl font-bold">{data.title}</h1>
       <HTMLViewer
         html={data.description}
         image={

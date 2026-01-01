@@ -10,12 +10,18 @@ import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useAcademicsSubNav } from '~/hooks/useSubNav';
 import type { DegreeRequirements } from '~/types/api/v2/academics/undergraduate/degree-requirements';
+import { processHtmlForCsp } from '~/utils/csp';
 import { fetchJson } from '~/utils/fetch';
 
 export async function loader() {
-  return await fetchJson<DegreeRequirements>(
+  const data = await fetchJson<DegreeRequirements>(
     `${BASE_URL}/v2/academics/undergraduate/degree-requirements`,
   );
+
+  return {
+    ...data,
+    description: processHtmlForCsp(data.description),
+  };
 }
 
 const META = {

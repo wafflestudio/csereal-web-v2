@@ -1,5 +1,6 @@
 import type { Route } from '.react-router/types/app/+types/root';
 import {
+  data,
   Links,
   Meta,
   Outlet,
@@ -8,6 +9,7 @@ import {
   ScrollRestoration,
 } from 'react-router';
 import './app.css';
+import '~/components/ui/sonner/styles.css';
 import clsx from 'clsx';
 import Footer from '~/components/layout/Footer';
 import LNB from '~/components/layout/LeftNav';
@@ -15,12 +17,14 @@ import MobileNav from '~/components/layout/MobileNav';
 import { useLanguage } from '~/hooks/useLanguage';
 
 import 'dayjs/locale/ko';
-import { Toaster } from 'sonner';
+import { Toaster } from '~/components/ui/sonner';
+import { useNonce } from '~/hooks/useNonce';
 import useIsMobile from '~/hooks/useResponsive';
 import { useStore } from '~/store';
+import { createNonce, getCSPHeaders, nonceContext } from '~/utils/csp';
 
 // Loader for handling redirects
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const url = new URL(request.url);
   const pathname = url.pathname;
 
@@ -41,10 +45,29 @@ export async function loader({ request }: Route.LoaderArgs) {
     }
   }
 
-  return null;
+  const nonce = createNonce();
+
+  const headers = {
+    [import.meta.env.PROD
+      ? 'Content-Security-Policy'
+      : 'Content-Security-Policy-Report-Only']: getCSPHeaders(nonce),
+    /** @see https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security */
+    'Strict-Transport-Security': 'max-age=3600', // 1 hour. HTTPS only
+    'X-Frame-Options': 'SAMEORIGIN', // Prevent clickjacking
+    'X-Content-Type-Options': 'nosniff', // Prevent MIME type sniffing
+  };
+
+  context.set(nonceContext, nonce);
+
+  return data({ nonce }, { headers });
+}
+
+export function headers({ loaderHeaders }: Route.HeadersArgs) {
+  return loaderHeaders;
 }
 
 export default function App() {
+  const nonce = useNonce();
   const { locale, pathWithoutLocale } = useLanguage();
   const isMain = pathWithoutLocale === '/';
   const paddingLeft = isMain ? `sm:pl-[11rem]` : 'sm:pl-[6.25rem]';
@@ -58,6 +81,7 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {import.meta.env.PROD && <meta property="csp-nonce" nonce={nonce} />}
         <link rel="icon" href="/favicon.ico" />
         <Meta />
         <Links />
@@ -76,8 +100,8 @@ export default function App() {
           <Footer />
           <Toaster />
         </main>
-        <ScrollRestoration />
-        <Scripts />
+        <ScrollRestoration nonce={nonce} />
+        <Scripts nonce={nonce} />
       </body>
     </html>
   );

@@ -1,6 +1,9 @@
+import type { Route } from '.react-router/types/app/routes/10-10-project/+types/participants';
 import PageLayout from '~/components/layout/PageLayout';
 import HTMLViewer from '~/components/ui/HTMLViewer';
 import { useLanguage } from '~/hooks/useLanguage';
+import { processHtmlForCsp } from '~/utils/csp';
+import { getLocaleFromPathname } from '~/utils/string';
 
 const META = {
   ko: {
@@ -15,8 +18,22 @@ const META = {
   },
 };
 
-export default function TenTenParticipantsPage() {
-  const { t, localizedPath, locale } = useLanguage();
+export async function loader({ request }: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  const locale = getLocaleFromPathname(url.pathname);
+  const localizedPath = locale === 'en' ? '/en' : '';
+
+  return {
+    htmlContent: processHtmlForCsp(
+      buildHtmlContent(`${localizedPath}/people/faculty`),
+    ),
+  };
+}
+
+export default function TenTenParticipantsPage({
+  loaderData,
+}: Route.ComponentProps) {
+  const { t, locale } = useLanguage();
 
   const subNav = {
     title: t('10-10 Project'),
@@ -31,7 +48,26 @@ export default function TenTenParticipantsPage() {
     ],
   };
 
-  const htmlContent = `<h3><strong>Academic Excellence Team</strong><br /></h3>
+  const htmlContent = loaderData.htmlContent;
+
+  const meta = META[locale];
+
+  return (
+    <PageLayout
+      title={t('Participants(Professors)')}
+      titleSize="xl"
+      subNav={subNav}
+      pageTitle={meta.title}
+      pageDescription={meta.description}
+    >
+      <HTMLViewer html={htmlContent} />
+    </PageLayout>
+  );
+}
+
+const buildHtmlContent = (
+  facultyPath: string,
+) => `<h3><strong>Academic Excellence Team</strong><br /></h3>
 <p>Team Leader: Prof. U Kang</p>
 <p>Prof. Choong Gil Hur</p>
 <p>Prof. Tae Hyun Kim</p>
@@ -71,22 +107,5 @@ export default function TenTenParticipantsPage() {
 <p>Prof. Kun Soo Park</p>
 <p>Prof. Kwang Keun Yi</p>
 <p>
-  <a href="${localizedPath(
-    '/people/faculty',
-  )}">click here for detailed info of participants</a>
+  <a href="${facultyPath}">click here for detailed info of participants</a>
 </p>`;
-
-  const meta = META[locale];
-
-  return (
-    <PageLayout
-      title={t('Participants(Professors)')}
-      titleSize="xl"
-      subNav={subNav}
-      pageTitle={meta.title}
-      pageDescription={meta.description}
-    >
-      <HTMLViewer html={htmlContent} />
-    </PageLayout>
-  );
-}

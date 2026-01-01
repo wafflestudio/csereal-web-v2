@@ -185,7 +185,6 @@ export async function loader({ request }: { request: Request }) {
   if (cached) return cached;
 
   // 원본 이미지 fetch
-  console.log('fetching image from', imageUrl);
   const imageResponse = await fetchImageWithProdFallback(imageUrl);
 
   // 이미 AVIF면 스킵

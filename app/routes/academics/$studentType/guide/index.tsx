@@ -8,11 +8,19 @@ import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useAcademicsSubNav } from '~/hooks/useSubNav';
 import type { Guide } from '~/types/api/v2/academics';
+import { processHtmlForCsp } from '~/utils/csp';
 import { fetchJson } from '~/utils/fetch';
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { studentType } = params;
-  return fetchJson<Guide>(`${BASE_URL}/v2/academics/${studentType}/guide`);
+  const data = await fetchJson<Guide>(
+    `${BASE_URL}/v2/academics/${studentType}/guide`,
+  );
+
+  return {
+    ...data,
+    description: processHtmlForCsp(data.description),
+  };
 }
 
 const META = {

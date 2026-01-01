@@ -1,8 +1,7 @@
 import type { Route } from '.react-router/types/app/routes/people/faculty/+types/edit.$id';
 import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
-
 import PageLayout from '~/components/layout/PageLayout';
+import { toast } from '~/components/ui/sonner';
 import { BASE_URL } from '~/constants/api';
 import FacultyEditor, {
   type FacultyFormData,

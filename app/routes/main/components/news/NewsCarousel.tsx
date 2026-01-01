@@ -4,14 +4,19 @@ import type { MainNews } from '~/types/api/v2';
 import { animateScrollLeft } from './animateScrollTo';
 import PauseIcon from './assets/pause.svg?react';
 import PlayIcon from './assets/play.svg?react';
-import { CARD_GAP_REM, CARD_GAP_TAILWIND } from './constants';
+import { CARD_GAP_TAILWIND } from './constants';
 import NewsCard from './NewsCard';
 import useCarousel from './useCarousel';
-import { useCarouselLayout } from './useCarouselLayout';
+
+const widthMap = {
+  3: 'w-[45.35rem]',
+  4: 'w-[61.15rem]',
+} as const;
 
 export default function NewsCarousel({ news }: { news: MainNews[] }) {
   const {
     offsetREM,
+    cardCnt,
     pageCnt,
     setPage,
     page,
@@ -19,7 +24,6 @@ export default function NewsCarousel({ news }: { news: MainNews[] }) {
     startScroll,
     stopScroll,
   } = useCarousel(news);
-  const { widthREM } = useCarouselLayout();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,9 +34,10 @@ export default function NewsCarousel({ news }: { news: MainNews[] }) {
   return (
     <div className="flex flex-col items-center">
       <div
-        className={`no-scrollbar mx-auto flex overflow-x-hidden pb-10 ${CARD_GAP_TAILWIND}`}
+        className={`no-scrollbar mx-auto flex overflow-x-hidden pb-10 ${CARD_GAP_TAILWIND} ${
+          widthMap[cardCnt as 3 | 4]
+        }`}
         ref={containerRef}
-        style={{ width: `${widthREM - CARD_GAP_REM}rem` }}
       >
         {news.map((news) => (
           <NewsCard key={news.id} news={news} />
@@ -94,13 +99,15 @@ const PageIndicatorDot = ({
 } & ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
-      className="flex h-6 items-center justify-center duration-700 "
-      style={{ width: isHighlight ? '3.5rem' : '1.5rem' }}
+      className={`flex h-6 items-center justify-center duration-700 ${
+        isHighlight ? 'w-14' : 'w-6'
+      }`}
       {...props}
     >
       <div
-        className="mx-2 h-2 w-full rounded-full"
-        style={{ backgroundColor: isHighlight ? '#E65615' : '#D4D4D4' }}
+        className={`mx-2 h-2 w-full rounded-full ${
+          isHighlight ? 'bg-[#E65615]' : 'bg-neutral-300'
+        }`}
       />
     </button>
   );

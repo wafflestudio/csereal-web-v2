@@ -1,8 +1,6 @@
 import type { Route } from '.react-router/types/app/routes/+types/layout';
-import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { isRouteErrorResponse, Outlet, useNavigate } from 'react-router';
-import { Toaster } from 'sonner';
 import Header from '~/components/layout/Header';
 import ErrorState from '~/components/ui/ErrorState';
 import { BASE_URL } from '~/constants/api';
@@ -36,12 +34,7 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
     useStore.setState({ role: loaderData });
   }, [loaderData]);
 
-  return (
-    <>
-      <Outlet />
-      <Toaster />
-    </>
-  );
+  return <Outlet />;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

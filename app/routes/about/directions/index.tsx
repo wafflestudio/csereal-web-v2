@@ -11,6 +11,7 @@ import { useLanguage } from '~/hooks/useLanguage';
 import { useSelectionList } from '~/hooks/useSelectionList';
 import { useAboutSubNav } from '~/hooks/useSubNav';
 import type { DirectionsResponse } from '~/types/api/v2/about/directions';
+import { processHtmlForCsp } from '~/utils/csp';
 import { encodeParam } from '~/utils/string';
 import KakaoMap from './components/KakaoMap';
 
@@ -18,7 +19,18 @@ export async function loader() {
   const response = await fetch(`${BASE_URL}/v2/about/directions`);
   if (!response.ok) throw new Error('Failed to fetch directions');
 
-  return (await response.json()) as DirectionsResponse;
+  const data = (await response.json()) as DirectionsResponse;
+
+  return data.map((direction) => ({
+    ko: {
+      ...direction.ko,
+      description: processHtmlForCsp(direction.ko.description),
+    },
+    en: {
+      ...direction.en,
+      description: processHtmlForCsp(direction.en.description),
+    },
+  }));
 }
 
 const META = {
@@ -112,7 +124,9 @@ export default function DirectionsPage({
             </LoginVisible>
           </div>
           <div className="ml-2.5">
-            <HTMLViewer html={selectedDirection[locale]?.description} />
+            {selectedDirection[locale]?.description && (
+              <HTMLViewer html={selectedDirection[locale].description} />
+            )}
           </div>
         </div>
       )}

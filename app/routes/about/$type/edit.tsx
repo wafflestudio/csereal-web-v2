@@ -2,13 +2,13 @@ import type { Route } from '.react-router/types/app/routes/about/$type/+types/ed
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
 import Fieldset from '~/components/form/Fieldset';
 import Form from '~/components/form/Form';
 import LanguagePicker, {
   type Language,
 } from '~/components/form/LanguagePicker';
 import PageLayout from '~/components/layout/PageLayout';
+import { toast } from '~/components/ui/sonner';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { AboutContent } from '~/types/api/v2/about/content';

@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from 'react';
 import { useRevalidator } from 'react-router';
-import { toast } from 'sonner';
+import { toast } from '~/components/ui/sonner';
 import LoginVisible from '~/components/feature/auth/LoginVisible';
 import AlertDialog from '~/components/ui/AlertDialog';
 import Button from '~/components/ui/Button';

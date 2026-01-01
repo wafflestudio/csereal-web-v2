@@ -51,6 +51,8 @@ export default function useCarousel(news: MainNews[]) {
 
   return {
     offsetREM,
+    widthREM,
+    cardCnt,
     page,
     setPage,
     pageCnt,

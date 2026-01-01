@@ -1,15 +1,16 @@
 import type { Route } from '.react-router/types/app/routes/academics/$studentType/scholarship/$id/+types/index';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
 import LoginVisible from '~/components/feature/auth/LoginVisible';
 import PageLayout from '~/components/layout/PageLayout';
 import AlertDialog from '~/components/ui/AlertDialog';
 import Button from '~/components/ui/Button';
 import HTMLViewer from '~/components/ui/HTMLViewer';
+import { toast } from '~/components/ui/sonner';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useAcademicsSubNav } from '~/hooks/useSubNav';
+import { processHtmlForCsp } from '~/utils/csp';
 import { fetchJson, fetchOk } from '~/utils/fetch';
 import { stripHtml, truncateDescription } from '~/utils/metadata';
 
@@ -19,9 +20,13 @@ export async function loader({ params }: Route.LoaderArgs) {
     `${BASE_URL}/v2/academics/scholarship/${id}`,
   );
   const isFirstKo = res.first.language === 'ko';
-  return isFirstKo
-    ? { ko: res.first, en: res.second }
-    : { ko: res.second, en: res.first };
+  const ko = isFirstKo ? res.first : res.second;
+  const en = isFirstKo ? res.second : res.first;
+
+  return {
+    ko: { ...ko, description: processHtmlForCsp(ko.description) },
+    en: { ...en, description: processHtmlForCsp(en.description) },
+  };
 }
 
 export default function ScholarshipDetailPage({
@@ -50,8 +55,8 @@ export default function ScholarshipDetailPage({
       ? `${name} | ${studentType === 'graduate' ? 'Graduate' : 'Undergraduate'} Scholarship`
       : `${name} | ${studentLabel} 장학금`;
 
-  const pageDescription = scholarship.description
-    ? truncateDescription(stripHtml(scholarship.description))
+  const pageDescription = scholarship.description?.html
+    ? truncateDescription(stripHtml(scholarship.description.html))
     : locale === 'en'
       ? `${name} scholarship information for ${studentType === 'graduate' ? 'graduate' : 'undergraduate'} students at the Department of CSE, SNU.`
       : `서울대학교 컴퓨터공학부 ${studentLabel} ${name} 장학금 안내입니다.`;

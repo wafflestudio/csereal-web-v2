@@ -1,5 +1,5 @@
 import { useReducer } from 'react';
-import { toast } from 'sonner';
+import { toast } from '~/components/ui/sonner';
 import LoginVisible from '~/components/feature/auth/LoginVisible';
 import Button from '~/components/ui/Button';
 import { useLanguage } from '~/hooks/useLanguage';

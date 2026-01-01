@@ -5,13 +5,19 @@ import { useLanguage } from '~/hooks/useLanguage';
 import { useAcademicsSubNav } from '~/hooks/useSubNav';
 import TimelineViewer from '~/routes/academics/components/timeline/TimelineViewer';
 import type { TimelineContent } from '~/types/api/v2/academics';
+import { processHtmlForCsp } from '~/utils/csp';
 import { fetchJson } from '~/utils/fetch';
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { studentType } = params;
-  return await fetchJson<TimelineContent[]>(
+  const data = await fetchJson<TimelineContent[]>(
     `${BASE_URL}/v2/academics/${studentType}/course-changes`,
   );
+
+  return data.map((item) => ({
+    ...item,
+    description: processHtmlForCsp(item.description),
+  }));
 }
 
 const META = {

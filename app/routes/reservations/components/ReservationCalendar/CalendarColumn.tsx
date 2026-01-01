@@ -89,9 +89,10 @@ const CalendarCell = ({
       type="button"
       className="absolute flex w-full flex-col items-center bg-[#ff6914cc]"
       onClick={() => onSelectReservation(reservation.id)}
-      style={{
-        height: `${unitCnt * UNIT_HEIGHT_IN_REM}rem`,
-        top: `${topOffset}rem`,
+      // TODO: 더 나은 방법
+      ref={(ref) => {
+        if (ref) ref.style.height = `${unitCnt * UNIT_HEIGHT_IN_REM}rem`;
+        if (ref) ref.style.top = `${topOffset}rem`;
       }}
     >
       {unitCnt !== 1 && (

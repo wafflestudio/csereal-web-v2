@@ -1,3 +1,4 @@
+import type { Route } from '.react-router/types/app/routes/reservations/+types/introduction';
 import SelectionList from '~/components/feature/selection/SelectionList';
 import SelectionTitle from '~/components/feature/selection/SelectionTitle';
 import PageLayout from '~/components/layout/PageLayout';
@@ -5,6 +6,7 @@ import HTMLViewer from '~/components/ui/HTMLViewer';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useSelectionList } from '~/hooks/useSelectionList';
 import { useReservationsSubNav } from '~/hooks/useSubNav';
+import { processHtmlForCsp } from '~/utils/csp';
 
 const META = {
   ko: {
@@ -30,7 +32,9 @@ const HTML_CONTENTS = {
     '<p><span style="background-color: transparent">로그인 후 하위 메뉴에서 원하는 공간을 선택하여 예약하시면 됩니다.</span><br></p><p><strong>공과대학 강의실 예약 권한은 컴퓨터공학부 대학원생 및 연구원에게 부여되어 있습니다(학번 필요).<br></strong></p><p><strong><span style="color:red">코로나-19 상황으로 인하여 한시적으로 중간.기말고사 장소로 운영할 예정입니다.</span><br><span style="color:#3c7de4">2022년 2학기 중간.기말 고사 시험이 진행되는 일정의 사용에 대해서만 예약 및 사용이 가능하오니 참고하여 주시기 바랍니다.</span><br>(문의: 컴퓨터공학부 행정실 박서현 02-880-1850)</strong><br><br></p><ul><li>공과대학 강의실 예약 (중간, 기말고사 용도로만 사용가능)<br><ul><li>301-101 (54석) - 마이스누 예약하샤 시스템 이용<br></li><li>301-203 (72석) - 마이스누 예약하샤 시스템 이용<br></li><li>302-106 (52석) - 마이스누 예약하샤 시스템 이용<br></li><li>302-107 (55석) - 마이스누 예약하샤 시스템 이용<br></li><li>302-208 (78석) - 컴퓨터공학부 홈페이지 공과대학 강의실 예약 이용<br></li><li>302-209 (70석) - 컴퓨터공학부 홈페이지 공과대학 강의실 예약 이용<br></li></ul></li></ul><p>공과대학 강의실에서는 연구실 세미나를 진행하실 수 없으니 참고 바랍니다.<br><br><span>세미나는 <a rel="nofollow" href="/reservations/introduction?selected=세미나실-예약">컴퓨터공학부 세미나실</a> 을 이용하여 주시기 바랍니다.</span></p>',
 } as const;
 
-export default function ReservationsIntroductionPage() {
+export default function ReservationsIntroductionPage({
+  loaderData,
+}: Route.ComponentProps) {
   const { t, locale } = useLanguage();
   const subNav = useReservationsSubNav();
 
@@ -53,7 +57,19 @@ export default function ReservationsIntroductionPage() {
     >
       <SelectionList items={items} />
       <SelectionTitle title={selectedName} animateKey={selectedName} />
-      <HTMLViewer html={HTML_CONTENTS[selectedName]} />
+      <HTMLViewer html={loaderData.contents[selectedName]} />
     </PageLayout>
   );
+}
+
+export async function loader() {
+  return {
+    contents: {
+      '세미나실 예약': processHtmlForCsp(HTML_CONTENTS['세미나실 예약']),
+      '실습실 예약': processHtmlForCsp(HTML_CONTENTS['실습실 예약']),
+      '공과대학 강의실 예약': processHtmlForCsp(
+        HTML_CONTENTS['공과대학 강의실 예약'],
+      ),
+    },
+  };
 }

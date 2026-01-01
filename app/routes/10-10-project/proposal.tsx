@@ -1,6 +1,9 @@
+import type { Route } from '.react-router/types/app/routes/10-10-project/+types/proposal';
 import PageLayout from '~/components/layout/PageLayout';
 import HTMLViewer from '~/components/ui/HTMLViewer';
 import { useLanguage } from '~/hooks/useLanguage';
+import { processHtmlForCsp } from '~/utils/csp';
+import { getLocaleFromPathname } from '~/utils/string';
 
 const META = {
   ko: {
@@ -15,8 +18,25 @@ const META = {
   },
 };
 
-export default function TenTenProposalPage() {
-  const { t, localizedPath, locale } = useLanguage();
+export async function loader({ request }: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  const locale = getLocaleFromPathname(url.pathname);
+  const prefix = locale === 'en' ? '/en' : '';
+
+  return {
+    htmlContent: processHtmlForCsp(
+      buildHtmlContent(
+        `${prefix}/10-10-project/manager`,
+        `${prefix}/10-10-project/participants`,
+      ),
+    ),
+  };
+}
+
+export default function TenTenProposalPage({
+  loaderData,
+}: Route.ComponentProps) {
+  const { t, locale } = useLanguage();
 
   const subNav = {
     title: t('10-10 Project'),
@@ -31,7 +51,25 @@ export default function TenTenProposalPage() {
     ],
   };
 
-  const htmlContent = `<h2>1. Executive Summary</h2>
+  const htmlContent = loaderData.htmlContent;
+
+  const meta = META[locale];
+
+  return (
+    <PageLayout
+      title={t('Proposal')}
+      titleSize="xl"
+      subNav={subNav}
+      pageTitle={meta.title}
+      pageDescription={meta.description}
+    >
+      <HTMLViewer html={htmlContent} />
+    </PageLayout>
+  );
+}
+
+const buildHtmlContent = (managerPath: string, participantsPath: string) =>
+  `<h2>1. Executive Summary</h2>
 <hr class="__se__solid" />
 <p>
   The goal of this project is to propel the Department of Computer Science and Engineering (CSE) at
@@ -136,9 +174,7 @@ export default function TenTenProposalPage() {
 
 <hr class="__se__solid" />
 <p>
-<a href="${localizedPath(
-    '/10-10-project/manager',
-  )}" rel="nofollow">professor-soonhoi-ha</a>
+<a href="${managerPath}" rel="nofollow">professor-soonhoi-ha</a>
 </p>
 
 <p>
@@ -149,25 +185,5 @@ export default function TenTenProposalPage() {
   >
 </p>
 
-<p><a
-    href="${localizedPath('/10-10-project/participants')}"
-    rel="nofollow"
-    >Team Organization and Participants</a
-  >
-</p>
+<p><a href="${participantsPath}" rel="nofollow">Team Organization and Participants</a></p>
 `;
-
-  const meta = META[locale];
-
-  return (
-    <PageLayout
-      title={t('Proposal')}
-      titleSize="xl"
-      subNav={subNav}
-      pageTitle={meta.title}
-      pageDescription={meta.description}
-    >
-      <HTMLViewer html={htmlContent} />
-    </PageLayout>
-  );
-}

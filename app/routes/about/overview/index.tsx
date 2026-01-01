@@ -10,6 +10,7 @@ import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import commonTranslations from '~/translations.json';
 import type { AboutContent } from '~/types/api/v2/about/content';
+import { processHtmlForCsp } from '~/utils/csp';
 import { getLocaleFromPathname } from '~/utils/string';
 import brochure1 from '../assets/brochure1.png';
 import brochure2 from '../assets/brochure2.png';
@@ -24,7 +25,12 @@ export async function loader({ request }: Route.LoaderArgs) {
   if (!response.ok)
     throw new Error('Failed to fetch overview data', { cause: response });
 
-  return (await response.json()) as AboutContent;
+  const data = (await response.json()) as AboutContent;
+
+  return {
+    ...data,
+    description: processHtmlForCsp(data.description),
+  };
 }
 
 const META = {

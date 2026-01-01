@@ -2,7 +2,7 @@ import type { Route } from '.react-router/types/app/routes/community/news/+types
 import dayjs from 'dayjs';
 import type { LoaderFunctionArgs } from 'react-router';
 import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
+import { toast } from '~/components/ui/sonner';
 import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
 import type { News } from '~/types/api/v2/news';

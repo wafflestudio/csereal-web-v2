@@ -5,14 +5,20 @@ import { useLanguage } from '~/hooks/useLanguage';
 import { useAcademicsSubNav } from '~/hooks/useSubNav';
 import TimelineViewer from '~/routes/academics/components/timeline/TimelineViewer';
 import type { TimelineContent } from '~/types/api/v2/academics';
+import { processHtmlForCsp } from '~/utils/csp';
 import { fetchJson } from '~/utils/fetch';
 
 import './assets/curriculumfix.css';
 
 export async function loader() {
-  return await fetchJson<TimelineContent[]>(
+  const data = await fetchJson<TimelineContent[]>(
     `${BASE_URL}/v2/academics/undergraduate/curriculum`,
   );
+
+  return data.map((item) => ({
+    ...item,
+    description: processHtmlForCsp(item.description),
+  }));
 }
 
 const META = {

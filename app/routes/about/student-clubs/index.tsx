@@ -8,6 +8,7 @@ import { useLanguage } from '~/hooks/useLanguage';
 import { useSelectionList } from '~/hooks/useSelectionList';
 import { useAboutSubNav } from '~/hooks/useSubNav';
 import type { StudentClubsResponse } from '~/types/api/v2/about/student-clubs';
+import { processHtmlForCsp } from '~/utils/csp';
 import { fetchJson } from '~/utils/fetch';
 import ClubDetails from './components/ClubDetails';
 
@@ -15,7 +16,17 @@ export async function loader() {
   const response = await fetchJson<StudentClubsResponse>(
     `${BASE_URL}/v2/about/student-clubs`,
   );
-  return response;
+
+  return response.map((club) => ({
+    ko: {
+      ...club.ko,
+      description: processHtmlForCsp(club.ko.description),
+    },
+    en: {
+      ...club.en,
+      description: processHtmlForCsp(club.en.description),
+    },
+  }));
 }
 
 const META = {

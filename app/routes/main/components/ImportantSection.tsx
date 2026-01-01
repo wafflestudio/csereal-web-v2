@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import Image from '~/components/ui/Image';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { MainImportant } from '~/types/api/v2';
 import charityImg from '../assets/charity.png';
@@ -41,13 +42,17 @@ const ImportantBanner = ({ important }: { important: MainImportant }) => {
 const CharityBanner = () => (
   <a
     href="https://computingcommons.snu.ac.kr/"
-    className="relative flex h-[7.5rem] flex-col gap-[0.62rem] bg-cover px-[1.75rem] pt-[1.63rem]"
-    style={{ backgroundImage: `url(${charityImg})` }}
+    className="relative flex h-[7.5rem] flex-col gap-[0.62rem] px-[1.75rem] pt-[1.63rem]"
   >
-    <h3 className="line-clamp-1 text-lg font-semibold text-neutral-950">
+    <Image
+      src={charityImg}
+      alt=""
+      className="absolute inset-0 h-full w-full object-cover"
+    />
+    <h3 className="relative z-10 line-clamp-1 text-lg font-semibold text-neutral-950">
       SNU Computing Commons 건축기금 모금
     </h3>
-    <p className="line-clamp-1 text-sm font-normal text-neutral-800">
+    <p className="relative z-10 line-clamp-1 text-sm font-normal text-neutral-800">
       서울대학교 발전재단 X 컴퓨터공학부
     </p>
     <ImportantSectionArrow />

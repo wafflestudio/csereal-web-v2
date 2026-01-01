@@ -1,7 +1,7 @@
 import { useReducer, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useRevalidator } from 'react-router';
-import { toast } from 'sonner';
+import { toast } from '~/components/ui/sonner';
 import LoginVisible from '~/components/feature/auth/LoginVisible';
 import Form from '~/components/form/Form';
 import AlertDialog from '~/components/ui/AlertDialog';

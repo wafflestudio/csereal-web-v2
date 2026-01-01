@@ -2,17 +2,18 @@ import type { Route } from '.react-router/types/app/routes/community/news/+types
 import dayjs from 'dayjs';
 import type { LoaderFunctionArgs } from 'react-router';
 import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
 import PageLayout from '~/components/layout/PageLayout';
 import Attachments from '~/components/ui/Attachments';
 import HTMLViewer from '~/components/ui/HTMLViewer';
 import Node from '~/components/ui/Nodes';
+import { toast } from '~/components/ui/sonner';
 import { Tag } from '~/components/ui/Tag';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useCommunitySubNav } from '~/hooks/useSubNav';
 import PostFooter from '~/routes/community/components/PostFooter';
 import type { News } from '~/types/api/v2/news';
+import { processHtmlForCsp } from '~/utils/csp';
 import { fetchOk } from '~/utils/fetch';
 import { stripHtml, truncateDescription } from '~/utils/metadata';
 import { getLocaleFromPathname } from '~/utils/string';
@@ -44,7 +45,12 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     throw new Response('Not Found', { status: 404 });
   }
 
-  return (await response.json()) as News;
+  const news = (await response.json()) as News;
+
+  return {
+    ...news,
+    description: processHtmlForCsp(news.description),
+  };
 }
 
 export default function NewsDetailPage({
@@ -58,8 +64,8 @@ export default function NewsDetailPage({
   const pageTitle =
     locale === 'en' ? `${news.title} | News` : `${news.title} | 새 소식`;
 
-  const pageDescription = news.description
-    ? truncateDescription(stripHtml(news.description))
+  const pageDescription = news.description?.html
+    ? truncateDescription(stripHtml(news.description.html))
     : locale === 'en'
       ? 'News from the Department of Computer Science and Engineering at Seoul National University.'
       : '서울대학교 컴퓨터공학부의 새 소식입니다.';

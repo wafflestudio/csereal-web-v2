@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRevalidator } from 'react-router';
-import { toast } from 'sonner';
+import { toast } from '~/components/ui/sonner';
 import { postReservation } from '~/routes/reservations/api';
 import type { ReservationPostBody } from '~/types/api/v2/reservation';
 import {

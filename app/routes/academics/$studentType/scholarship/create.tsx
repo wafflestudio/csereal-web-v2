@@ -1,6 +1,6 @@
 import type { Route } from '.react-router/types/app/routes/academics/$studentType/scholarship/+types/create';
 import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
+import { toast } from '~/components/ui/sonner';
 import PageLayout from '~/components/layout/PageLayout';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';

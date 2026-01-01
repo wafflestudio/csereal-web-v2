@@ -5,7 +5,6 @@ import LNBMenuItem from './LeftNavMenuItem';
 
 export default function LNBDetail() {
   const navbarState = useStore((s) => s.navbarState);
-  const { activeItem } = useNavItem();
 
   if (navbarState.type !== 'hovered') return null;
 
@@ -15,22 +14,26 @@ export default function LNBDetail() {
       role="menu"
       aria-label="서브 네비게이션"
     >
-      <NavTree item={navbarState.navItem} activeItem={activeItem} />
+      <NavTree item={navbarState.navItem} />
     </div>
   );
 }
 
 interface NavTreeProps {
   item: NavItem;
-  activeItem: NavItem | null;
   depth?: number;
 }
 
-function NavTree({ item, activeItem, depth = 0 }: NavTreeProps) {
+function NavTree({ item, depth = 0 }: NavTreeProps) {
+  const { activeItem } = useNavItem();
   const childItems = item.children || [];
   const closeNavbar = useStore((s) => s.closeNavbar);
 
-  const isHighlighted = item.path?.startsWith(activeItem?.path || '') ?? false;
+  const isHighlighted =
+    activeItem?.path !== undefined &&
+    item.path !== undefined &&
+    (activeItem.path === item.path ||
+      activeItem.path.startsWith(`${item.path}/`));
 
   return (
     <>
@@ -45,12 +48,7 @@ function NavTree({ item, activeItem, depth = 0 }: NavTreeProps) {
       {childItems.length > 0 && (
         <div className="mb-11 ml-5">
           {childItems.map((child, i) => (
-            <NavTree
-              key={i}
-              item={child}
-              activeItem={activeItem}
-              depth={depth + 1}
-            />
+            <NavTree key={i} item={child} depth={depth + 1} />
           ))}
         </div>
       )}

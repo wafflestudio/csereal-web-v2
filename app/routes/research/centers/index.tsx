@@ -1,7 +1,6 @@
 import type { Route } from '.react-router/types/app/routes/research/centers/+types/index';
 import { useState } from 'react';
 import { type LoaderFunctionArgs, useRevalidator } from 'react-router';
-import { toast } from 'sonner';
 import LoginVisible from '~/components/feature/auth/LoginVisible';
 import SelectionList from '~/components/feature/selection/SelectionList';
 import PageLayout from '~/components/layout/PageLayout';
@@ -9,11 +8,13 @@ import AlertDialog from '~/components/ui/AlertDialog';
 import Button from '~/components/ui/Button';
 import HTMLViewer from '~/components/ui/HTMLViewer';
 import Node from '~/components/ui/Nodes';
+import { toast } from '~/components/ui/sonner';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useSelectionList } from '~/hooks/useSelectionList';
 import { useResearchSubNav } from '~/hooks/useSubNav';
 import type { ResearchCentersResponse } from '~/types/api/v2/research/centers';
+import { processHtmlForCsp } from '~/utils/csp';
 import { fetchJson, fetchOk } from '~/utils/fetch';
 import { getLocaleFromPathname } from '~/utils/string';
 import LinkIcon from './assets/link_icon.svg?react';
@@ -30,7 +31,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   );
   if (!response.ok) throw new Error('Failed to fetch research centers');
 
-  return (await response.json()) as ResearchCentersResponse;
+  const data = (await response.json()) as ResearchCentersResponse;
+
+  return data.map((center) => ({
+    ...center,
+    description: processHtmlForCsp(center.description),
+  }));
 }
 
 const META = {

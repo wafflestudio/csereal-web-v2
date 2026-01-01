@@ -5,9 +5,10 @@ import HTMLViewer from '~/components/ui/HTMLViewer';
 import { useLanguage } from '~/hooks/useLanguage';
 import { useNavItem } from '~/hooks/useNavItem';
 import { useAdmissionsSubNav } from '~/hooks/useSubNav';
+import type { ProcessedHtml } from '~/utils/csp';
 
 interface AdmissionsPageContentProps {
-  description: string;
+  description: ProcessedHtml;
   layout?: 'default' | 'extraBottom';
   mainType?: string;
   postType?: string;

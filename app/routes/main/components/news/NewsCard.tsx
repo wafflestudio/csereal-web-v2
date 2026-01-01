@@ -17,13 +17,7 @@ export default function NewsCard({ news }: { news: MainNews }) {
         <Image
           src={encodeURI(news.imageURL)}
           alt=""
-          className="object-cover"
-          style={{
-            position: 'absolute',
-            height: '100%',
-            width: '100%',
-            inset: 0,
-          }}
+          className="absolute inset-0 h-full w-full object-cover"
         />
       </div>
 

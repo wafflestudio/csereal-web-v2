@@ -1,6 +1,9 @@
+import type { Route } from '.react-router/types/app/routes/10-10-project/+types/manager';
 import PageLayout from '~/components/layout/PageLayout';
 import HTMLViewer from '~/components/ui/HTMLViewer';
 import { useLanguage } from '~/hooks/useLanguage';
+import { processHtmlForCsp } from '~/utils/csp';
+import { getLocaleFromPathname } from '~/utils/string';
 
 const META = {
   ko: {
@@ -15,8 +18,22 @@ const META = {
   },
 };
 
-export default function TenTenManagerPage() {
-  const { t, localizedPath, locale } = useLanguage();
+export async function loader({ request }: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  const locale = getLocaleFromPathname(url.pathname);
+  const prefix = locale === 'en' ? '/en' : '';
+
+  return {
+    htmlContent: processHtmlForCsp(
+      buildHtmlContent(`${prefix}/about/greetings`),
+    ),
+  };
+}
+
+export default function TenTenManagerPage({
+  loaderData,
+}: Route.ComponentProps) {
+  const { t, locale } = useLanguage();
 
   const subNav = {
     title: t('10-10 Project'),
@@ -31,29 +48,7 @@ export default function TenTenManagerPage() {
     ],
   };
 
-  const htmlContent = `<h3>Professor Soonhoi Ha (Department Head)<br /></h3>
-<p>Codesign And Parallel Processing Lab</p>
-<p>Contact info</p>
-<p>Office: 301 Building, Room 408</p>
-<p>Phone: (02) 880-8382 Fax: (02) 886-7589</p>
-<p>Email: sha@iris.snu.ac.kr</p>
-<p>
-  Website:&nbsp;<a rel="nofollow" href="http://peace.snu.ac.kr/sha/">http://peace.snu.ac.kr/sha/</a>
-</p>
-<p>Education Ph.D. in EECS, University of California, Berkeley, 1992</p>
-<p>Introduction&nbsp;:<a rel="nofollow" href="${localizedPath(
-    '/about/greetings',
-  )}">${localizedPath('/about/greetings')}</a></p>
-<h3>Curricular Vitae (CV)&nbsp;</h3>
-<p>
-  <a
-    rel="nofollow"
-    href="https://docs.google.com/document/d/1WmpKLWIv_xjwFv4VFOItJ4vuhfAPi-67JRCl6pszHoI/edit"
-    >https://docs.google.com/document/d/1WmpKLWIv_xjwFv4VFOItJ4vuhfAPi-67JRCl6pszHoI/edit</a
-  >
-</p>
-`;
-
+  const htmlContent = loaderData.htmlContent;
   const meta = META[locale];
 
   return (
@@ -68,3 +63,26 @@ export default function TenTenManagerPage() {
     </PageLayout>
   );
 }
+
+const buildHtmlContent = (
+  greetingsPath: string,
+) => `<h3>Professor Soonhoi Ha (Department Head)<br /></h3>
+<p>Codesign And Parallel Processing Lab</p>
+<p>Contact info</p>
+<p>Office: 301 Building, Room 408</p>
+<p>Phone: (02) 880-8382 Fax: (02) 886-7589</p>
+<p>Email: sha@iris.snu.ac.kr</p>
+<p>
+  Website:&nbsp;<a rel="nofollow" href="http://peace.snu.ac.kr/sha/">http://peace.snu.ac.kr/sha/</a>
+</p>
+<p>Education Ph.D. in EECS, University of California, Berkeley, 1992</p>
+<p>Introduction&nbsp;:<a rel="nofollow" href="${greetingsPath}">${greetingsPath}</a></p>
+<h3>Curricular Vitae (CV)&nbsp;</h3>
+<p>
+  <a
+    rel="nofollow"
+    href="https://docs.google.com/document/d/1WmpKLWIv_xjwFv4VFOItJ4vuhfAPi-67JRCl6pszHoI/edit"
+    >https://docs.google.com/document/d/1WmpKLWIv_xjwFv4VFOItJ4vuhfAPi-67JRCl6pszHoI/edit</a
+  >
+</p>
+`;
