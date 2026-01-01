@@ -7,7 +7,7 @@ import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
 import type { MainResponse } from '~/types/api/v2';
 import { SITE_NAME } from '~/utils/metadata';
-import backgroundImg from './assets/background.png';
+import backgroundImg from './assets/background.avif';
 import GraphicSection from './components/GraphicSection';
 import ImportantSection from './components/ImportantSection';
 import LinkSection from './components/LinkSection';

@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import Image from '~/components/ui/Image';
-import backgroundImg from '../assets/background.png';
+import backgroundImg from '../assets/background.avif';
 import DownArrowIcon from '../assets/down_arrow.svg?react';
-import mainGraphicImg from '../assets/mainGraphic.png';
+import mainGraphicImg from '../assets/mainGraphic.avif';
 
 export default function GraphicSection() {
   return (

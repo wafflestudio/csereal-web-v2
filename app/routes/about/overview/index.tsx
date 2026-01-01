@@ -12,8 +12,8 @@ import commonTranslations from '~/translations.json';
 import type { AboutContent } from '~/types/api/v2/about/content';
 import { processHtmlForCsp } from '~/utils/csp';
 import { getLocaleFromPathname } from '~/utils/string';
-import brochure1 from '../assets/brochure1.png';
-import brochure2 from '../assets/brochure2.png';
+import brochure1 from '../assets/brochure1.avif';
+import brochure2 from '../assets/brochure2.avif';
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);

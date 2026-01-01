@@ -8,7 +8,7 @@ import Image from '~/components/ui/Image';
 import { useLanguage } from '~/hooks/useLanguage';
 import useIsMobile from '~/hooks/useResponsive';
 import type { AllMainNotice } from '~/types/api/v2';
-import noticeGraphicImg from '../assets/noticeGraphic.png';
+import noticeGraphicImg from '../assets/noticeGraphic.avif';
 import PlusIcon from '../assets/plus.svg?react';
 
 export default function NoticeSection({
