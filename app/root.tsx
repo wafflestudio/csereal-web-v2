@@ -47,10 +47,17 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
   const nonce = createNonce();
 
+  const cookies = request.headers.get('cookie');
+  const hasSession = cookies?.includes('JSESSIONID=');
+
   const headers = {
-    [import.meta.env.PROD
-      ? 'Content-Security-Policy'
-      : 'Content-Security-Policy-Report-Only']: getCSPHeaders(nonce),
+    ...(hasSession
+      ? {}
+      : {
+          [import.meta.env.PROD
+            ? 'Content-Security-Policy'
+            : 'Content-Security-Policy-Report-Only']: getCSPHeaders(nonce),
+        }),
     /** @see https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security */
     'Strict-Transport-Security': 'max-age=3600', // 1 hour. HTTPS only
     'X-Frame-Options': 'SAMEORIGIN', // Prevent clickjacking
@@ -59,7 +66,12 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
   context.set(nonceContext, nonce);
 
-  return data({ nonce }, { headers });
+  return data(
+    { nonce },
+    {
+      headers: pathname.includes('/create') ? undefined : headers,
+    },
+  );
 }
 
 export function headers({ loaderHeaders }: Route.HeadersArgs) {
