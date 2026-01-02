@@ -20,6 +20,7 @@ import { useNonce } from '~/hooks/useNonce';
 import useIsMobile from '~/hooks/useResponsive';
 import { useStore } from '~/store';
 import { createNonce, getCSPHeaders, nonceContext } from '~/utils/csp';
+import { getPrimaryLanguage } from '~/utils/string';
 
 // Loader for handling redirects
 export async function loader({ request, context }: Route.LoaderArgs) {
@@ -37,12 +38,10 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
   // / 진입 시 언어 감지
   if (pathname === '/') {
-    // Detect browser language
-    const acceptLanguage = request.headers.get('accept-language');
-    const browserLang = acceptLanguage?.split(',')[0]?.toLowerCase();
+    const acceptLanguage = request.headers.get('accept-language') || '';
+    const primaryLang = getPrimaryLanguage(acceptLanguage);
 
-    // If browser language is English, redirect to /en
-    if (browserLang?.startsWith('en')) {
+    if (primaryLang === 'en') {
       return redirect('/en');
     }
   }
