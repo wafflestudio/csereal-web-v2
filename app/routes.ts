@@ -49,7 +49,7 @@ const getLocaleRoutes = (locale: Locale) => {
       route('/facilities/edit', 'routes/about/facilities/edit.tsx'),
       route('/contact', 'routes/about/contact.tsx'),
       route('/directions', 'routes/about/directions/index.tsx'),
-      route('/directions/edit', 'routes/about/directions/edit.tsx'),
+      route('/directions/:id/edit', 'routes/about/directions/$id/edit.tsx'),
       // Dynamic route for overview/greetings/history/contact edit pages
       route('/:type/edit', 'routes/about/$type/edit.tsx'),
     ]),

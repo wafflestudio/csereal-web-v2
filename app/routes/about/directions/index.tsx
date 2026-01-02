@@ -8,7 +8,7 @@ import Button from '~/components/ui/Button';
 import HTMLViewer from '~/components/ui/HTMLViewer';
 import { BASE_URL } from '~/constants/api';
 import { useLanguage } from '~/hooks/useLanguage';
-import { createSelectionUrl, useSelectionList } from '~/hooks/useSelectionList';
+import { useSelectionList } from '~/hooks/useSelectionList';
 import { useAboutSubNav } from '~/hooks/useSubNav';
 import type { DirectionsResponse } from '~/types/api/v2/about/directions';
 import { processHtmlForCsp } from '~/utils/csp';
@@ -110,10 +110,7 @@ export default function DirectionsPage({
               <Button
                 as="link"
                 to={localizedPath(
-                  createSelectionUrl(
-                    '/about/directions/edit',
-                    selectedDirection.en.name || selectedDirection.ko.name,
-                  ),
+                  `/about/directions/${selectedDirection.ko.id}/edit`,
                 )}
                 variant="outline"
                 tone="neutral"
