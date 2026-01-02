@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # CSEREAL 배포 스크립트
-# 사용법: ./deploy.sh [dev|prod]
+# 사용법: ./deploy.sh [beta|prod]
 
 # 색상 코드
 RED='\033[0;31m'
@@ -13,15 +13,15 @@ NC='\033[0m' # No Color
 # 인자 확인
 if [ -z "$1" ]; then
     echo -e "${RED}오류: 환경 인자가 필요합니다${NC}"
-    echo "사용법: ./deploy.sh [dev|prod]"
+    echo "사용법: ./deploy.sh [beta|prod]"
     exit 1
 fi
 
 ENV="$1"
 
-if [ "$ENV" != "dev" ] && [ "$ENV" != "prod" ]; then
+if [ "$ENV" != "beta" ] && [ "$ENV" != "prod" ]; then
     echo -e "${RED}오류: 잘못된 환경 '$ENV'${NC}"
-    echo "사용법: ./deploy.sh [dev|prod]"
+    echo "사용법: ./deploy.sh [beta|prod]"
     exit 1
 fi
 
@@ -40,13 +40,13 @@ CONTAINER_NAME="frontend"
 IMAGE_NAME="frontend"
 PORT="3000"
 
-if [ "$ENV" == "dev" ]; then
-    SSH_KEY="${CSEREAL_DEV_SSH_KEY}"
-    SSH_USER="${CSEREAL_DEV_SSH_USER}"
-    SSH_HOST="${CSEREAL_DEV_SSH_HOST}"
-    SSH_PORT="${CSEREAL_DEV_SSH_PORT}"
+if [ "$ENV" == "beta" ]; then
+    SSH_KEY="${CSEREAL_BETA_SSH_KEY}"
+    SSH_USER="${CSEREAL_BETA_SSH_USER}"
+    SSH_HOST="${CSEREAL_BETA_SSH_HOST}"
+    SSH_PORT="${CSEREAL_BETA_SSH_PORT}"
     BUILD_MODE="beta"
-    TITLE="CSEREAL 개발 서버 배포"
+    TITLE="CSEREAL 베타 서버 배포"
 else
     # PROD 환경
     SSH_KEY="${CSEREAL_PROD_SSH_KEY}"
@@ -77,11 +77,11 @@ echo "작성자: $(git log -1 $REMOTE_BRANCH --format='%an <%ae>')"
 echo "날짜:   $(git log -1 $REMOTE_BRANCH --format='%cd' --date=format:'%Y-%m-%d %H:%M:%S')"
 echo ""
 
-# 첫 번째 배포 확인 (dev/prod 공통)
+# 첫 번째 배포 확인 (beta/prod 공통)
 if [ "$ENV" == "prod" ]; then
     echo -e "${YELLOW}프로덕션 서버에 배포합니다.${NC}"
 else
-    echo -e "${YELLOW}개발 서버에 배포합니다.${NC}"
+    echo -e "${YELLOW}베타 서버에 배포합니다.${NC}"
 fi
 echo -e "${YELLOW}서버: $SSH_USER@$SSH_HOST:$SSH_PORT${NC}"
 echo ""
@@ -162,8 +162,8 @@ echo -e "${GREEN}  ✅ 배포 완료!${NC}"
 echo -e "${GREEN}=====================================${NC}"
 echo ""
 
-if [ "$ENV" == "dev" ]; then
-    echo "🌐 개발 서버: http://$SSH_HOST:$PORT"
+if [ "$ENV" == "beta" ]; then
+    echo "🌐 베타 서버: http://$SSH_HOST:$PORT"
 else
     echo "🌐 프로덕션 서버: https://cse.snu.ac.kr"
 fi

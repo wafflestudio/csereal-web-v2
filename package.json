@@ -16,7 +16,7 @@
     "prepare": "node .husky/install.mjs",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "deploy:dev": "scripts/deploy.sh dev",
+    "deploy:beta": "scripts/deploy.sh beta",
     "deploy:prod": "scripts/deploy.sh prod"
   },
   "dependencies": {
