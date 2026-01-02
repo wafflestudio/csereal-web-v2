@@ -42,10 +42,15 @@ docker stop $CONTAINER_NAME 2>/dev/null || echo "실행 중인 컨테이너 없�
 docker rm $CONTAINER_NAME 2>/dev/null || echo "삭제할 컨테이너 없음" >&2
 
 echo "🚀 새 컨테이너 시작 중..." >&2
+
+CACHE_DIR="/home/$(whoami)/img-optimized"
+mkdir -p "$CACHE_DIR"
+
 docker run -d \
-  --name $CONTAINER_NAME \
+  --name "$CONTAINER_NAME" \
   --restart unless-stopped \
-  -p $PORT:$PORT \
+  -p "$PORT:$PORT" \
+  -v "$CACHE_DIR:/img-optimized" \
   $IMAGE_NAME:latest
 
 echo "✅ 컨테이너 시작 완료" >&2
