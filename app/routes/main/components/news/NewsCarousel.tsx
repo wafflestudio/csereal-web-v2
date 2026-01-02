@@ -1,7 +1,6 @@
 import type { ButtonHTMLAttributes } from 'react';
 import { useEffect, useRef } from 'react';
 import type { MainNews } from '~/types/api/v2';
-import { animateScrollLeft } from './animateScrollTo';
 import PauseIcon from './assets/pause.svg?react';
 import PlayIcon from './assets/play.svg?react';
 import { CARD_GAP_TAILWIND } from './constants';
@@ -24,24 +23,26 @@ export default function NewsCarousel({ news }: { news: MainNews[] }) {
     startScroll,
     stopScroll,
   } = useCarousel(news);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (containerRef.current === null) return;
-    return animateScrollLeft(containerRef.current, offsetREM * 16);
+    if (!trackRef.current) return;
+    trackRef.current.style.transform = `translateX(-${offsetREM}rem)`;
   }, [offsetREM]);
 
   return (
     <div className="flex flex-col items-center">
       <div
-        className={`no-scrollbar mx-auto flex overflow-x-hidden pb-10 ${CARD_GAP_TAILWIND} ${
-          widthMap[cardCnt as 3 | 4]
-        }`}
-        ref={containerRef}
+        className={`mx-auto overflow-hidden pb-10 ${widthMap[cardCnt as 3 | 4]}`}
       >
-        {news.map((news) => (
-          <NewsCard key={news.id} news={news} />
-        ))}
+        <div
+          ref={trackRef}
+          className={`flex ${CARD_GAP_TAILWIND} transition-transform duration-700 ease-[cubic-bezier(0.42,0,0.58,1)]`}
+        >
+          {news.map((news) => (
+            <NewsCard key={news.id} news={news} />
+          ))}
+        </div>
       </div>
       <PageIndicator
         page={page}
