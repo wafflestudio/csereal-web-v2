@@ -58,4 +58,4 @@ pnpm deploy:prod  # 프로덕션 배포
 
 ## 관련 레포지토리
 
-- 백엔드: [wafflestudio/csereal-server](https://github.com/wafflestudio/csereal-server)
+- [wafflestudio/csereal-server](https://github.com/wafflestudio/csereal-server)

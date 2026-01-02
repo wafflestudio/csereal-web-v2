@@ -4,16 +4,8 @@
 @import "tailwindcss/utilities.css";
 
 @font-face {
-  font-family: "Pretendard Variable";
-  src: url("/PretendardVariable.woff2") format("woff2");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
   font-family: "Gowun Batang";
-  src: url("./routes/main/assets/GowunBatang-Regular.woff2") format("woff2");
+  src: url("/GowunBatang-Regular.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
