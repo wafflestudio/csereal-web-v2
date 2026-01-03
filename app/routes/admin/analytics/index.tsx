@@ -45,7 +45,6 @@ export default function AnalyticsPage({ loaderData }: Route.ComponentProps) {
     <PageLayout title="접속 통계" titleSize="xl">
       {/* 파일 목록 */}
       <div>
-        <h2 className="mb-4 font-bold">로그 파일 (최근 3개월)</h2>
         {filesPerMonth.length === 0 ? (
           <p className="text-neutral-500">로그 파일이 없습니다.</p>
         ) : (

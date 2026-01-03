@@ -2,28 +2,20 @@
 
 서울대학교 컴퓨터공학부 홈페이지의 프론트엔드 소스코드입니다.
 
-## 연혁
-
-- 2023.07: CSEREAL 프로젝트 시작
-- 2024.04: [cse.snu.ac.kr](https://cse.snu.ac.kr) 배포
-- 2024.08: 기술/디자인 발표
-- 2025.12: React Router 마이그레이션
-
 ## Getting Started
 
 ```sh
 git clone https://github.com/wafflestudio/cse.snu.ac.kr
 cd cse.snu.ac.kr
 pnpm install
+pnpm dev
 ```
 
-### 환경 변수 설정
+필요시 환경 변수를 설정합니다.
 
 ```sh
 cp env/.env.example env/.env
 ```
-
-`env/.env` 파일을 열어 다음 값들을 채워넣습니다:
 
 **1. 카카오 맵 API 키** 
 - [소개 > 찾아오는 길](https://cse.snu.ac.kr/about/directions) 페이지에서 사용
@@ -50,9 +42,7 @@ pnpm deploy:prod  # 프로덕션 배포
 
 ## 참고사항
 
-- 개발 중 백엔드 서버 변경: `env/.env.development` 수정
-- ⚠️ 학외망에서 prod 서버 연결 시 실패 가능(재시도하면 정상 동작)
-- 테스트 작성 가이드: [CLAUDE.md](./CLAUDE.md)
+- ⚠️ 학외망에서 prod 서버 접속시 첫번쨰 시도는 실패할 수 있습니다.
 
 ## 관련 레포
 
