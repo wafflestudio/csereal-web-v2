@@ -1,117 +1,205 @@
 import type { Route } from '.react-router/types/app/routes/admin/analytics/+types/index';
+import dayjs from 'dayjs';
 import PageLayout from '~/components/layout/PageLayout';
+import { type NavItem, navigationTree } from '~/constants/navigation';
+import type { PageStats } from '~/types/analytics';
 import {
-  getDayFiles,
-  getMonthFolders,
-  readLogEntries,
-} from '~/utils/analytics-reader.server';
+  getAvailableDates,
+  getDailyStats,
+} from '~/utils/analytics/stats-reader.server';
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
-  const selectedFile = url.searchParams.get('file');
+  const date = url.searchParams.get('date') || dayjs().format('YYYY-MM-DD');
 
-  const months = await getMonthFolders();
+  const stats = await getDailyStats(date);
+  const availableDates = await getAvailableDates();
 
-  // 최근 3개월의 파일 목록만
-  const filesPerMonth = await Promise.all(
-    months.slice(0, 3).map(async (month) => ({
-      month,
-      files: await getDayFiles(month),
-    })),
-  );
-
-  // 선택된 파일의 로그 읽기
-  const logs = selectedFile ? await readLogEntries(selectedFile) : null;
-
-  return {
-    filesPerMonth,
-    logs: logs?.map((log) => ({ timestamp: log.timestamp, url: log.url })),
-    selectedFile,
-  };
+  return { stats, date, availableDates };
 }
 
 export default function AnalyticsPage({ loaderData }: Route.ComponentProps) {
-  if (!loaderData) {
-    return (
-      <PageLayout title="접속 통계" titleSize="xl">
-        <p>로그인이 필요합니다.</p>
-      </PageLayout>
-    );
-  }
-
-  const { filesPerMonth, logs, selectedFile } = loaderData;
+  const { stats, date, availableDates } = loaderData;
 
   return (
     <PageLayout title="접속 통계" titleSize="xl">
-      {/* 파일 목록 */}
-      <div>
-        {filesPerMonth.length === 0 ? (
-          <p className="text-neutral-500">로그 파일이 없습니다.</p>
-        ) : (
-          <div className="space-y-6">
-            {filesPerMonth.map(({ month, files }) => (
-              <div key={month}>
-                <h3 className="mb-2 font-semibold">{month}</h3>
-                {files.length === 0 ? (
-                  <p className="ml-4 text-neutral-500">파일 없음</p>
-                ) : (
-                  <ul className="ml-4 space-y-1">
-                    {files.map((file) => (
-                      <li key={file.name} className="flex items-center gap-3">
-                        <a
-                          href={`/admin/analytics?file=${encodeURIComponent(file.path)}`}
-                          className={
-                            selectedFile === file.path
-                              ? 'font-bold text-main-orange'
-                              : 'text-main-orange hover:underline'
-                          }
-                        >
-                          {file.name}
-                        </a>
-                        <span className="text-sm text-neutral-400">
-                          ({formatFileSize(file.size)})
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+      {/* 날짜 선택 */}
+      <form
+        method="get"
+        className="mb-8 rounded-lg border border-neutral-300 bg-white p-6"
+      >
+        <div className="flex items-center gap-3">
+          <select
+            name="date"
+            defaultValue={date}
+            className="rounded border border-neutral-300 px-3 py-2"
+          >
+            {availableDates.map((d) => (
+              <option key={d} value={d}>
+                {d}
+              </option>
             ))}
-          </div>
-        )}
-      </div>
-
-      {/* 로그 뷰어 */}
-      <div className="mt-10">
-        <div className="overflow-x-auto">
-          <table className="border-collapse text-sm">
-            <thead>
-              <tr className="border-b bg-neutral-100">
-                <th className="px-3 py-2 text-left">시간</th>
-                <th className="px-3 py-2 text-left">URL</th>
-              </tr>
-            </thead>
-            <tbody>
-              {logs?.map((log, index) => (
-                <tr key={index} className="border-b hover:bg-neutral-50">
-                  <td className="px-3 py-2 whitespace-nowrap text-xs">
-                    {new Date(log.timestamp).toLocaleString('ko-KR')}
-                  </td>
-                  <td className="px-3 py-2 max-w-md truncate" title={log.url}>
-                    {new URL(log.url).pathname}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          </select>
+          <button
+            type="submit"
+            className="rounded bg-main-orange px-4 py-2 text-white hover:bg-main-orange/90"
+          >
+            조회
+          </button>
         </div>
-      </div>
+      </form>
+
+      {!stats && <p className="text-neutral-500">통계 없음</p>}
+
+      {stats && (
+        <>
+          {/* 요약 */}
+          <div className="mb-8 grid grid-cols-3 gap-4">
+            <div className="rounded-lg border border-neutral-300 bg-white p-6">
+              <div className="text-sm text-neutral-600">총 조회수</div>
+              <div className="mt-2 text-3xl font-bold">
+                {stats.total.toLocaleString()}
+              </div>
+            </div>
+            <div className="rounded-lg border border-neutral-300 bg-white p-6">
+              <div className="text-sm text-neutral-600">실 사용자</div>
+              <div className="mt-2 text-3xl font-bold text-main-orange">
+                {stats.realUsers.toLocaleString()}
+              </div>
+            </div>
+            <div className="rounded-lg border border-neutral-300 bg-white p-6">
+              <div className="text-sm text-neutral-600">봇</div>
+              <div className="mt-2 text-3xl font-bold text-neutral-400">
+                {stats.bots.toLocaleString()}
+              </div>
+            </div>
+          </div>
+
+          {/* 페이지별 (navigationTree 순서) */}
+          <section className="mb-8">
+            <h2 className="mb-4 text-xl font-bold">페이지별 접속자수</h2>
+            <PagesTable pages={stats.pages} />
+          </section>
+
+          {/* 브라우저 분포 */}
+          <section className="mb-8">
+            <h2 className="mb-4 text-xl font-bold">브라우저 분포</h2>
+            <StatsTable data={stats.browsers} />
+          </section>
+
+          {/* OS 분포 */}
+          <section className="mb-8">
+            <h2 className="mb-4 text-xl font-bold">OS 분포</h2>
+            <StatsTable data={stats.os} />
+          </section>
+
+          {/* 플랫폼 분포 */}
+          <section className="mb-8">
+            <h2 className="mb-4 text-xl font-bold">플랫폼 분포</h2>
+            <StatsTable data={stats.platforms} />
+          </section>
+
+          {/* Referer 순위 */}
+          <section className="mb-8">
+            <h2 className="mb-4 text-xl font-bold">Referer 순위</h2>
+            <StatsTable data={stats.referers} />
+          </section>
+        </>
+      )}
     </PageLayout>
   );
 }
 
-function formatFileSize(bytes: number): string {
-  if (bytes < 1024) return `${bytes}B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)}KB`;
-  return `${(bytes / 1024 / 1024).toFixed(1)}MB`;
+// === Helper Components ===
+
+function PagesTable({ pages }: { pages: PageStats[] }) {
+  const sorted = sortByNavigationTree(pages);
+  return (
+    <div className="overflow-x-auto rounded-lg border border-neutral-300 bg-white">
+      <table className="w-full">
+        <thead className="bg-neutral-50">
+          <tr>
+            <th className="px-4 py-3 text-left text-sm font-semibold">경로</th>
+            <th className="px-4 py-3 text-right text-sm font-semibold">
+              조회수
+            </th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-neutral-200">
+          {sorted.map((p) => (
+            <tr key={p.path} className="hover:bg-neutral-50">
+              <td className="px-4 py-3 text-sm">{p.path}</td>
+              <td className="px-4 py-3 text-right text-sm font-medium">
+                {p.views.toLocaleString()}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function StatsTable({
+  data,
+}: {
+  data: Array<{ name: string; count: number; percentage: number }>;
+}) {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-neutral-300 bg-white">
+      <table className="w-full">
+        <thead className="bg-neutral-50">
+          <tr>
+            <th className="px-4 py-3 text-left text-sm font-semibold">이름</th>
+            <th className="px-4 py-3 text-right text-sm font-semibold">개수</th>
+            <th className="px-4 py-3 text-right text-sm font-semibold">비율</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-neutral-200">
+          {data.map((d) => (
+            <tr key={d.name} className="hover:bg-neutral-50">
+              <td className="px-4 py-3 text-sm">{d.name}</td>
+              <td className="px-4 py-3 text-right text-sm font-medium">
+                {d.count.toLocaleString()}
+              </td>
+              <td className="px-4 py-3 text-right text-sm">
+                {d.percentage.toFixed(1)}%
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// === Sorting ===
+
+function sortByNavigationTree(pages: PageStats[]): PageStats[] {
+  const order = flattenNavigationTree(navigationTree);
+  const orderMap = new Map(order.map((path, index) => [path, index]));
+
+  return pages.sort((a, b) => {
+    const aIndex = orderMap.get(a.path) ?? 9999;
+    const bIndex = orderMap.get(b.path) ?? 9999;
+    return aIndex - bIndex;
+  });
+}
+
+function flattenNavigationTree(tree: NavItem[]): string[] {
+  const paths: string[] = [];
+
+  function walk(items: NavItem[]) {
+    for (const item of items) {
+      if (item.path) {
+        paths.push(item.path);
+      }
+      if (item.children) {
+        walk(item.children);
+      }
+    }
+  }
+
+  walk(tree);
+  return paths;
 }

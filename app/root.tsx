@@ -19,7 +19,7 @@ import { useLanguage } from '~/hooks/useLanguage';
 import { useNonce } from '~/hooks/useNonce';
 import useIsMobile from '~/hooks/useResponsive';
 import { useStore } from '~/store';
-import { logPageView } from '~/utils/analytics.server';
+import { logPageView } from '~/utils/analytics/log-writer.server';
 import { createNonce, getCSPHeaders, nonceContext } from '~/utils/csp';
 import { detectLang } from '~/utils/lang';
 
