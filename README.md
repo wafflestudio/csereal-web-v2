@@ -1,8 +1,8 @@
-서울대학교 컴퓨터공학부 홈페이지의 프론트엔드 소스코드입니다.
-
 ![](https://github.com/user-attachments/assets/39a28dbf-8ce8-4c3c-9222-abdddd22b934)
 
 ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+
+서울대학교 컴퓨터공학부 홈페이지의 프론트엔드 소스코드입니다.
 
 ## 연혁
 

@@ -1,14 +1,17 @@
 https://cse.snu.ac.kr/
 
 https://cse.snu.ac.kr/about
-https://cse.snu.ac.kr/about/contact
-https://cse.snu.ac.kr/about/directions
-https://cse.snu.ac.kr/about/facilities
-https://cse.snu.ac.kr/about/future-careers
-https://cse.snu.ac.kr/about/greetings
-https://cse.snu.ac.kr/about/history
+
 https://cse.snu.ac.kr/about/overview
+https://cse.snu.ac.kr/about/future-careers
 https://cse.snu.ac.kr/about/student-clubs
+https://cse.snu.ac.kr/about/facilities
+https://cse.snu.ac.kr/about/directions
+
+https://cse.snu.ac.kr/community/faculty-recruitment
+https://cse.snu.ac.kr/community/news
+https://cse.snu.ac.kr/community/notice
+https://cse.snu.ac.kr/community/seminar
 
 https://cse.snu.ac.kr/academics/graduate/course-changes
 https://cse.snu.ac.kr/academics/graduate/courses
@@ -30,10 +33,7 @@ https://cse.snu.ac.kr/admissions/international/undergraduate
 https://cse.snu.ac.kr/admissions/undergraduate/early-admission
 https://cse.snu.ac.kr/admissions/undergraduate/regular-admission
 
-https://cse.snu.ac.kr/community/faculty-recruitment
-https://cse.snu.ac.kr/community/news
-https://cse.snu.ac.kr/community/notice
-https://cse.snu.ac.kr/community/seminar
+
 
 https://cse.snu.ac.kr/people/emeritus-faculty
 https://cse.snu.ac.kr/people/faculty

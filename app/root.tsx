@@ -20,31 +20,31 @@ import { useNonce } from '~/hooks/useNonce';
 import useIsMobile from '~/hooks/useResponsive';
 import { useStore } from '~/store';
 import { createNonce, getCSPHeaders, nonceContext } from '~/utils/csp';
-import { getPrimaryLanguage } from '~/utils/string';
+import { detectLang } from '~/utils/lang';
 
-// Loader for handling redirects
 export async function loader({ request, context }: Route.LoaderArgs) {
   const url = new URL(request.url);
   const pathname = url.pathname;
 
-  if (pathname === '/login/success') {
-    return redirect('/');
+  if (pathname === '/login/success') return redirect('/');
+
+  // locale prefix 제거 (/ko, /en)
+  const pathWithoutLocale = pathname.replace(/^\/(ko|en)/, '') || '/';
+
+  // 유저 언어 감지 (1순위 쿠키, 2순위 Accept-Language)
+  const lang = detectLang(request);
+
+  if (lang === 'en' && !/^\/en/.test(pathname)) {
+    console.log('redirecting to /en', pathWithoutLocale);
+    return redirect(`/en${pathWithoutLocale}`);
   }
 
-  // /ko/* → /* redirect
-  if (pathname.startsWith('/ko')) {
-    return redirect(pathname.replace('/ko', '') || '/');
+  if (lang === 'ko' && /^\/(en|ko)/.test(pathname)) {
+    console.log('redirecting to', pathWithoutLocale);
+    return redirect(pathWithoutLocale);
   }
 
-  // / 진입 시 언어 감지
-  if (pathname === '/') {
-    const acceptLanguage = request.headers.get('accept-language') || '';
-    const primaryLang = getPrimaryLanguage(acceptLanguage);
-
-    if (primaryLang === 'en') {
-      return redirect('/en');
-    }
-  }
+  console.log('no redirect');
 
   const nonce = createNonce();
 

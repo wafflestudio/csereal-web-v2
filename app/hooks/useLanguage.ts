@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router';
+import { useFetcher, useLocation } from 'react-router';
 import commonTranslations from '~/translations.json';
 import type { Locale } from '~/types/i18n';
 
@@ -29,8 +29,8 @@ export function useLanguage<T extends Record<string, string>>(
 ):
   | UseLanguageWithTranslations<CommonTranslations>
   | UseLanguageWithTranslations<CommonTranslations & T> {
-  const navigate = useNavigate();
-  const { pathname, search } = useLocation();
+  const fetcher = useFetcher();
+  const { pathname } = useLocation();
 
   const locale = pathname.startsWith('/en') ? 'en' : 'ko';
   const isEnglish = locale === 'en';
@@ -38,11 +38,8 @@ export function useLanguage<T extends Record<string, string>>(
 
   const changeLanguage = () => {
     const newLocale = isEnglish ? 'ko' : 'en';
-    if (newLocale === 'en') {
-      navigate(`/en${pathWithoutLocale}${search}`);
-    } else {
-      navigate(`${pathWithoutLocale}${search}`);
-    }
+
+    fetcher.submit({ lang: newLocale }, { method: 'post', action: '/lang' });
   };
 
   const localizedPath = (path: string): string => {
