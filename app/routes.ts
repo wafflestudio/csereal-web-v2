@@ -233,6 +233,7 @@ export default [
     ...getLocaleRoutes('ko'),
     ...prefix('/en', [...getLocaleRoutes('en')]),
     _route('/admin', 'routes/admin/index.tsx'),
+    _route('/admin/analytics', 'routes/admin/analytics/index.tsx'),
     _route('/.internal', 'routes/internal.tsx'),
     _route('/lang', 'routes/lang.tsx'),
   ]),

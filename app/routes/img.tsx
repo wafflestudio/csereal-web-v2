@@ -22,7 +22,7 @@ const ALLOWED_DOMAINS = [
 
 const CACHE_DIR = import.meta.env.DEV
   ? path.join(process.cwd(), '.cache', 'images')
-  : '/img-optimized';
+  : '/frontend-data/img-optimized';
 
 /**
  * 개발 모드에서 이미지가 prod 환경에 있을 경우를 대비해 호스트를 prod로 변경

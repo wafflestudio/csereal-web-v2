@@ -1,7 +1,5 @@
 ![](https://github.com/user-attachments/assets/39a28dbf-8ce8-4c3c-9222-abdddd22b934)
 
-![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-
 서울대학교 컴퓨터공학부 홈페이지의 프론트엔드 소스코드입니다.
 
 ## 연혁
@@ -14,8 +12,8 @@
 ## Getting Started
 
 ```sh
-git clone https://github.com/wafflestudio/csereal-web-v2
-cd csereal-web-v2
+git clone https://github.com/wafflestudio/cse.snu.ac.kr
+cd cse.snu.ac.kr
 pnpm install
 ```
 
@@ -53,9 +51,10 @@ pnpm deploy:prod  # 프로덕션 배포
 ## 참고사항
 
 - 개발 중 백엔드 서버 변경: `env/.env.development` 수정
-- ⚠️ 학교 외부에서 프로덕션 서버 첫 연결 시 실패 가능 (재시도 필요)
+- ⚠️ 학외망에서 prod 서버 연결 시 실패 가능(재시도하면 정상 동작)
 - 테스트 작성 가이드: [CLAUDE.md](./CLAUDE.md)
 
-## 관련 레포지토리
+## 관련 레포
 
 - [wafflestudio/csereal-server](https://github.com/wafflestudio/csereal-server)
+- [csereal-web](https://github.com/wafflestudio/csereal-web)

@@ -19,6 +19,7 @@ import { useLanguage } from '~/hooks/useLanguage';
 import { useNonce } from '~/hooks/useNonce';
 import useIsMobile from '~/hooks/useResponsive';
 import { useStore } from '~/store';
+import { logPageView } from '~/utils/analytics.server';
 import { createNonce, getCSPHeaders, nonceContext } from '~/utils/csp';
 import { detectLang } from '~/utils/lang';
 
@@ -35,16 +36,12 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   const lang = detectLang(request);
 
   if (lang === 'en' && !/^\/en/.test(pathname)) {
-    console.log('redirecting to /en', pathWithoutLocale);
     return redirect(`/en${pathWithoutLocale}`);
   }
 
   if (lang === 'ko' && /^\/(en|ko)/.test(pathname)) {
-    console.log('redirecting to', pathWithoutLocale);
     return redirect(pathWithoutLocale);
   }
-
-  console.log('no redirect');
 
   const nonce = createNonce();
 
@@ -67,6 +64,11 @@ export async function loader({ request, context }: Route.LoaderArgs) {
   };
 
   context.set(nonceContext, nonce);
+
+  // Analytics 로깅 (실패해도 페이지는 정상 동작)
+  logPageView(request).catch((error) =>
+    console.error('Analytics logging failed:', error),
+  );
 
   return data({ nonce }, { headers });
 }
