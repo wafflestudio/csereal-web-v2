@@ -13,12 +13,14 @@ import { ANALYTICS_LOGS_DIR } from './constants.server';
  * - 한 줄당 하나의 JSON 객체 (JSONL 형식)
  */
 export async function logPageView(request: Request): Promise<void> {
-  const now = dayjs();
-  const yearMonth = now.format('YYYY-MM');
-  const date = now.format('YYYY-MM-DD');
-
   // User-Agent 파싱
   const uaString = request.headers.get('user-agent');
+
+  // 봇이면 로그하지 않음
+  if (uaString && isbot(uaString)) {
+    return;
+  }
+
   let parsedUA: ParsedUA | null = null;
   if (uaString) {
     const result = Bowser.parse(uaString);
@@ -30,19 +32,22 @@ export async function logPageView(request: Request): Promise<void> {
     };
   }
 
+  const now = dayjs();
+
   const log: LogEntry = {
     timestamp: now.toISOString(),
     pathname: new URL(request.url).pathname,
     userAgent: parsedUA,
     referer: request.headers.get('referer'),
-    isBot: uaString ? isbot(uaString) : false,
   };
 
   // 월별 폴더 생성
+  const yearMonth = now.format('YYYY-MM');
   const monthDir = path.join(ANALYTICS_LOGS_DIR, yearMonth);
   await fs.mkdir(monthDir, { recursive: true });
 
   // 일별 파일에 JSONL 추가
+  const date = now.format('YYYY-MM-DD');
   const logFile = path.join(monthDir, `${date}.jsonl`);
   await fs.appendFile(logFile, `${JSON.stringify(log)}\n`, 'utf8');
 }

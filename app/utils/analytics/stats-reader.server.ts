@@ -1,12 +1,13 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import dayjs from 'dayjs';
 import type { DayStats } from '~/types/analytics';
 import { ANALYTICS_LOGS_DIR, ANALYTICS_STATS_DIR } from './constants.server';
 import { computeDailyStats } from './stats-computer.server';
 
 /**
  * 일별 통계 조회
- * - 캐시 있으면 반환, 없으면 계산
+ * - 캐시 있으면 반환, 없으면 계산 후 저장 (오늘 제외)
  */
 export async function getDailyStats(date: string): Promise<DayStats | null> {
   const yearMonth = date.slice(0, 7);
@@ -17,10 +18,28 @@ export async function getDailyStats(date: string): Promise<DayStats | null> {
     return JSON.parse(content) as DayStats;
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-      return await computeDailyStats(date);
+      const stats = await computeDailyStats(date);
+      if (!stats) return null;
+
+      // 오늘이 아닌 경우만 캐시에 저장
+      const today = dayjs().format('YYYY-MM-DD');
+      if (date !== today) {
+        await saveDailyStats(date, stats);
+      }
+
+      return stats;
     }
     throw error;
   }
+}
+
+async function saveDailyStats(date: string, stats: DayStats): Promise<void> {
+  const yearMonth = date.slice(0, 7);
+  const dir = path.join(ANALYTICS_STATS_DIR, yearMonth);
+  await fs.mkdir(dir, { recursive: true });
+
+  const file = path.join(dir, `${date}.json`);
+  await fs.writeFile(file, JSON.stringify(stats, null, 2), 'utf8');
 }
 
 /**

@@ -1,8 +1,11 @@
 import type { Route } from '.react-router/types/app/routes/admin/analytics/+types/index';
+import clsx from 'clsx';
 import dayjs from 'dayjs';
+import { ChevronDown, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
 import PageLayout from '~/components/layout/PageLayout';
-import { type NavItem, navigationTree } from '~/constants/navigation';
-import type { PageStats } from '~/types/analytics';
+import Button from '~/components/ui/Button';
+import type { TreeNode } from '~/types/analytics';
 import {
   getAvailableDates,
   getDailyStats,
@@ -24,10 +27,7 @@ export default function AnalyticsPage({ loaderData }: Route.ComponentProps) {
   return (
     <PageLayout title="접속 통계" titleSize="xl">
       {/* 날짜 선택 */}
-      <form
-        method="get"
-        className="mb-8 rounded-lg border border-neutral-300 bg-white p-6"
-      >
+      <form method="get" className="mb-8">
         <div className="flex items-center gap-3">
           <select
             name="date"
@@ -40,45 +40,30 @@ export default function AnalyticsPage({ loaderData }: Route.ComponentProps) {
               </option>
             ))}
           </select>
-          <button
-            type="submit"
-            className="rounded bg-main-orange px-4 py-2 text-white hover:bg-main-orange/90"
-          >
+          <Button type="submit" size="lg" variant="solid" tone="brand">
             조회
-          </button>
+          </Button>
         </div>
       </form>
 
-      {!stats && <p className="text-neutral-500">통계 없음</p>}
+      {(!stats || stats.total === 0) && (
+        <p className="text-neutral-500">통계 없음</p>
+      )}
 
-      {stats && (
+      {stats && stats.total > 0 && (
         <>
           {/* 요약 */}
-          <div className="mb-8 grid grid-cols-3 gap-4">
-            <div className="rounded-lg border border-neutral-300 bg-white p-6">
-              <div className="text-sm text-neutral-600">총 조회수</div>
-              <div className="mt-2 text-3xl font-bold">
-                {stats.total.toLocaleString()}
-              </div>
-            </div>
-            <div className="rounded-lg border border-neutral-300 bg-white p-6">
-              <div className="text-sm text-neutral-600">실 사용자</div>
-              <div className="mt-2 text-3xl font-bold text-main-orange">
-                {stats.realUsers.toLocaleString()}
-              </div>
-            </div>
-            <div className="rounded-lg border border-neutral-300 bg-white p-6">
-              <div className="text-sm text-neutral-600">봇</div>
-              <div className="mt-2 text-3xl font-bold text-neutral-400">
-                {stats.bots.toLocaleString()}
-              </div>
+          <div className="mb-8">
+            <div className="text-sm text-neutral-600">총 조회수</div>
+            <div className="mt-2 text-3xl font-bold">
+              {stats.total.toLocaleString()}
             </div>
           </div>
 
           {/* 페이지별 (navigationTree 순서) */}
           <section className="mb-8">
             <h2 className="mb-4 text-xl font-bold">페이지별 접속자수</h2>
-            <PagesTable pages={stats.pages} />
+            <PagesTable tree={stats.tree} />
           </section>
 
           {/* 브라우저 분포 */}
@@ -112,8 +97,7 @@ export default function AnalyticsPage({ loaderData }: Route.ComponentProps) {
 
 // === Helper Components ===
 
-function PagesTable({ pages }: { pages: PageStats[] }) {
-  const sorted = sortByNavigationTree(pages);
+function PagesTable({ tree }: { tree: TreeNode }) {
   return (
     <div className="overflow-x-auto rounded-lg border border-neutral-300 bg-white">
       <table className="w-full">
@@ -121,22 +105,69 @@ function PagesTable({ pages }: { pages: PageStats[] }) {
           <tr>
             <th className="px-4 py-3 text-left text-sm font-semibold">경로</th>
             <th className="px-4 py-3 text-right text-sm font-semibold">
-              조회수
+              한글 조회수
+            </th>
+            <th className="px-4 py-3 text-right text-sm font-semibold">
+              영어 조회수
             </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-neutral-200">
-          {sorted.map((p) => (
-            <tr key={p.path} className="hover:bg-neutral-50">
-              <td className="px-4 py-3 text-sm">{p.path}</td>
-              <td className="px-4 py-3 text-right text-sm font-medium">
-                {p.views.toLocaleString()}
-              </td>
-            </tr>
+          {Object.values(tree.children).map((child) => (
+            <TreeNodeRow key={child.fullPath} node={child} depth={0} />
           ))}
         </tbody>
       </table>
     </div>
+  );
+}
+
+function TreeNodeRow({ node, depth }: { node: TreeNode; depth: number }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const hasChildren = Object.keys(node.children).length > 0;
+  const indent = `${depth * 1.5}rem`;
+
+  return (
+    <>
+      <tr
+        className="cursor-pointer bg-neutral-50 hover:bg-neutral-100"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <td
+          className="px-4 py-3 text-sm font-medium"
+          ref={(ref) => {
+            if (ref) {
+              ref.style.paddingLeft = indent;
+            }
+          }}
+        >
+          <span
+            className={clsx(
+              'text-neutral-600 h-4 w-4 mr-2 inline-block',
+              hasChildren ? '' : 'opacity-0',
+            )}
+          >
+            {isOpen ? (
+              <ChevronDown strokeWidth={1.5} />
+            ) : (
+              <ChevronRight strokeWidth={1.5} />
+            )}
+          </span>
+          {node.fullPath}
+        </td>
+        <td className="px-4 py-3 text-right text-sm font-semibold">
+          {node.totalKoViews.toLocaleString()}
+        </td>
+        <td className="px-4 py-3 text-right text-sm font-semibold">
+          {node.totalEnViews.toLocaleString()}
+        </td>
+      </tr>
+      {hasChildren &&
+        isOpen &&
+        Object.values(node.children).map((child) => (
+          <TreeNodeRow key={child.fullPath} node={child} depth={depth + 1} />
+        ))}
+    </>
   );
 }
 
@@ -171,35 +202,4 @@ function StatsTable({
       </table>
     </div>
   );
-}
-
-// === Sorting ===
-
-function sortByNavigationTree(pages: PageStats[]): PageStats[] {
-  const order = flattenNavigationTree(navigationTree);
-  const orderMap = new Map(order.map((path, index) => [path, index]));
-
-  return pages.sort((a, b) => {
-    const aIndex = orderMap.get(a.path) ?? 9999;
-    const bIndex = orderMap.get(b.path) ?? 9999;
-    return aIndex - bIndex;
-  });
-}
-
-function flattenNavigationTree(tree: NavItem[]): string[] {
-  const paths: string[] = [];
-
-  function walk(items: NavItem[]) {
-    for (const item of items) {
-      if (item.path) {
-        paths.push(item.path);
-      }
-      if (item.children) {
-        walk(item.children);
-      }
-    }
-  }
-
-  walk(tree);
-  return paths;
 }

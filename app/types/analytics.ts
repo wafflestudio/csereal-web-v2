@@ -11,7 +11,6 @@ export interface LogEntry {
   pathname: string;
   userAgent: ParsedUA | null;
   referer: string | null;
-  isBot: boolean;
 }
 
 export interface PageStats {
@@ -19,12 +18,20 @@ export interface PageStats {
   views: number;
 }
 
+export interface TreeNode {
+  segment: string;
+  fullPath: string;
+  koViews: number;
+  enViews: number;
+  totalKoViews: number;
+  totalEnViews: number;
+  children: Record<string, TreeNode>;
+}
+
 export interface DayStats {
   date: string; // YYYY-MM-DD
   total: number;
-  realUsers: number;
-  bots: number;
-  pages: PageStats[];
+  tree: TreeNode;
   browsers: Array<{ name: string; count: number; percentage: number }>;
   os: Array<{ name: string; count: number; percentage: number }>;
   platforms: Array<{ name: string; count: number; percentage: number }>;
