@@ -27,15 +27,23 @@ function normalizePageViews(
   const viewsMap = new Map<string, { ko: number; en: number }>();
 
   for (const entry of entries) {
-    const isEnglish = entry.pathname.startsWith('/en/');
-    const normalizedPath = isEnglish
-      ? entry.pathname.replace('/en', '')
-      : entry.pathname;
+    const { isEnglish, normalizedPath } = (() => {
+      const pathname = entry.pathname;
+
+      if (pathname === '/en') {
+        return { isEnglish: true, normalizedPath: '/' };
+      }
+
+      if (pathname.startsWith('/en/')) {
+        return { isEnglish: true, normalizedPath: pathname.replace('/en', '') };
+      }
+
+      return { isEnglish: false, normalizedPath: pathname };
+    })();
 
     if (!viewsMap.has(normalizedPath)) {
       viewsMap.set(normalizedPath, { ko: 0, en: 0 });
     }
-
     // biome-ignore lint/style/noNonNullAssertion: viewsMap에 반드시 존재
     const views = viewsMap.get(normalizedPath)!;
 

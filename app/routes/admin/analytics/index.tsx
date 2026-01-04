@@ -53,10 +53,24 @@ export default function AnalyticsPage({ loaderData }: Route.ComponentProps) {
       {stats && stats.total > 0 && (
         <>
           {/* 요약 */}
-          <div className="mb-8">
-            <div className="text-sm text-neutral-600">총 조회수</div>
-            <div className="mt-2 text-3xl font-bold">
-              {stats.total.toLocaleString()}
+          <div className="mb-8 gap-8 flex flex-wrap">
+            <div>
+              <div className="text-sm text-neutral-600">총 조회수</div>
+              <div className="mt-2 text-3xl font-bold">
+                {stats.total.toLocaleString()}
+              </div>
+            </div>
+            <div>
+              <div className="text-sm text-neutral-600">/</div>
+              <div className="mt-2 text-3xl font-bold">
+                {stats.tree.koViews.toLocaleString()}
+              </div>
+            </div>
+            <div>
+              <div className="text-sm text-neutral-600">/en</div>
+              <div className="mt-2 text-3xl font-bold">
+                {stats.tree.enViews.toLocaleString()}
+              </div>
             </div>
           </div>
 
